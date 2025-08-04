@@ -1,24 +1,11 @@
 from typing import Any
 
-from dash import dcc, html
+from dash import html
 
 from .buttons import PrimaryButton, SecondaryButton
 from .logo import BrandHeader
 from .navigation import FilterBar, TopNavigationBar
-
-
-def create_dark_mode_toggle() -> html.Button:
-    """Create a dark mode toggle button."""
-    return html.Button(
-        [
-            # Sun icon for light mode
-            html.I(className="fas fa-sun text-gray-500 dark:text-gray-400"),
-            # Moon icon for dark mode (hidden by default)
-            html.I(className="fas fa-moon text-gray-500 dark:text-gray-400"),
-        ],
-        id="dark-mode-toggle",
-        className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700",
-    )
+from .theme_manager import create_dark_mode_toggle
 
 
 def create_header(
@@ -45,18 +32,6 @@ def create_header(
     left_content = BrandHeader(page_title, page_icon)
 
     center_content = None
-    # html.Div(
-    #     [
-    #         html.I(
-    #             className="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-    #         ),
-    #         dcc.Input(
-    #             placeholder=search_placeholder,
-    #             className="pl-10 pr-2 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-64",
-    #         ),
-    #     ],
-    #     className="relative",
-    # )
 
     # Build right content from actions
     right_content = [create_dark_mode_toggle()]

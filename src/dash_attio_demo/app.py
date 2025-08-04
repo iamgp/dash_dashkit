@@ -4,10 +4,11 @@ from pathlib import Path
 # Add the src directory to the path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from dash import Dash, dcc, html, Input, Output, callback, State, clientside_callback
+from dash import Dash, html, Input, Output, callback, State, clientside_callback
 from demo_utils import create_company_columns, format_company_data
 
 from dash_attio_components import AttioTable, create_layout
+from dash_attio_components.theme_manager import ThemeManager, create_dark_mode_toggle
 
 # External stylesheets including Font Awesome for icons
 external_stylesheets = [
@@ -293,8 +294,7 @@ header_config = {
 
 app.layout = html.Div(
     [
-        dcc.Location(id='url', refresh=False),
-        dcc.Store(id="theme-store", storage_type="local"),
+        ThemeManager(),
         html.Div(
             id="app-container",
             children=create_layout(
@@ -304,60 +304,6 @@ app.layout = html.Div(
             ),
         ),
     ]
-)
-
-clientside_callback(
-    """
-    function(pathname, data) {
-        console.log('Clientside callback (dcc.Location) triggered.');
-        const storedTheme = localStorage.getItem('theme');
-        if (storedTheme) {
-            console.log('Clientside callback (dcc.Location) - Stored theme:', storedTheme);
-            return { theme: storedTheme };
-        }
-        console.log('Clientside callback (dcc.Location) - No stored theme, returning no_update.');
-        return window.dash_clientside.no_update;
-    }
-    """,
-    Output('theme-store', 'data'),
-    Input('url', 'pathname'),
-    State('theme-store', 'data'),
-)
-
-clientside_callback(
-    """
-    function(n_clicks, data) {
-        if (n_clicks > 0) {
-            const currentTheme = data && data.theme ? data.theme : 'light';
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-            console.log('Toggling theme to:', newTheme);
-            document.documentElement.classList.toggle('dark', newTheme === 'dark');
-            localStorage.setItem('theme', newTheme);
-            return { theme: newTheme };
-        }
-        return window.dash_clientside.no_update;
-    }
-    """,
-    Output("theme-store", "data", allow_duplicate=True),
-    Input("dark-mode-toggle", "n_clicks"),
-    State("theme-store", "data"),
-    prevent_initial_call=True,
-)
-
-clientside_callback(
-    """
-    function(data) {
-        const theme = data && data.theme ? data.theme : 'light';
-        console.log('Clientside callback - Updating table theme to:', theme);
-        if (theme === 'dark') {
-            return "ht-theme-main-dark";
-        }
-        return "ht-theme-main";
-    }
-    """,
-    Output("attio-table", "themeName"),
-    Input("theme-store", "data"),
-    prevent_initial_call=False
 )
 
 
