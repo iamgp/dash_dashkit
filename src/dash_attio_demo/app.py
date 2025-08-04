@@ -37,6 +37,16 @@ app.index_string = (
     + open(Path(__file__).parent.parent / "assets/style.css").read()
     + """
         </style>
+        <script>
+            (function() {
+                const storedTheme = localStorage.getItem('theme');
+                if (storedTheme === 'dark') {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+            })();
+        </script>
     </head>
     <body>
         {%app_entry%}
@@ -283,6 +293,7 @@ header_config = {
 
 app.layout = html.Div(
     [
+        dcc.Location(id='url', refresh=False),
         dcc.Store(id="theme-store", storage_type="local"),
         html.Div(
             id="app-container",
@@ -295,6 +306,23 @@ app.layout = html.Div(
     ]
 )
 
+clientside_callback(
+    """
+    function(pathname, data) {
+        console.log('Clientside callback (dcc.Location) triggered.');
+        const storedTheme = localStorage.getItem('theme');
+        if (storedTheme) {
+            console.log('Clientside callback (dcc.Location) - Stored theme:', storedTheme);
+            return { theme: storedTheme };
+        }
+        console.log('Clientside callback (dcc.Location) - No stored theme, returning no_update.');
+        return window.dash_clientside.no_update;
+    }
+    """,
+    Output('theme-store', 'data'),
+    Input('url', 'pathname'),
+    State('theme-store', 'data'),
+)
 
 clientside_callback(
     """
@@ -310,21 +338,27 @@ clientside_callback(
         return window.dash_clientside.no_update;
     }
     """,
-    Output("theme-store", "data"),
+    Output("theme-store", "data", allow_duplicate=True),
     Input("dark-mode-toggle", "n_clicks"),
     State("theme-store", "data"),
     prevent_initial_call=True,
 )
 
-@callback(
+clientside_callback(
+    """
+    function(data) {
+        const theme = data && data.theme ? data.theme : 'light';
+        console.log('Clientside callback - Updating table theme to:', theme);
+        if (theme === 'dark') {
+            return "ht-theme-main-dark";
+        }
+        return "ht-theme-main";
+    }
+    """,
     Output("attio-table", "themeName"),
-    Input("theme-store", "data")
+    Input("theme-store", "data"),
+    prevent_initial_call=False
 )
-def update_table_theme(data):
-    theme = data.get('theme', 'light') if data else 'light'
-    if theme == 'dark':
-        return "ht-theme-main-dark"
-    return "ht-theme-main"
 
 
 if __name__ == "__main__":
