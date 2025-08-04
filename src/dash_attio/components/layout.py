@@ -16,16 +16,18 @@ def create_layout(content=None):
         # Sidebar
         create_sidebar(),
         
-        # Main content area
+        # Right side: navbar + content (full width minus sidebar)
         html.Div([
-            # Header
+            # Header/navbar - spans full width of content area
             create_header(),
             
-            # Content
+            # Content with max-width constraint
             html.Main([
-                content
+                html.Div([
+                    content
+                ], style={"maxWidth": "calc(100vw - 16rem)", "width": "100%"}, className="")
             ], className="flex-1 overflow-auto bg-gray-50"),
             
-        ], className="flex-1 flex flex-col min-h-screen"),
+        ], className="flex-1 flex flex-col"),
         
     ], className="flex h-screen bg-white font-sans")

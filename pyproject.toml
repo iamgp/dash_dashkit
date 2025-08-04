@@ -4,17 +4,14 @@ version = "0.1.0"
 description = "Attio-style components for Dash applications"
 requires-python = ">=3.11"
 dependencies = [
-    "dash>=2.17.0",
+    "dash[dev]>=2.17.0",
     "dash-bootstrap-components>=1.5.0",
     "dash-handsontable>=0.1.0",
     "plotly>=5.17.0",
 ]
 
 [project.optional-dependencies]
-dev = [
-    "ruff>=0.1.0",
-    "basedpyright>=1.10.0",
-]
+dev = ["ruff>=0.1.0", "basedpyright>=1.10.0"]
 
 [build-system]
 requires = ["hatchling"]
@@ -57,7 +54,4 @@ reportUnknownParameterType = false
 reportUnknownArgumentType = false
 
 [dependency-groups]
-dev = [
-    "basedpyright>=1.31.0",
-    "ruff>=0.12.7",
-]
+dev = ["basedpyright>=1.31.0", "ruff>=0.12.7"]

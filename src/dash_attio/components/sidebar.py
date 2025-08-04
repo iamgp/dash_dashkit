@@ -49,4 +49,4 @@ def create_sidebar():
         # Navigation
         nav.render(nav_items, sections),
         
-    ], className="bg-white w-72 h-screen border-r border-gray-200 flex flex-col shrink-0")
+    ], className="bg-white w-64 h-screen border-r border-gray-200 flex flex-col shrink-0")

@@ -7,6 +7,13 @@ sys.path.insert(0, str(Path(__file__).parent))
 from dash import Dash, html
 
 from components.layout import create_layout
+from components.table import (
+    AttioTable,
+    AttioHTMLTable,
+    create_company_columns,
+    format_company_data,
+)
+from components.buttons import PrimaryButton
 
 # External stylesheets including Font Awesome for icons
 external_stylesheets = [
@@ -16,7 +23,8 @@ external_stylesheets = [
 app = Dash(__name__, external_stylesheets=external_stylesheets)
 
 # Serve custom CSS by embedding it in the index string
-app.index_string = '''
+app.index_string = (
+    """
 <!DOCTYPE html>
 <html>
     <head>
@@ -25,8 +33,12 @@ app.index_string = '''
         {%favicon%}
         {%css%}
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable@16.0.1/styles/handsontable.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable@16.0.1/styles/ht-theme-horizon.min.css">
         <style>
-            ''' + open(Path(__file__).parent / "assets/style.css").read() + '''
+            """
+    + open(Path(__file__).parent / "assets/style.css").read()
+    + """
         </style>
     </head>
     <body>
@@ -38,82 +50,166 @@ app.index_string = '''
         </footer>
     </body>
 </html>
-'''
+"""
+)
 
-# Example content for the main area - proper Attio-style table
-example_content = html.Div([
-    # Top section with count and actions
-    html.Div([
-        html.Div([
-            html.Span("10 count", className="text-sm text-gray-500"),
-        ], className="flex items-center"),
-        
-        html.Button([
-            html.I(className="fas fa-plus mr-1 text-xs"),
-            "Add calculation",
-        ], className="text-sm text-blue-600 hover:text-blue-700 font-medium"),
-    ], className="flex items-center justify-between px-6 py-4 bg-white border-b border-gray-200"),
+# Sample company data with proper Attio-style formatting
+companies_data = [
+    {
+        "name": "United Airlines",
+        "icon": "🛫",
+        "categories": [
+            {"name": "Airlines", "color": "#FEF3C7"},
+            {"name": "B2C", "color": "#DBEAFE"},
+            {"name": "E-commerce", "color": "#FED7C3"},
+            {"name": "Transport", "color": "#FEF3C7"},
+        ],
+        "linkedin": "united-airlines",
+        "last_interaction": "No communication",
+        "connection_strength": "",
+        "twitter_followers": 1174209,
+        "twitter_handle": "united",
+    },
+    {
+        "name": "Airbnb",
+        "icon": "🏠",
+        "categories": [
+            {"name": "B2C", "color": "#DBEAFE"},
+            {"name": "Information", "color": "#FEF3C7"},
+            {"name": "Internet", "color": "#FED7C3"},
+            {"name": "Marketplace", "color": "#D1FAE5"},
+        ],
+        "linkedin": "airbnb",
+        "last_interaction": "No communication",
+        "connection_strength": "",
+        "twitter_followers": 883549,
+        "twitter_handle": "Airbnb",
+    },
+    {
+        "name": "Attio",
+        "icon": "⚡",
+        "categories": [
+            {"name": "Automation", "color": "#FEE2E2"},
+            {"name": "B2B", "color": "#DBEAFE"},
+            {"name": "Enterprise", "color": "#E0E7FF"},
+            {"name": "Information", "color": "#FEF3C7"},
+        ],
+        "linkedin": "attio",
+        "last_interaction": "No communication",
+        "connection_strength": "",
+        "twitter_followers": 1340,
+        "twitter_handle": "attio",
+    },
+    {
+        "name": "Google",
+        "icon": "🌐",
+        "categories": [
+            {"name": "B2B", "color": "#DBEAFE"},
+            {"name": "B2C", "color": "#DBEAFE"},
+            {"name": "Broadcasting", "color": "#E0E7FF"},
+            {"name": "Information", "color": "#FEF3C7"},
+        ],
+        "linkedin": "google",
+        "last_interaction": "No communication",
+        "connection_strength": "",
+        "twitter_followers": 28946065,
+        "twitter_handle": "Google",
+    },
+    {
+        "name": "Microsoft",
+        "icon": "🖥️",
+        "categories": [
+            {"name": "B2B", "color": "#DBEAFE"},
+            {"name": "Enterprise", "color": "#E0E7FF"},
+            {"name": "Information", "color": "#FEF3C7"},
+            {"name": "Publishing", "color": "#FCE7F3"},
+        ],
+        "linkedin": "microsoft",
+        "last_interaction": "No communication",
+        "connection_strength": "",
+        "twitter_followers": 12814907,
+        "twitter_handle": "Microsoft",
+    },
+    {
+        "name": "PayPal",
+        "icon": "💳",
+        "categories": [
+            {"name": "B2C", "color": "#DBEAFE"},
+            {"name": "Finance", "color": "#FED7C3"},
+            {"name": "Financial services", "color": "#FEF3C7"},
+            {"name": "Information", "color": "#FEF3C7"},
+        ],
+        "linkedin": "paypal",
+        "last_interaction": "No communication",
+        "connection_strength": "",
+        "twitter_followers": 1800000,
+        "twitter_handle": "PayPal",
+    },
+    {
+        "name": "Disney",
+        "icon": "🏰",
+        "categories": [
+            {"name": "B2C", "color": "#DBEAFE"},
+            {"name": "Entertainment & Recreation", "color": "#FCE7F3"},
+        ],
+        "linkedin": "the-walt-disney-company",
+        "last_interaction": "No communication",
+        "connection_strength": "",
+        "twitter_followers": 14500000,
+        "twitter_handle": "Disney",
+    },
+    {
+        "name": "Intercom",
+        "icon": "💬",
+        "categories": [
+            {"name": "B2B", "color": "#DBEAFE"},
+            {"name": "Information", "color": "#FEF3C7"},
+            {"name": "Publishing", "color": "#FCE7F3"},
+            {"name": "SAAS", "color": "#D1FAE5"},
+        ],
+        "linkedin": "intercom",
+        "last_interaction": "No communication",
+        "connection_strength": "",
+        "twitter_followers": 82000,
+        "twitter_handle": "intercom",
+    },
+    {
+        "name": "Apple",
+        "icon": "🍎",
+        "categories": [
+            {"name": "B2C", "color": "#DBEAFE"},
+            {"name": "Computer Hardware", "color": "#FEF3C7"},
+            {"name": "Consumer Electronics", "color": "#FED7C3"},
+            {"name": "Consumer Goods", "color": "#FED7C3"},
+        ],
+        "linkedin": "apple",
+        "last_interaction": "No communication",
+        "connection_strength": "",
+        "twitter_followers": 9000000,
+        "twitter_handle": "Apple",
+    },
+    {
+        "name": "LVMH",
+        "icon": "👜",
+        "categories": [
+            {"name": "B2C", "color": "#DBEAFE"},
+            {"name": "Consumer Discretionary", "color": "#E0E7FF"},
+            {"name": "E-commerce", "color": "#FED7C3"},
+        ],
+        "linkedin": "lvmh",
+        "last_interaction": "No communication",
+        "connection_strength": "",
+        "twitter_followers": 420000,
+        "twitter_handle": "LVMH",
+    },
+]
 
-    # Full-width table
-    html.Div([
-        # Table header
-        html.Div([
-            html.Div("Company", className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider"),
-            html.Div("Categories", className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider"),
-            html.Div("LinkedIn", className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider"),
-            html.Div("Last interaction", className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider"),
-            html.Div("Connection strength", className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider"),
-            html.Div("Twitter followers", className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider"),
-            html.Div("Twitter", className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider"),
-        ], className="grid grid-cols-7 gap-8 px-6 py-3 bg-gray-50 border-b border-gray-200"),
+# Format data and create table
+table_data = format_company_data(companies_data)
+columns = create_company_columns()
 
-        # Table rows
-        *[html.Div([
-            # Company column
-            html.Div([
-                html.Div([
-                    html.Div(className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 text-sm font-semibold mr-3", children=company[0]),
-                    html.Span(company, className="text-sm font-medium text-gray-900"),
-                ], className="flex items-center"),
-            ], className="flex items-center"),
-            
-            # Categories column
-            html.Div([
-                html.Span(category, className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-blue-100 text-blue-800 mr-1 mb-1")
-                for category in categories[:2]  # Only show first 2 categories
-            ] + ([html.Span(f"+{len(categories)-2}", className="text-xs text-gray-400")] if len(categories) > 2 else []),
-                className="flex flex-wrap items-center"
-            ),
-            
-            # LinkedIn column
-            html.Div("No contact", className="text-sm text-gray-500"),
-            
-            # Last interaction column
-            html.Div("No communication", className="text-sm text-gray-500"),
-            
-            # Connection strength column
-            html.Div("", className="text-sm text-gray-500"),
-            
-            # Twitter followers column
-            html.Div(f"{followers:,}" if isinstance(followers, int) else followers, className="text-sm text-gray-900 font-medium"),
-            
-            # Twitter column
-            html.Div([
-                html.A(twitter, href="#", className="text-sm text-blue-600 hover:text-blue-700 font-medium"),
-            ], className=""),
-            
-        ], className="grid grid-cols-7 gap-8 px-6 py-4 bg-white border-b border-gray-100 hover:bg-gray-50 transition-colors duration-150")
-        for company, categories, followers, twitter in [
-            ("United Airlines", ["Airlines", "B2C", "E-commerce", "Transport"], "1,174,209", "united"),
-            ("Airbnb", ["B2C", "Information", "Internet", "Marketplace"], "883,549", "Airbnb"),
-            ("Attio", ["Automation", "B2B", "Enterprise", "Information"], "1,340", "attio"),
-            ("Google", ["B2B", "B2C", "Broadcasting", "Information"], "28,946,065", "Google"),
-            ("Microsoft", ["B2B", "Enterprise", "Information", "Publishing"], "12,814,907", "Microsoft"),
-        ]],
-
-    ], className="bg-white"),
-
-], className="")
+# Create the content using just the table component without stats header
+example_content = AttioTable(data=table_data, columns=columns, height=400)
 
 app.layout = create_layout(example_content)
 
