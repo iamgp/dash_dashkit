@@ -4,7 +4,7 @@ from dash import html
 from dash_handsontable import HotTable
 
 
-def AttioTableModern(
+def AttioTable(
     data: list[dict[str, Any]] | None = None,
     columns: list[dict[str, Any]] | None = None,
     height: int = 400,

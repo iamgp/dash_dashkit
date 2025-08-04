@@ -8,7 +8,7 @@ from pathlib import Path
 
 def main():
     """Run the Dash application."""
-    app_path = Path(__file__).parent / "src" / "dash_attio" / "app.py"
+    app_path = Path(__file__).parent / "src" / "dash_attio_demo" / "app.py"
 
     try:
         subprocess.run([sys.executable, str(app_path)], check=True)

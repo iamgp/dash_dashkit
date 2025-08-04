@@ -1,16 +1,13 @@
 import sys
 from pathlib import Path
 
-# Add the current directory to the path for imports
-sys.path.insert(0, str(Path(__file__).parent))
+# Add the src directory to the path for imports
+sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from components.layout import create_layout
-from components.table import (
-    AttioTable,
-    create_company_columns,
-    format_company_data,
-)
 from dash import Dash
+
+from dash_attio_components import AttioTable, create_layout
+from dash_attio_components.table import create_company_columns, format_company_data
 
 # External stylesheets including Font Awesome for icons
 external_stylesheets = [
@@ -207,7 +204,69 @@ columns = create_company_columns()
 # Create the content using just the table component without stats header
 example_content = AttioTable(data=table_data, columns=columns, height=600)
 
-app.layout = create_layout(example_content)
+# Configuration for the demo app
+sidebar_config = {
+    "brand_name": "Rhinoe",
+    "brand_initial": "R",
+    "nav_items": [
+        {"icon": "fas fa-bolt", "label": "Quick actions"},
+        {"icon": "fas fa-bell", "label": "Notifications"},
+        {"icon": "fas fa-tasks", "label": "Tasks"},
+        {"icon": "fas fa-sticky-note", "label": "Notes"},
+        {"icon": "fas fa-envelope", "label": "Emails"},
+        {"icon": "fas fa-phone", "label": "Calls"},
+        {"icon": "fas fa-chart-bar", "label": "Reports"},
+    ],
+    "sections": [
+        {
+            "title": "Automations",
+            "items": [
+                {"type": "nav_item", "icon": "fas fa-list", "label": "Sequences"},
+                {"type": "nav_item", "icon": "fas fa-cogs", "label": "Workflows"},
+            ]
+        },
+        {
+            "title": "Favorites",
+            "items": ["No favorites"],
+            "expanded": True
+        },
+        {
+            "title": "Records",
+            "items": [
+                {"type": "nav_item", "icon": "fas fa-building", "label": "Companies", "active": True},
+                {"type": "nav_item", "icon": "fas fa-users", "label": "People"},
+            ]
+        },
+        {
+            "title": "Lists",
+            "items": [
+                {"type": "button", "icon": "fas fa-plus", "label": "New list"}
+            ]
+        }
+    ]
+}
+
+header_config = {
+    "page_title": "Companies",
+    "page_icon": "📊",
+    "search_placeholder": "Search...",
+    "actions": [
+        {"type": "secondary", "label": "Import / Export", "icon": "fas fa-download", "dropdown": True, "className": "mr-3"},
+        {"type": "primary", "label": "New Company", "icon": "fas fa-plus"},
+    ],
+    "filter_items": [
+        {"label": "All Companies", "icon": "fas fa-building", "dropdown": True, "className": "mr-3"},
+        {"label": "View settings", "icon": "fas fa-eye", "dropdown": True, "className": "mr-3"},
+        {"label": "Sort", "icon": "fas fa-sort", "className": "mr-3"},
+        {"label": "Filter", "icon": "fas fa-filter"},
+    ]
+}
+
+app.layout = create_layout(
+    content=example_content,
+    sidebar_config=sidebar_config,
+    header_config=header_config
+)
 
 if __name__ == "__main__":
     app.run(debug=True)
