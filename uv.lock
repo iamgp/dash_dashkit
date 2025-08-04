@@ -147,7 +147,6 @@ source = { editable = "." }
 dependencies = [
     { name = "dash", extra = ["dev"] },
     { name = "dash-bootstrap-components" },
-    { name = "dash-handsontable" },
     { name = "plotly" },
 ]
 
@@ -168,7 +167,6 @@ requires-dist = [
     { name = "basedpyright", marker = "extra == 'dev'", specifier = ">=1.10.0" },
     { name = "dash", extras = ["dev"], specifier = ">=2.17.0" },
     { name = "dash-bootstrap-components", specifier = ">=1.5.0" },
-    { name = "dash-handsontable", specifier = ">=0.1.0" },
     { name = "plotly", specifier = ">=5.17.0" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.1.0" },
 ]
@@ -190,18 +188,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/49/8d/0f641e7c7878ac65b4bb78a2c7cb707db036f82da13fd61948adec44d5aa/dash_bootstrap_components-2.0.3.tar.gz", hash = "sha256:5c161b04a6e7ed19a7d54e42f070c29fd6c385d5a7797e7a82999aa2fc15b1de", size = 115466 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/f7/f6/b4652aacfbc8d684c9ca8efc5178860a50b54abf82cd1960013c59f8258f/dash_bootstrap_components-2.0.3-py3-none-any.whl", hash = "sha256:82754d3d001ad5482b8a82b496c7bf98a1c68d2669d607a89dda7ec627304af5", size = 203706 },
-]
-
-[[package]]
-name = "dash-handsontable"
-version = "0.1.2"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "dash" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/b8/2a/66e8de0ac8d75a217c6ccaa532ba4c54b76b4d694eac3eac875f2016a61a/dash_handsontable-0.1.2.tar.gz", hash = "sha256:74f63c41263a0f05c914a7527f08a3b57e75f41c41702ca2d105a1e1fb9ffc96", size = 670912 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/4d/11/5604f71160f9d53b77c348a4da65c4738d79c01bc3f9215704477e195561/dash_handsontable-0.1.2-py3-none-any.whl", hash = "sha256:8fb8c3cb415855f316af80312b7fb97f9e85261671f63adb8e42aca533edd079", size = 678966 },
 ]
 
 [[package]]

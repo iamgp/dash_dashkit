@@ -1,7 +1,7 @@
-import React from 'react';
-import 'handsontable/styles/handsontable.min.css';
-import 'handsontable/styles/ht-theme-main.min.css';
-import 'handsontable/styles/ht-theme-horizon.min.css';
+import React from "react";
+import "handsontable/styles/handsontable.min.css";
+import "handsontable/styles/ht-theme-main.min.css";
+import "handsontable/styles/ht-theme-horizon.min.css";
 export interface AttioTableProps {
     /**
      * The ID used to identify this component in Dash callbacks
@@ -18,7 +18,7 @@ export interface AttioTableProps {
     /**
      * Theme name - supports Handsontable native themes
      */
-    themeName?: 'ht-theme-main' | 'ht-theme-main-dark' | 'ht-theme-horizon' | 'ht-theme-horizon-dark';
+    themeName?: string;
     /**
      * Custom CSS class for the table container
      */
@@ -46,7 +46,7 @@ export interface AttioTableProps {
     /**
      * Show column headers
      */
-    colHeaders?: boolean | string[];
+    colHeaders?: boolean;
     /**
      * License key for Handsontable
      */
@@ -66,11 +66,11 @@ export interface AttioTableProps {
     /**
      * Enable dropdown menu
      */
-    dropdownMenu?: boolean | string[];
+    dropdownMenu?: boolean;
     /**
      * Enable context menu
      */
-    contextMenu?: boolean | string[];
+    contextMenu?: boolean;
     /**
      * Custom row height
      */
@@ -78,7 +78,7 @@ export interface AttioTableProps {
     /**
      * Stretch columns to fill container
      */
-    stretchH?: 'none' | 'last' | 'all';
+    stretchH?: string;
     /**
      * Any additional Handsontable settings
      */

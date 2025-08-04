@@ -1,7 +1,7 @@
 from typing import Any
 
 from dash import html
-from dash_handsontable import HotTable
+from dash_attio_table import AttioTable as CustomAttioTable
 
 
 def AttioTable(
@@ -29,44 +29,21 @@ def AttioTable(
         **kwargs: Additional Handsontable options
     """
 
-    # Base configuration for modern Handsontable with theming
-    config = {
-        "licenseKey": "non-commercial-and-evaluation",
-        "data": data or [],
-        "height": height,
-        "rowHeaders": row_headers,
-        "colHeaders": col_headers,
-        "contextMenu": context_menu,
-        "allowEmpty": allow_empty,
-        "fillHandle": fill_handle,
-        "manualColumnResize": True,
-        "manualRowResize": True,
-        "columnSorting": True,
-        "filters": True,
-        "dropdownMenu": True,
-        "stretchH": "all",
-        "autoWrapRow": True,
-        "autoWrapCol": True,
-        "className": f"{class_name} attio-table-modern {theme_name}",
+    # Using our custom AttioTable component with latest Handsontable v16.0.1
+    return CustomAttioTable(
+        id=f"attio-table-{theme_name}",
+        data=data or [],
+        columns=columns,
+        height=height,
+        themeName=theme_name,
+        className=class_name,
+        rowHeaders=row_headers,
+        colHeaders=col_headers,
+        contextMenu=context_menu,
+        licenseKey="non-commercial-and-evaluation",
+        columnSorting=True,
+        filters=True,
+        dropdownMenu=True,
+        stretchH="all",
         **kwargs
-    }
-
-    if columns:
-        config["columns"] = columns
-
-    # Include the theme CSS and custom styles
-
-    return html.Div([
-        HotTable(
-            id=f"attio-table-{theme_name}",
-            **config
-        )
-    ],
-    className=f"attio-table-container {theme_name}",
-    style={
-        'borderRadius': '8px',
-        'overflow': 'hidden',
-        'boxShadow': '0 1px 3px 0 rgb(0 0 0 / 0.1)',
-        'fontFamily': 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
-        'height': f'{height}px'
-    })
+    )

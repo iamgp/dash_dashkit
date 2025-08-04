@@ -6,7 +6,6 @@ requires-python = ">=3.11"
 dependencies = [
     "dash[dev]>=2.17.0",
     "dash-bootstrap-components>=1.5.0",
-    "dash-handsontable>=0.1.0",
     "plotly>=5.17.0",
 ]
 

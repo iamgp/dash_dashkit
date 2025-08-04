@@ -1,0 +1,6 @@
+include dash_attio_table/*.js
+include dash_attio_table/*.js.map
+include dash_attio_table/*.json
+include dash_attio_table/*.txt
+include dash_attio_table/*.py
+recursive-include dash_attio_table *

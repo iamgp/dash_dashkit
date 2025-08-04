@@ -1,11 +1,23 @@
-import React, { useEffect, useRef } from 'react';
-import { HotTable, HotTableClass } from '@handsontable/react';
-import Handsontable from 'handsontable';
+import React, { useEffect, useRef } from "react";
+import { HotTable, HotTableClass } from "@handsontable/react";
+import Handsontable from "handsontable";
+
+// Import Handsontable cell types
+import { registerCellType, NumericCellType } from "handsontable/cellTypes";
 
 // Import Handsontable styles
-import 'handsontable/styles/handsontable.min.css';
-import 'handsontable/styles/ht-theme-main.min.css';
-import 'handsontable/styles/ht-theme-horizon.min.css';
+import "handsontable/styles/handsontable.min.css";
+import "handsontable/styles/ht-theme-main.min.css";
+import "handsontable/styles/ht-theme-horizon.min.css";
+
+// Register cell types
+registerCellType("numeric", NumericCellType);
+
+// Log Handsontable version to console for verification
+console.log("Handsontable version:", Handsontable.version);
+
+// Expose to window for debugging
+(window as any).__HANDSONTABLE_VERSION__ = Handsontable.version;
 
 export interface AttioTableProps {
   /**
@@ -26,7 +38,7 @@ export interface AttioTableProps {
   /**
    * Theme name - supports Handsontable native themes
    */
-  themeName?: 'ht-theme-main' | 'ht-theme-main-dark' | 'ht-theme-horizon' | 'ht-theme-horizon-dark';
+  themeName?: string;
 
   /**
    * Custom CSS class for the table container
@@ -61,7 +73,7 @@ export interface AttioTableProps {
   /**
    * Show column headers
    */
-  colHeaders?: boolean | string[];
+  colHeaders?: boolean;
 
   /**
    * License key for Handsontable
@@ -86,12 +98,12 @@ export interface AttioTableProps {
   /**
    * Enable dropdown menu
    */
-  dropdownMenu?: boolean | string[];
+  dropdownMenu?: boolean;
 
   /**
    * Enable context menu
    */
-  contextMenu?: boolean | string[];
+  contextMenu?: boolean;
 
   /**
    * Custom row height
@@ -101,7 +113,7 @@ export interface AttioTableProps {
   /**
    * Stretch columns to fill container
    */
-  stretchH?: 'none' | 'last' | 'all';
+  stretchH?: string;
 
   /**
    * Any additional Handsontable settings
@@ -122,28 +134,28 @@ const AttioTable: React.FC<AttioTableProps> = ({
   id,
   data = [],
   columns,
-  themeName = 'ht-theme-main',
-  className = '',
-  cellClassName = '',
-  headerClassName = '',
+  themeName = "ht-theme-main",
+  className = "",
+  cellClassName = "",
+  headerClassName = "",
   height = 400,
-  width = '100%',
+  width = "100%",
   rowHeaders = false,
   colHeaders = true,
-  licenseKey = 'non-commercial-and-evaluation',
+  licenseKey = "non-commercial-and-evaluation",
   columnSorting = true,
   multiColumnSorting = false,
   filters = false,
   dropdownMenu = false,
   contextMenu = false,
   rowHeight = 35,
-  stretchH = 'all',
+  stretchH = "all",
   settings = {},
-  setProps
+  setProps,
 }) => {
   const hotRef = useRef<HotTableClass>(null);
 
-  // Base Handsontable configuration  
+  // Base Handsontable configuration
   const hotSettings: any = {
     data,
     columns,
@@ -162,15 +174,17 @@ const AttioTable: React.FC<AttioTableProps> = ({
     // Apply theme
     themeName,
     // Custom cell renderer for styling
-    cells: function(row: number, col: number) {
+    cells: function (row: number, col: number) {
       const cellProperties: any = {};
       if (cellClassName) {
-        cellProperties.className = `${cellClassName} attio-cell`;
+        cellProperties.className = `${cellClassName} attio-cell`.trim();
+      } else {
+        cellProperties.className = "attio-cell";
       }
       return cellProperties;
     },
     // Override default settings with any custom ones
-    ...settings
+    ...settings,
   };
 
   // Handle data changes
@@ -184,13 +198,15 @@ const AttioTable: React.FC<AttioTableProps> = ({
   };
 
   return (
-    <div className={`attio-table-container ${themeName} ${className}`}>
+    <div
+      className={`attio-table-container ${themeName} ${className || ""}`.trim()}
+    >
       <HotTable
         ref={hotRef}
         {...hotSettings}
         afterChange={handleAfterChange}
-        className={`${cellClassName} attio-cell`}
-        headerClassName={`${headerClassName} attio-header`}
+        className={`${cellClassName || ""} attio-cell`.trim()}
+        headerClassName={`${headerClassName || ""} attio-header`.trim()}
       />
     </div>
   );
