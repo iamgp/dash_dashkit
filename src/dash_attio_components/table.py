@@ -54,7 +54,7 @@ def AttioTableWithStats(
             # Table
             html.Div([table_component], className="overflow-x-auto"),
         ],
-        className="bg-white dark:bg-[#1E1E1E] border border-gray-200 dark:border-[#27282B] rounded-lg shadow-sm",
+        className="bg-white dark:bg-[#1B1D21] border border-gray-200 dark:border-[#27282B] ",
     )
 
 

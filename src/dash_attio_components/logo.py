@@ -14,7 +14,10 @@ def LogoSection(logo_text, logo_icon=None, logo_bg="bg-blue-600", height="h-12")
         )
 
     logo_elements.append(
-        html.Span(logo_text, className="ml-3 text-md font-semibold text-gray-900")
+        html.Span(
+            logo_text,
+            className="ml-3 text-md font-semibold text-[#242529] dark:text-[#EEEFF1]",
+        )
     )
 
     return html.Div(
@@ -23,7 +26,7 @@ def LogoSection(logo_text, logo_icon=None, logo_bg="bg-blue-600", height="h-12")
                 [
                     html.Div(logo_elements, className="flex items-center px-6 py-2"),
                 ],
-                className=f"border-b border-gray-200 flex items-center {height}",
+                className=f"border-b border-gray-200 dark:border-[#27282B] flex items-center {height}",
             ),
         ]
     )
@@ -38,7 +41,8 @@ def BrandHeader(brand_name, icon=None, subtitle=None):
 
     header_content.append(
         html.Span(
-            brand_name, className="text-sm font-[500]  text-gray-900 dark:text-white"
+            brand_name,
+            className="text-sm font-[500]  text-[#242529] dark:text-[#EEEFF1]",
         )
     )
 

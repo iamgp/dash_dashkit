@@ -73,5 +73,5 @@ def create_sidebar(
             # Navigation
             nav.render(rendered_nav_items, rendered_sections),
         ],
-        className="bg-[#FBFBFB] dark:bg-[#1E1E1E] w-64 h-screen border-r border-[#EEEFF1] flex flex-col shrink-0",
+        className="bg-[#FBFBFB] dark:bg-[#16181C] w-64 h-screen border-r border-[#EEEFF1] dark:border-[#27282B] flex flex-col shrink-0",
     )
