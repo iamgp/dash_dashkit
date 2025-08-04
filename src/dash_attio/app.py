@@ -4,16 +4,13 @@ from pathlib import Path
 # Add the current directory to the path for imports
 sys.path.insert(0, str(Path(__file__).parent))
 
-from dash import Dash, html
-
 from components.layout import create_layout
 from components.table import (
     AttioTable,
-    AttioHTMLTable,
     create_company_columns,
     format_company_data,
 )
-from components.buttons import PrimaryButton
+from dash import Dash
 
 # External stylesheets including Font Awesome for icons
 external_stylesheets = [

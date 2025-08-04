@@ -1,9 +1,11 @@
+from typing import Any
+
 from dash import html
-from dash_handsontable import HotTable
+
 from .attio_table import AttioTableModern
 
 
-def AttioHTMLTable(data, columns=None, **kwargs):
+def AttioHTMLTable(data: list[dict[str, Any]], columns: list[dict[str, Any]] | None = None, **kwargs: Any) -> html.Div | html.Table:
     """
     Create an Attio-style HTML table that supports complex content like icons, tags, and links.
     """
@@ -22,7 +24,7 @@ def AttioHTMLTable(data, columns=None, **kwargs):
             )
     else:
         # Auto-generate headers from first data row
-        if data and isinstance(data[0], dict):
+        if data:
             for key in data[0].keys():
                 headers.append(
                     html.Th(
@@ -58,17 +60,17 @@ def AttioHTMLTable(data, columns=None, **kwargs):
 
 
 def AttioTable(
-    data,
-    columns=None,
-    height=400,
-    theme_name="ht-theme-horizon",
-    row_headers=False,
-    col_headers=True,
-    context_menu=False,
-    allow_empty=True,
-    fill_handle=False,
-    **kwargs,
-):
+    data: list[dict[str, Any]],
+    columns: list[dict[str, Any]] | None = None,
+    height: int = 400,
+    theme_name: str = "ht-theme-horizon",
+    row_headers: bool = False,
+    col_headers: bool = True,
+    context_menu: bool = False,
+    allow_empty: bool = True,
+    fill_handle: bool = False,
+    **kwargs: Any,
+) -> html.Div:
     """
     Modern Attio-styled table component using latest Handsontable with native theming.
 
@@ -100,8 +102,12 @@ def AttioTable(
 
 
 def AttioTableWithStats(
-    data, columns=None, title="Table", count_label="count", actions=None, **table_kwargs
-):
+    data: list[dict[str, Any]],
+    columns: list[dict[str, Any]] | None = None,
+    count_label: str = "count",
+    actions: list[Any] | None = None,
+    **table_kwargs: Any
+) -> html.Div:
     """
     Table component with Attio-style header showing count and actions.
 
@@ -115,7 +121,7 @@ def AttioTableWithStats(
     """
 
     # Calculate row count
-    row_count = len(data) if isinstance(data, list) else 0
+    row_count = len(data)
 
     header_content = [
         # Left side - count
@@ -148,7 +154,7 @@ def AttioTableWithStats(
     )
 
 
-def create_company_columns():
+def create_company_columns() -> list[dict[str, Any]]:
     """Create column configuration for the companies table matching Attio style."""
     return [
         {
@@ -203,7 +209,7 @@ def create_company_columns():
     ]
 
 
-def format_company_data(companies):
+def format_company_data(companies: list[dict[str, Any]]) -> list[dict[str, Any]]:
     """Format company data for Handsontable with proper string representations."""
     formatted_data = []
 

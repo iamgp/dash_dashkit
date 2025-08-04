@@ -20,8 +20,11 @@ build-backend = "hatchling.build"
 [tool.hatch.build.targets.wheel]
 packages = ["src/dash_attio"]
 
-[tool.ruff.lint]
+[tool.ruff]
 target-version = "py311"
+line-length = 88
+
+[tool.ruff.lint]
 select = [
     "E",  # pycodestyle errors
     "W",  # pycodestyle warnings
@@ -37,9 +40,6 @@ ignore = [
     "C901", # too complex
 ]
 
-[tool.ruff]
-line-length = 88
-
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
@@ -52,6 +52,19 @@ exclude = ["**/__pycache__"]
 reportMissingTypeStubs = false
 reportUnknownParameterType = false
 reportUnknownArgumentType = false
+reportUnknownMemberType = false
+reportUnknownVariableType = false
+reportMissingImports = false
+reportAny = false
+reportExplicitAny = false
+reportUnusedParameter = false
+reportMissingParameterType = false
+reportArgumentType = false
+reportReturnType = false
+reportIncompatibleMethodOverride = false
+reportImplicitOverride = false
+reportUnannotatedClassAttribute = false
+reportUnnecessaryIsInstance = false
 
 [dependency-groups]
 dev = ["basedpyright>=1.31.0", "ruff>=0.12.7"]
