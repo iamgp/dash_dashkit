@@ -5,9 +5,9 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from dash import Dash
+from demo_utils import create_company_columns, format_company_data
 
 from dash_attio_components import AttioTable, create_layout
-from dash_attio_components.table import create_company_columns, format_company_data
 
 # External stylesheets including Font Awesome for icons
 external_stylesheets = [
