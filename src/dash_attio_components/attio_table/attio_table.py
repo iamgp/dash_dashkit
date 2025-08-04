@@ -5,6 +5,7 @@ from dash_attio_table import AttioTable as CustomAttioTable
 
 
 def AttioTable(
+    id: str,
     data: list[dict[str, Any]] | None = None,
     columns: list[dict[str, Any]] | None = None,
     height: int = 400,
@@ -21,6 +22,7 @@ def AttioTable(
     Modern Attio-styled table component with native Handsontable theming support.
 
     Args:
+        id: The ID used to identify this component in Dash callbacks
         data: List of dictionaries or 2D array of table data
         columns: List of column configurations
         height: Table height in pixels
@@ -31,7 +33,7 @@ def AttioTable(
 
     # Using our custom AttioTable component with latest Handsontable v16.0.1
     return CustomAttioTable(
-        id=f"attio-table-{theme_name}",
+        id=id,
         data=data or [],
         columns=columns,
         height=height,

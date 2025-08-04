@@ -154,6 +154,7 @@ const AttioTable: React.FC<AttioTableProps> = ({
   setProps,
 }) => {
   const hotRef = useRef<HotTableClass>(null);
+  console.log("AttioTable rendered with themeName:", themeName);
 
   // Base Handsontable configuration
   const hotSettings: any = {
@@ -171,8 +172,6 @@ const AttioTable: React.FC<AttioTableProps> = ({
     contextMenu,
     stretchH,
     rowHeights: rowHeight,
-    // Apply theme
-    themeName,
     // Custom cell renderer for styling
     cells: function (row: number, col: number) {
       const cellProperties: any = {};
@@ -199,13 +198,14 @@ const AttioTable: React.FC<AttioTableProps> = ({
 
   return (
     <div
-      className={`attio-table-container ${themeName} ${className || ""}`.trim()}
+      className={`attio-table-container ${className || ""}`.trim()}
     >
       <HotTable
+        key={themeName} // Force re-render when theme changes
         ref={hotRef}
         {...hotSettings}
+        themeName={themeName}
         afterChange={handleAfterChange}
-        className={`${cellClassName || ""} attio-cell`.trim()}
         headerClassName={`${headerClassName || ""} attio-header`.trim()}
       />
     </div>

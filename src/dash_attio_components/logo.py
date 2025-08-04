@@ -37,7 +37,9 @@ def BrandHeader(brand_name, icon=None, subtitle=None):
         header_content.append(html.Span(icon, className="mr-2"))
 
     header_content.append(
-        html.Span(brand_name, className="text-sm font-[500]  text-gray-900")
+        html.Span(
+            brand_name, className="text-sm font-[500]  text-gray-900 dark:text-white"
+        )
     )
 
     if subtitle:

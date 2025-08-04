@@ -12,23 +12,26 @@
     html {
         font-family: "Inter", system-ui, sans-serif;
     }
+    body {
+        @apply bg-white dark:bg-attio-gray-900;
+    }
 }
 
 @layer components {
     .sidebar-item {
-        @apply flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-100 hover:text-gray-900 transition-colors duration-150;
+        @apply flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-100 hover:text-gray-900 transition-colors duration-150 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white;
     }
 
     .sidebar-item.active {
-        @apply bg-blue-50 text-blue-700 border-r-2 border-blue-600;
+        @apply bg-blue-50 text-blue-700 border-r-2 border-blue-600 dark:bg-blue-900/50 dark:text-blue-300 dark:border-blue-500;
     }
 
     .nav-button {
-        @apply inline-flex items-center px-3 py-1.5 border border-gray-200 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-150;
+        @apply inline-flex items-center px-3 py-1.5 border border-gray-200 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-150 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700;
     }
 
     .primary-button {
-        @apply inline-flex items-center px-4 py-1.5 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-colors duration-150;
+        @apply inline-flex items-center px-4 py-1.5 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-colors duration-150 dark:bg-blue-500 dark:hover:bg-blue-600;
     }
 }
 
@@ -59,6 +62,7 @@
 .attio-table-container .handsontable th.attio-header {
     background-color: white !important;
     color: #6b7280 !important;
+    @apply dark:bg-attio-gray-800 dark:text-attio-gray-300;
     font-family: Inter !important;
     font-size: 12px !important;
     font-weight: 500 !important;
@@ -94,11 +98,13 @@
     position: relative !important;
     background-color: white !important;
     height: 35px !important;
+    @apply dark:bg-attio-gray-900 dark:text-attio-gray-100;
 }
 
 /* Row hover effect - subtle like Attio */
 .attio-table-container .handsontable tbody tr:hover td.attio-cell {
     background-color: #f8f9fa !important;
+    @apply dark:bg-attio-gray-800;
 }
 
 /* Remove selection borders */
@@ -181,6 +187,7 @@
     white-space: nowrap !important;
     position: relative !important;
     vertical-align: middle !important;
+    @apply dark:bg-attio-gray-900 dark:text-attio-gray-100;
 }
 
 /* Target ALL header cells - Exact Attio specs */
@@ -207,12 +214,14 @@
     padding: 8px 12px !important;
     text-align: left !important;
     vertical-align: middle !important;
+    @apply dark:bg-attio-gray-800 dark:text-attio-gray-300;
 }
 
 /* Subtle hover effect like Attio */
 .attio-table-container.ht-theme-horizon .handsontable tbody tr:hover td,
 .attio-table-container.ht-theme-main .handsontable tbody tr:hover td {
     background-color: #f8f9fb !important;
+    @apply dark:bg-attio-gray-800;
 }
 
 /* Remove table outer border, use container border */
@@ -236,3 +245,7 @@
 .attio-table-container.ht-theme-main .handsontable th:last-child {
     border-right: none !important;
 }
+
+
+
+

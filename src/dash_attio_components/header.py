@@ -7,6 +7,20 @@ from .logo import BrandHeader
 from .navigation import FilterBar, TopNavigationBar
 
 
+def create_dark_mode_toggle() -> html.Button:
+    """Create a dark mode toggle button."""
+    return html.Button(
+        [
+            # Sun icon for light mode
+            html.I(className="fas fa-sun text-gray-500 dark:text-gray-400"),
+            # Moon icon for dark mode (hidden by default)
+            html.I(className="fas fa-moon text-gray-500 dark:text-gray-400"),
+        ],
+        id="dark-mode-toggle",
+        className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700",
+    )
+
+
 def create_header(
     page_title: str,
     page_icon: str,
@@ -45,7 +59,7 @@ def create_header(
     # )
 
     # Build right content from actions
-    right_content = []
+    right_content = [create_dark_mode_toggle()]
     if actions:
         for action in actions:
             if action["type"] == "primary":

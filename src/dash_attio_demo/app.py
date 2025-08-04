@@ -4,7 +4,7 @@ from pathlib import Path
 # Add the src directory to the path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from dash import Dash
+from dash import Dash, dcc, html, Input, Output, callback, State, clientside_callback
 from demo_utils import create_company_columns, format_company_data
 
 from dash_attio_components import AttioTable, create_layout
@@ -14,13 +14,17 @@ external_stylesheets = [
     "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css",
 ]
 
-app = Dash(__name__, external_stylesheets=external_stylesheets)
+app = Dash(
+    __name__,
+    external_stylesheets=external_stylesheets,
+    suppress_callback_exceptions=True,
+)
 
 # Serve custom CSS by embedding it in the index string
 app.index_string = (
     """
 <!DOCTYPE html>
-<html>
+<html class="">
     <head>
         {%metas%}
         <title>{%title%}</title>
@@ -202,7 +206,7 @@ table_data = format_company_data(companies_data)
 columns = create_company_columns()
 
 # Create the content using just the table component without stats header
-example_content = AttioTable(data=table_data, columns=columns, height=600)
+example_content = AttioTable(id="attio-table", data=table_data, columns=columns, height=600)
 
 # Configuration for the demo app
 sidebar_config = {
@@ -277,9 +281,57 @@ header_config = {
     ],
 }
 
-app.layout = create_layout(
-    content=example_content, sidebar_config=sidebar_config, header_config=header_config
+app.layout = html.Div(
+    [
+        dcc.Store(id="theme-store", storage_type="local"),
+        html.Div(
+            id="app-container",
+            children=create_layout(
+                content=example_content,
+                sidebar_config=sidebar_config,
+                header_config=header_config,
+            ),
+        ),
+    ]
 )
 
+
+clientside_callback(
+    """
+    function(n_clicks, data) {
+        if (n_clicks > 0) {
+            const currentTheme = data && data.theme ? data.theme : 'light';
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            console.log('Toggling theme to:', newTheme);
+            document.documentElement.classList.toggle('dark', newTheme === 'dark');
+            localStorage.setItem('theme', newTheme);
+            return { theme: newTheme };
+        }
+        return window.dash_clientside.no_update;
+    }
+    """,
+    Output("theme-store", "data"),
+    Input("dark-mode-toggle", "n_clicks"),
+    State("theme-store", "data"),
+    prevent_initial_call=True,
+)
+
+@callback(
+    Output("attio-table", "themeName"),
+    Input("theme-store", "data")
+)
+def update_table_theme(data):
+    theme = data.get('theme', 'light') if data else 'light'
+    if theme == 'dark':
+        return "ht-theme-main-dark"
+    return "ht-theme-main"
+
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Run the Dash app")
+    parser.add_argument("--port", type=int, default=8050, help="Port to run the app on")
+    args = parser.parse_args()
+
+    app.run(debug=True, port=args.port)

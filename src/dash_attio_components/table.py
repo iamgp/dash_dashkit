@@ -10,7 +10,7 @@ def AttioTableWithStats(
     columns: list[dict[str, Any]] | None = None,
     count_label: str = "count",
     actions: list[Any] | None = None,
-    **table_kwargs: Any
+    **table_kwargs: Any,
 ) -> html.Div:
     """
     Table component with Attio-style header showing count and actions.
@@ -54,7 +54,7 @@ def AttioTableWithStats(
             # Table
             html.Div([table_component], className="overflow-x-auto"),
         ],
-        className="bg-white border border-gray-200 rounded-lg shadow-sm",
+        className="bg-white dark:bg-[#1E1E1E] border border-gray-200 dark:border-[#27282B] rounded-lg shadow-sm",
     )
 
 
