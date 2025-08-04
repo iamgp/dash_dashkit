@@ -33,11 +33,10 @@ app.index_string = (
         {%favicon%}
         {%css%}
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable@16.0.1/styles/handsontable.min.css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable@16.0.1/styles/ht-theme-horizon.min.css">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
         <style>
             """
-    + open(Path(__file__).parent / "assets/style.css").read()
+    + open(Path(__file__).parent.parent / "assets/style.css").read()
     + """
         </style>
     </head>
@@ -209,7 +208,7 @@ table_data = format_company_data(companies_data)
 columns = create_company_columns()
 
 # Create the content using just the table component without stats header
-example_content = AttioTable(data=table_data, columns=columns, height=400)
+example_content = AttioTable(data=table_data, columns=columns, height=600)
 
 app.layout = create_layout(example_content)
 

@@ -126,5 +126,6 @@ def AttioTableModern(
         'borderRadius': '8px',
         'overflow': 'hidden',
         'boxShadow': '0 1px 3px 0 rgb(0 0 0 / 0.1)',
-        'fontFamily': 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'
+        'fontFamily': 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+        'height': f'{height}px' if isinstance(height, int) else str(height)
     })

@@ -140,60 +140,99 @@
     color: #374151;
 }
 
-/* Modern Attio Table with native Handsontable theming - MORE AGGRESSIVE */
+/* Modern Attio Table with native Handsontable theming - EXACT MATCH */
+.attio-table-container.ht-theme-horizon,
 .attio-table-container.ht-theme-main {
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+    box-shadow: none;
     font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    border: 1px solid #e1e5e9;
 }
 
-/* Target ALL table cells aggressively */
+/* Target ALL table cells - Exact Attio specs */
+.attio-table-container.ht-theme-horizon td,
+.attio-table-container.ht-theme-horizon .handsontable td,
+.attio-table-container.ht-theme-horizon .handsontable tbody td,
+.attio-table-container.ht-theme-horizon .handsontable .ht_clone_left td,
+.attio-table-container.ht-theme-horizon .handsontable .ht_clone_top td,
+.attio-table-container.ht-theme-horizon .handsontable .ht_clone_bottom td,
 .attio-table-container.ht-theme-main td,
 .attio-table-container.ht-theme-main .handsontable td,
 .attio-table-container.ht-theme-main .handsontable tbody td,
 .attio-table-container.ht-theme-main .handsontable .ht_clone_left td,
 .attio-table-container.ht-theme-main .handsontable .ht_clone_top td,
 .attio-table-container.ht-theme-main .handsontable .ht_clone_bottom td {
-    color: #ff0000 !important;  /* RED TO SEE IF IT WORKS */
-    background-color: #ffff00 !important;  /* YELLOW BACKGROUND */
-    border-bottom: 3px solid #00ff00 !important;  /* GREEN BORDER */
-    border-right: none !important;
-    padding: 7.5px 8px !important;
+    color: #1a1a1a !important;
+    background-color: #ffffff !important;
+    border-bottom: 1px solid #f0f2f5 !important;
+    border-right: 1px solid #f0f2f5 !important;
+    border-top: none !important;
+    border-left: none !important;
+    padding: 8px 12px !important;
     font-family: Inter !important;
-    letter-spacing: -0.02em !important;
-    font-weight: 500 !important;
+    letter-spacing: -0.01em !important;
+    font-weight: 400 !important;
     line-height: 20px !important;
-    font-size: 18px !important;  /* BIGGER FONT */
-    height: 50px !important;  /* BIGGER HEIGHT */
+    font-size: 14px !important;
+    height: 36px !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
     white-space: nowrap !important;
     position: relative !important;
+    vertical-align: middle !important;
 }
 
-/* Target ALL header cells aggressively */
+/* Target ALL header cells - Exact Attio specs */
+.attio-table-container.ht-theme-horizon th,
+.attio-table-container.ht-theme-horizon .handsontable th,
+.attio-table-container.ht-theme-horizon .handsontable thead th,
+.attio-table-container.ht-theme-horizon .handsontable .ht_clone_top th,
 .attio-table-container.ht-theme-main th,
 .attio-table-container.ht-theme-main .handsontable th,
 .attio-table-container.ht-theme-main .handsontable thead th,
 .attio-table-container.ht-theme-main .handsontable .ht_clone_top th {
-    height: 50px !important;  /* BIGGER HEIGHT */
+    height: 36px !important;
     font-family: Inter !important;
-    font-weight: 600 !important;
-    font-size: 16px !important;  /* BIGGER FONT */
-    color: #ff0000 !important;  /* RED TEXT */
-    background: #0000ff !important;  /* BLUE BACKGROUND */
-    border-bottom: 3px solid #00ff00 !important;  /* GREEN BORDER */
-    text-transform: uppercase !important;
-    letter-spacing: 0.05em !important;
+    font-weight: 500 !important;
+    font-size: 13px !important;
+    color: #6c7680 !important;
+    background: #ffffff !important;
+    border-bottom: 1px solid #e1e5e9 !important;
+    border-right: 1px solid #f0f2f5 !important;
+    border-top: none !important;
+    border-left: none !important;
+    text-transform: none !important;
+    letter-spacing: -0.01em !important;
+    padding: 8px 12px !important;
+    text-align: left !important;
+    vertical-align: middle !important;
 }
 
-.attio-table-container.ht-theme-main .handsontable tr:hover td {
-    background-color: #ff00ff !important;  /* MAGENTA ON HOVER */
+/* Subtle hover effect like Attio */
+.attio-table-container.ht-theme-horizon .handsontable tbody tr:hover td,
+.attio-table-container.ht-theme-main .handsontable tbody tr:hover td {
+    background-color: #f8f9fb !important;
 }
 
+/* Remove table outer border, use container border */
+.attio-table-container.ht-theme-horizon .handsontable,
 .attio-table-container.ht-theme-main .handsontable {
-    border: 5px solid #ff0000 !important;  /* THICK RED BORDER */
-    border-radius: 8px !important;
+    border: none !important;
+    border-radius: 0 !important;
     overflow: hidden !important;
+}
+
+/* First row should not have top border */
+.attio-table-container.ht-theme-horizon .handsontable tbody tr:first-child td,
+.attio-table-container.ht-theme-main .handsontable tbody tr:first-child td {
+    border-top: none !important;
+}
+
+/* Last column should not have right border */
+.attio-table-container.ht-theme-horizon .handsontable td:last-child,
+.attio-table-container.ht-theme-horizon .handsontable th:last-child,
+.attio-table-container.ht-theme-main .handsontable td:last-child,
+.attio-table-container.ht-theme-main .handsontable th:last-child {
+    border-right: none !important;
 }
