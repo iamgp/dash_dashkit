@@ -14,12 +14,12 @@ def PrimaryButton(children, icon=None, onClick=None, className="", **kwargs):
         button_children.extend(children if isinstance(children, list) else [children])
 
     # Combine base class with any additional classes
-    combined_className = f"primary-button {className}".strip()
+    combined_className = f"primary-button {className} p-1".strip()
 
     props = {
         "className": combined_className,
         "children": button_children,
-        **{k: v for k, v in kwargs.items() if k != "className"}
+        **{k: v for k, v in kwargs.items() if k != "className"},
     }
 
     if onClick:
@@ -28,7 +28,9 @@ def PrimaryButton(children, icon=None, onClick=None, className="", **kwargs):
     return html.Button(**props)
 
 
-def SecondaryButton(children, icon=None, dropdown=False, onClick=None, className="", **kwargs):
+def SecondaryButton(
+    children, icon=None, dropdown=False, onClick=None, className="", **kwargs
+):
     """Secondary/navigation button with Attio styling."""
     button_children = []
 
@@ -49,7 +51,7 @@ def SecondaryButton(children, icon=None, dropdown=False, onClick=None, className
     props = {
         "className": combined_className,
         "children": button_children,
-        **{k: v for k, v in kwargs.items() if k != "className"}
+        **{k: v for k, v in kwargs.items() if k != "className"},
     }
 
     if onClick:
@@ -66,7 +68,9 @@ def IconButton(icon, children=None, active=False, onClick=None, className="", **
         if isinstance(children, str):
             button_children.append(html.Span(children))
         else:
-            button_children.extend(children if isinstance(children, list) else [children])
+            button_children.extend(
+                children if isinstance(children, list) else [children]
+            )
 
     # Combine base classes with any additional classes
     base_className = f"sidebar-item {'active' if active else ''}"
@@ -76,7 +80,7 @@ def IconButton(icon, children=None, active=False, onClick=None, className="", **
         "className": combined_className,
         "children": button_children,
         "href": kwargs.get("href", "#"),
-        **{k: v for k, v in kwargs.items() if k not in ["href", "className"]}
+        **{k: v for k, v in kwargs.items() if k not in ["href", "className"]},
     }
 
     if onClick:

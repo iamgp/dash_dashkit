@@ -10,7 +10,7 @@ def create_sidebar(
     brand_name: str,
     brand_initial: str,
     nav_items: list[dict[str, Any]],
-    sections: list[dict[str, Any]]
+    sections: list[dict[str, Any]],
 ) -> html.Div:
     """Create a reusable sidebar component.
 
@@ -28,9 +28,7 @@ def create_sidebar(
     for item in nav_items:
         rendered_nav_items.append(
             nav.create_nav_item(
-                item["icon"],
-                item["label"],
-                active=item.get("active", False)
+                item["icon"], item["label"], active=item.get("active", False)
             )
         )
 
@@ -45,34 +43,35 @@ def create_sidebar(
             elif item.get("type") == "nav_item":
                 # Navigation item
                 section_items.append(
-                    html.Li(nav.create_nav_item(
-                        item["icon"],
-                        item["label"],
-                        active=item.get("active", False)
-                    ))
+                    html.Li(
+                        nav.create_nav_item(
+                            item["icon"],
+                            item["label"],
+                            active=item.get("active", False),
+                        )
+                    )
                 )
             elif item.get("type") == "button":
                 # Button item
                 section_items.append(
-                    html.Button([
-                        html.I(className=f"{item['icon']} mr-2"),
-                        item["label"]
-                    ], className="text-sm text-blue-600 hover:text-blue-700 px-3 py-2 w-full text-left")
+                    html.Button(
+                        [html.I(className=f"{item['icon']} mr-2"), item["label"]],
+                        className="text-sm text-blue-600 hover:text-blue-700 px-3 py-2 w-full text-left",
+                    )
                 )
 
         rendered_sections.append(
             nav.create_section(
-                section["title"],
-                section_items,
-                expanded=section.get("expanded", False)
+                section["title"], section_items, expanded=section.get("expanded", False)
             )
         )
 
-    return html.Div([
-        # Logo section
-        LogoSection(brand_name, brand_initial),
-
-        # Navigation
-        nav.render(rendered_nav_items, rendered_sections),
-
-    ], className="bg-white w-64 h-screen border-r border-gray-200 flex flex-col shrink-0")
+    return html.Div(
+        [
+            # Logo section
+            LogoSection(brand_name, brand_initial),
+            # Navigation
+            nav.render(rendered_nav_items, rendered_sections),
+        ],
+        className="bg-[#FBFBFB] dark:bg-[#1E1E1E] w-64 h-screen border-r border-[#EEEFF1] flex flex-col shrink-0",
+    )

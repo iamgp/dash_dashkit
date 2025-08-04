@@ -223,49 +223,62 @@ sidebar_config = {
             "items": [
                 {"type": "nav_item", "icon": "fas fa-list", "label": "Sequences"},
                 {"type": "nav_item", "icon": "fas fa-cogs", "label": "Workflows"},
-            ]
+            ],
         },
-        {
-            "title": "Favorites",
-            "items": ["No favorites"],
-            "expanded": True
-        },
+        {"title": "Favorites", "items": ["No favorites"], "expanded": True},
         {
             "title": "Records",
             "items": [
-                {"type": "nav_item", "icon": "fas fa-building", "label": "Companies", "active": True},
+                {
+                    "type": "nav_item",
+                    "icon": "fas fa-building",
+                    "label": "Companies",
+                    "active": True,
+                },
                 {"type": "nav_item", "icon": "fas fa-users", "label": "People"},
-            ]
+            ],
         },
         {
             "title": "Lists",
-            "items": [
-                {"type": "button", "icon": "fas fa-plus", "label": "New list"}
-            ]
-        }
-    ]
+            "items": [{"type": "button", "icon": "fas fa-plus", "label": "New list"}],
+        },
+    ],
 }
 
 header_config = {
     "page_title": "Companies",
-    "page_icon": "📊",
+    "page_icon": "",
     "search_placeholder": "Search...",
     "actions": [
-        {"type": "secondary", "label": "Import / Export", "icon": "fas fa-download", "dropdown": True, "className": "mr-3"},
+        {
+            "type": "secondary",
+            "label": "Import / Export",
+            "icon": "fas fa-download",
+            "dropdown": True,
+            "className": "mr-3",
+        },
         {"type": "primary", "label": "New Company", "icon": "fas fa-plus"},
     ],
     "filter_items": [
-        {"label": "All Companies", "icon": "fas fa-building", "dropdown": True, "className": "mr-3"},
-        {"label": "View settings", "icon": "fas fa-eye", "dropdown": True, "className": "mr-3"},
+        {
+            "label": "All Companies",
+            "icon": "fas fa-building",
+            "dropdown": True,
+            "className": "mr-3",
+        },
+        {
+            "label": "View settings",
+            "icon": "fas fa-eye",
+            "dropdown": True,
+            "className": "mr-3",
+        },
         {"label": "Sort", "icon": "fas fa-sort", "className": "mr-3"},
         {"label": "Filter", "icon": "fas fa-filter"},
-    ]
+    ],
 }
 
 app.layout = create_layout(
-    content=example_content,
-    sidebar_config=sidebar_config,
-    header_config=header_config
+    content=example_content, sidebar_config=sidebar_config, header_config=header_config
 )
 
 if __name__ == "__main__":
