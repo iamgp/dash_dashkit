@@ -4,11 +4,11 @@ from pathlib import Path
 # Add the src directory to the path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from dash import Dash, html, Input, Output, callback, State, clientside_callback
-from demo_utils import create_company_columns, format_company_data
+from dash import Dash, html, dcc
+import dash
 
-from dash_attio_components import AttioTable, create_layout
-from dash_attio_components.theme_manager import ThemeManager, create_dark_mode_toggle
+from dash_attio_components import create_layout
+from dash_attio_components.theme_manager import ThemeManager
 
 # External stylesheets including Font Awesome for icons
 external_stylesheets = [
@@ -20,6 +20,8 @@ app = Dash(
     external_stylesheets=external_stylesheets,
     suppress_callback_exceptions=True,
     assets_folder=str(Path(__file__).parent.parent / "assets"),
+    use_pages=True,
+    pages_folder="pages",
 )
 
 # Serve custom CSS by embedding it in the index string
@@ -56,169 +58,10 @@ app.index_string = """
 </html>
 """
 
-# Sample company data with proper Attio-style formatting
-companies_data = [
-    {
-        "name": "United Airlines",
-        "icon": "🛫",
-        "categories": [
-            {"name": "Airlines", "color": "#FEF3C7"},
-            {"name": "B2C", "color": "#DBEAFE"},
-            {"name": "E-commerce", "color": "#FED7C3"},
-            {"name": "Transport", "color": "#FEF3C7"},
-        ],
-        "linkedin": "united-airlines",
-        "last_interaction": "No communication",
-        "connection_strength": "",
-        "twitter_followers": 1174209,
-        "twitter_handle": "united",
-    },
-    {
-        "name": "Airbnb",
-        "icon": "🏠",
-        "categories": [
-            {"name": "B2C", "color": "#DBEAFE"},
-            {"name": "Information", "color": "#FEF3C7"},
-            {"name": "Internet", "color": "#FED7C3"},
-            {"name": "Marketplace", "color": "#D1FAE5"},
-        ],
-        "linkedin": "airbnb",
-        "last_interaction": "No communication",
-        "connection_strength": "",
-        "twitter_followers": 883549,
-        "twitter_handle": "Airbnb",
-    },
-    {
-        "name": "Attio",
-        "icon": "⚡",
-        "categories": [
-            {"name": "Automation", "color": "#FEE2E2"},
-            {"name": "B2B", "color": "#DBEAFE"},
-            {"name": "Enterprise", "color": "#E0E7FF"},
-            {"name": "Information", "color": "#FEF3C7"},
-        ],
-        "linkedin": "attio",
-        "last_interaction": "No communication",
-        "connection_strength": "",
-        "twitter_followers": 1340,
-        "twitter_handle": "attio",
-    },
-    {
-        "name": "Google",
-        "icon": "🌐",
-        "categories": [
-            {"name": "B2B", "color": "#DBEAFE"},
-            {"name": "B2C", "color": "#DBEAFE"},
-            {"name": "Broadcasting", "color": "#E0E7FF"},
-            {"name": "Information", "color": "#FEF3C7"},
-        ],
-        "linkedin": "google",
-        "last_interaction": "No communication",
-        "connection_strength": "",
-        "twitter_followers": 28946065,
-        "twitter_handle": "Google",
-    },
-    {
-        "name": "Microsoft",
-        "icon": "🖥️",
-        "categories": [
-            {"name": "B2B", "color": "#DBEAFE"},
-            {"name": "Enterprise", "color": "#E0E7FF"},
-            {"name": "Information", "color": "#FEF3C7"},
-            {"name": "Publishing", "color": "#FCE7F3"},
-        ],
-        "linkedin": "microsoft",
-        "last_interaction": "No communication",
-        "connection_strength": "",
-        "twitter_followers": 12814907,
-        "twitter_handle": "Microsoft",
-    },
-    {
-        "name": "PayPal",
-        "icon": "💳",
-        "categories": [
-            {"name": "B2C", "color": "#DBEAFE"},
-            {"name": "Finance", "color": "#FED7C3"},
-            {"name": "Financial services", "color": "#FEF3C7"},
-            {"name": "Information", "color": "#FEF3C7"},
-        ],
-        "linkedin": "paypal",
-        "last_interaction": "No communication",
-        "connection_strength": "",
-        "twitter_followers": 1800000,
-        "twitter_handle": "PayPal",
-    },
-    {
-        "name": "Disney",
-        "icon": "🏰",
-        "categories": [
-            {"name": "B2C", "color": "#DBEAFE"},
-            {"name": "Entertainment & Recreation", "color": "#FCE7F3"},
-        ],
-        "linkedin": "the-walt-disney-company",
-        "last_interaction": "No communication",
-        "connection_strength": "",
-        "twitter_followers": 14500000,
-        "twitter_handle": "Disney",
-    },
-    {
-        "name": "Intercom",
-        "icon": "💬",
-        "categories": [
-            {"name": "B2B", "color": "#DBEAFE"},
-            {"name": "Information", "color": "#FEF3C7"},
-            {"name": "Publishing", "color": "#FCE7F3"},
-            {"name": "SAAS", "color": "#D1FAE5"},
-        ],
-        "linkedin": "intercom",
-        "last_interaction": "No communication",
-        "connection_strength": "",
-        "twitter_followers": 82000,
-        "twitter_handle": "intercom",
-    },
-    {
-        "name": "Apple",
-        "icon": "🍎",
-        "categories": [
-            {"name": "B2C", "color": "#DBEAFE"},
-            {"name": "Computer Hardware", "color": "#FEF3C7"},
-            {"name": "Consumer Electronics", "color": "#FED7C3"},
-            {"name": "Consumer Goods", "color": "#FED7C3"},
-        ],
-        "linkedin": "apple",
-        "last_interaction": "No communication",
-        "connection_strength": "",
-        "twitter_followers": 9000000,
-        "twitter_handle": "Apple",
-    },
-    {
-        "name": "LVMH",
-        "icon": "👜",
-        "categories": [
-            {"name": "B2C", "color": "#DBEAFE"},
-            {"name": "Consumer Discretionary", "color": "#E0E7FF"},
-            {"name": "E-commerce", "color": "#FED7C3"},
-        ],
-        "linkedin": "lvmh",
-        "last_interaction": "No communication",
-        "connection_strength": "",
-        "twitter_followers": 420000,
-        "twitter_handle": "LVMH",
-    },
-]
-
-# Format data and create table
-table_data = format_company_data(companies_data)
-columns = create_company_columns()
-
-# Create the content using just the table component without stats header
-example_content = AttioTable(
-    id="attio-table", data=table_data, columns=columns, height=600
-)
 
 # Configuration for the demo app
 sidebar_config = {
-    "brand_name": "Rhinoe",
+    "brand_name": "Rhinoe", 
     "brand_initial": "R",
     "nav_items": [
         {"icon": "fas fa-bolt", "label": "Quick actions"},
@@ -239,13 +82,13 @@ sidebar_config = {
         },
         {"title": "Favorites", "items": ["No favorites"], "expanded": True},
         {
-            "title": "Records",
+            "title": "Records", 
             "items": [
                 {
                     "type": "nav_item",
-                    "icon": "fas fa-building",
+                    "icon": "fas fa-building", 
                     "label": "Companies",
-                    "active": True,
+                    "href": "/",
                 },
                 {"type": "nav_item", "icon": "fas fa-users", "label": "People"},
             ],
@@ -257,51 +100,23 @@ sidebar_config = {
     ],
 }
 
-header_config = {
-    "page_title": "Companies",
-    "page_icon": "",
-    "search_placeholder": "Search...",
-    "actions": [
-        {
-            "type": "secondary",
-            "label": "Import / Export",
-            "icon": "fas fa-download",
-            "dropdown": True,
-            "className": "mr-3",
-        },
-        {"type": "primary", "label": "New Company", "icon": "fas fa-plus"},
-    ],
-    "filter_items": [
-        {
-            "label": "All Companies",
-            "icon": "fas fa-building",
-            "dropdown": True,
-            "className": "mr-3",
-        },
-        {
-            "label": "View settings",
-            "icon": "fas fa-eye",
-            "dropdown": True,
-            "className": "mr-3",
-        },
-        {"label": "Sort", "icon": "fas fa-sort", "className": "mr-3"},
-        {"label": "Filter", "icon": "fas fa-filter"},
-    ],
-}
+import pages  # Import pages to register them AFTER app creation
 
-app.layout = html.Div(
-    [
-        ThemeManager(),
-        html.Div(
-            id="app-container",
-            children=create_layout(
-                content=example_content,
-                sidebar_config=sidebar_config,
-                header_config=header_config,
-            ),
-        ),
-    ]
-)
+app.layout = html.Div([
+    ThemeManager(),
+    create_layout(
+        content=dash.page_container,
+        sidebar_config=sidebar_config,
+        header_config={
+            "page_title": "",  # Will be set by individual pages
+            "page_icon": "",
+            "search_placeholder": "Search...",
+            "actions": [],
+            "filter_items": [],
+        }
+    )
+])
+
 
 
 if __name__ == "__main__":
