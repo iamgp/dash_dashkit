@@ -28,10 +28,30 @@
     }
 
     .nav-button {
-        @apply inline-flex items-center px-3 py-1.5 border border-gray-200 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-150 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700;
+        @apply inline-flex items-center px-3 py-1 border border-gray-200 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-150 dark:bg-[#1B1D21] dark:border-[#2B2C30] dark:text-[#EEEFF1] dark:hover:bg-[#1B1D21];
     }
 
     .primary-button {
         @apply inline-flex items-center px-4 py-1.5 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-colors duration-150 dark:bg-blue-500 dark:hover:bg-blue-600;
     }
+}
+
+.ht-theme-main-dark {
+    --ht-border-color: #27282b !important;
+    --ht-background-color: rgba(0, 0, 0, 0) !important;
+    --ht-wrapper-border-radius: 0px !important;
+    --ht-wrapper-border-width: 0px !important;
+    --ht-wrapper-border-color: rgba(0, 0, 0, 0) !important;
+    --ht-letter-spacing: -0.02em !important;
+    --ht-font-weight: 500 !important;
+    --ht-line-height: 20px !important;
+    --ht-row-header-even-background-color: rgba(0, 0, 0, 0) !important;
+    --ht-cell-editor-background-color: rgba(0, 0, 0, 0) !important;
+    --ht-header-background-color: rgba(0, 0, 0, 0) !important;
+}
+
+.ht-theme-main thead,
+.ht-theme-main-dark thead {
+    --ht-cell-vertical-padding: 8px !important;
+    --ht-line-height: 24px !important;
 }

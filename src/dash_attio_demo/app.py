@@ -19,11 +19,11 @@ app = Dash(
     __name__,
     external_stylesheets=external_stylesheets,
     suppress_callback_exceptions=True,
+    assets_folder=str(Path(__file__).parent.parent / "assets"),
 )
 
 # Serve custom CSS by embedding it in the index string
-app.index_string = (
-    """
+app.index_string = """
 <!DOCTYPE html>
 <html class="">
     <head>
@@ -33,11 +33,7 @@ app.index_string = (
         {%css%}
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-        <style>
-            """
-    + open(Path(__file__).parent.parent / "assets/style.css").read()
-    + """
-        </style>
+        <link href="/assets/style.css" rel="stylesheet">
         <script>
             (function() {
                 const storedTheme = localStorage.getItem('theme');
@@ -59,7 +55,6 @@ app.index_string = (
     </body>
 </html>
 """
-)
 
 # Sample company data with proper Attio-style formatting
 companies_data = [
@@ -217,7 +212,9 @@ table_data = format_company_data(companies_data)
 columns = create_company_columns()
 
 # Create the content using just the table component without stats header
-example_content = AttioTable(id="attio-table", data=table_data, columns=columns, height=600)
+example_content = AttioTable(
+    id="attio-table", data=table_data, columns=columns, height=600
+)
 
 # Configuration for the demo app
 sidebar_config = {
