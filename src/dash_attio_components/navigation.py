@@ -38,35 +38,48 @@ class SidebarNavigation(BaseNavigationBar):
         """Create a sidebar navigation item."""
         return IconButton(icon, label, active=active, href=href)
 
-    def create_section(self, title, items, expanded=True):
+    def create_section(self, title, items, expanded=True, section_id=None):
         """Create a collapsible navigation section."""
+        if section_id is None:
+            section_id = f"sidebar-section-{title.lower().replace(' ', '-')}"
+        
+        chevron_id = f"{section_id}-chevron"
+        content_id = f"{section_id}-content"
+        toggle_id = f"{section_id}-toggle"
+        
         chevron = "fas fa-chevron-down" if expanded else "fas fa-chevron-right"
 
-        section_items = [
-            html.Div(
-                [
-                    html.I(className=f"{chevron} mr-2 text-xs text-gray-400"),
-                    html.Span(title, className="text-sm font-medium text-gray-600"),
-                ],
-                className="flex items-center px-3 py-2 cursor-pointer hover:bg-gray-50 rounded-lg",
-            )
-        ]
+        # Header with toggle functionality
+        header = html.Div(
+            [
+                html.I(id=chevron_id, className=f"{chevron} mr-2 text-xs text-gray-400 transition-transform duration-200"),
+                html.Span(title, className="text-sm font-medium text-gray-600 dark:text-gray-300"),
+            ],
+            id=toggle_id,
+            className="flex items-center px-3 py-2 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg",
+        )
 
-        if expanded and items:
+        # Content container that will be shown/hidden
+        content_items = []
+        if items:
             if isinstance(items[0], str):  # Simple text items
-                section_items.append(
+                content_items = [
                     html.Div(
-                        [
-                            html.Span(item, className="text-sm text-gray-400 px-3 py-2")
-                            for item in items
-                        ],
-                        className="ml-4",
+                        item, 
+                        className="text-sm text-gray-400 dark:text-gray-500 px-3 py-1"
                     )
-                )
+                    for item in items
+                ]
             else:  # Navigation items
-                section_items.append(html.Ul(items, className="ml-4 mt-1 space-y-1"))
+                content_items = items
 
-        return html.Li(section_items, className="mb-2 ")
+        content = html.Div(
+            content_items,
+            id=content_id,
+            className=f"ml-4 {'block' if expanded else 'hidden'}",
+        )
+
+        return html.Li([header, content], className="mb-2", id=section_id)
 
     def render(self, nav_items, sections=None):
         """Render sidebar navigation with items and sections."""
