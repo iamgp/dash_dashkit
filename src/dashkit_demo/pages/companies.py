@@ -79,9 +79,9 @@ columns = create_company_columns()
 dash.register_page(__name__, path="/", title="Companies")
 
 layout = Table(
-    id="companies-table", 
-    data=table_data, 
-    columns=columns, 
+    id="companies-table",
+    data=table_data,
+    columns=columns,
     height=600,
     theme_name="ht-theme-horizon"
 )

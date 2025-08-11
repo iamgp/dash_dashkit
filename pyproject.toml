@@ -23,6 +23,9 @@ packages = ["src/dashkit"]
 [tool.ruff]
 target-version = "py311"
 line-length = 88
+exclude = [
+    "src/dashkit_table/**",
+]
 
 [tool.ruff.lint]
 select = [
@@ -48,7 +51,10 @@ line-ending = "auto"
 
 [tool.basedpyright]
 include = ["src"]
-exclude = ["**/__pycache__"]
+exclude = [
+    "**/__pycache__",
+    "src/dashkit_table/**",
+]
 reportMissingTypeStubs = false
 reportUnknownParameterType = false
 reportUnknownArgumentType = false

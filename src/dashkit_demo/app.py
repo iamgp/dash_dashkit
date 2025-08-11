@@ -7,7 +7,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 import dash
 from dash import Dash, html
 
-from dashkit import create_layout
+from dashkit import create_layout, setup_app
 from dashkit.theme_manager import ThemeManager
 
 # External stylesheets including Font Awesome for icons
@@ -24,39 +24,8 @@ app = Dash(
     pages_folder=str(Path(__file__).parent / "pages"),
 )
 
-# Serve custom CSS by embedding it in the index string
-app.index_string = """
-<!DOCTYPE html>
-<html class="">
-    <head>
-        {%metas%}
-        <title>{%title%}</title>
-        {%favicon%}
-        {%css%}
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-        <link href="/assets/style.css" rel="stylesheet">
-        <script>
-            (function() {
-                const storedTheme = localStorage.getItem('theme');
-                if (storedTheme === 'dark') {
-                    document.documentElement.classList.add('dark');
-                } else {
-                    document.documentElement.classList.remove('dark');
-                }
-            })();
-        </script>
-    </head>
-    <body>
-        {%app_entry%}
-        <footer>
-            {%config%}
-            {%scripts%}
-            {%renderer%}
-        </footer>
-    </body>
-</html>
-"""
+# Configure the app with dashkit styling
+setup_app(app)
 
 
 # Configuration for the demo app
