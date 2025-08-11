@@ -31,7 +31,7 @@ Our customer base expanded significantly this quarter:
 Our top-performing products this quarter:
 
 - **Pro Plan**: 45% of total revenue
-- **Enterprise Plan**: 38% of total revenue  
+- **Enterprise Plan**: 38% of total revenue
 - **Basic Plan**: 17% of total revenue
 
 ## Challenges and Opportunities
@@ -80,7 +80,7 @@ Our vision includes:
 
 ## Conclusion
 
-Q4 2024 has been a remarkable quarter for our company. The **34% revenue growth** demonstrates the strength of our product-market fit and the dedication of our team. 
+Q4 2024 has been a remarkable quarter for our company. The **34% revenue growth** demonstrates the strength of our product-market fit and the dedication of our team.
 
 Moving forward, we must balance aggressive growth with sustainable infrastructure development to ensure we can continue delivering exceptional value to our customers.
 

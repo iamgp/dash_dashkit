@@ -42,18 +42,24 @@ class SidebarNavigation(BaseNavigationBar):
         """Create a collapsible navigation section."""
         if section_id is None:
             section_id = f"sidebar-section-{title.lower().replace(' ', '-')}"
-        
+
         chevron_id = f"{section_id}-chevron"
         content_id = f"{section_id}-content"
         toggle_id = f"{section_id}-toggle"
-        
+
         chevron = "fas fa-chevron-down" if expanded else "fas fa-chevron-right"
 
         # Header with toggle functionality
         header = html.Div(
             [
-                html.I(id=chevron_id, className=f"{chevron} mr-2 text-xs text-gray-400 transition-transform duration-200"),
-                html.Span(title, className="text-sm font-medium text-gray-600 dark:text-gray-300"),
+                html.I(
+                    id=chevron_id,
+                    className=f"{chevron} mr-2 text-xs text-gray-400 transition-transform duration-200",
+                ),
+                html.Span(
+                    title,
+                    className="text-sm font-medium text-gray-600 dark:text-gray-300",
+                ),
             ],
             id=toggle_id,
             className="flex items-center px-3 py-2 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg",
@@ -65,8 +71,8 @@ class SidebarNavigation(BaseNavigationBar):
             if isinstance(items[0], str):  # Simple text items
                 content_items = [
                     html.Div(
-                        item, 
-                        className="text-sm text-gray-400 dark:text-gray-500 px-3 py-1"
+                        item,
+                        className="text-sm text-gray-400 dark:text-gray-500 px-3 py-1",
                     )
                     for item in items
                 ]

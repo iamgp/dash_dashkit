@@ -14,21 +14,19 @@ from dash_attio_table import AttioTable
 # Create a minimal test app
 app = dash.Dash(__name__)
 
-app.layout = html.Div([
-    html.H1("Testing Custom AttioTable Component"),
-    AttioTable(
-        id="test-table",
-        data=[
-            ["A", "B", "C"],
-            [1, 2, 3],
-            [4, 5, 6]
-        ],
-        height=300,
-        themeName="ht-theme-main",
-        colHeaders=True,
-        licenseKey="non-commercial-and-evaluation"
-    )
-])
+app.layout = html.Div(
+    [
+        html.H1("Testing Custom AttioTable Component"),
+        AttioTable(
+            id="test-table",
+            data=[["A", "B", "C"], [1, 2, 3], [4, 5, 6]],
+            height=300,
+            themeName="ht-theme-main",
+            colHeaders=True,
+            licenseKey="non-commercial-and-evaluation",
+        ),
+    ]
+)
 
 if __name__ == "__main__":
     print("Starting test app...")

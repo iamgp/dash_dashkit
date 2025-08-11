@@ -16,7 +16,7 @@ def AttioTable(
     context_menu: bool = False,
     allow_empty: bool = True,
     fill_handle: bool = False,
-    **kwargs: Any
+    **kwargs: Any,
 ) -> html.Div:
     """
     Modern Attio-styled table component with native Handsontable theming support.
@@ -47,5 +47,5 @@ def AttioTable(
         filters=True,
         dropdownMenu=True,
         stretchH="all",
-        **kwargs
+        **kwargs,
     )

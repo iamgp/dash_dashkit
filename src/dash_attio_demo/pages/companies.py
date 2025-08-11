@@ -1,13 +1,14 @@
-import dash
-from dash import html
-
 # Import parent directory for components
 import sys
 from pathlib import Path
+
+import dash
+
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
 from dash_attio_components import AttioTable
-from demo_utils import create_company_columns, format_company_data
+
+from ..demo_utils import create_company_columns, format_company_data
 
 # Sample company data (moved from app.py)
 companies_data = [
@@ -78,9 +79,4 @@ columns = create_company_columns()
 
 dash.register_page(__name__, path="/", title="Companies")
 
-layout = AttioTable(
-    id="attio-table", 
-    data=table_data, 
-    columns=columns, 
-    height=600
-)
+layout = AttioTable(id="attio-table", data=table_data, columns=columns, height=600)

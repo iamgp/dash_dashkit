@@ -1,4 +1,4 @@
-from dash import dcc, html, Input, Output, State, clientside_callback
+from dash import Input, Output, State, clientside_callback, dcc, html
 
 
 def create_dark_mode_toggle() -> html.Button:
@@ -21,8 +21,8 @@ class ThemeManager(html.Div):
             id=id,
             children=[
                 dcc.Store(id="theme-store", storage_type="local"),
-                dcc.Location(id='url', refresh=False),
-            ]
+                dcc.Location(id="url", refresh=False),
+            ],
         )
 
         clientside_callback(
@@ -38,9 +38,9 @@ class ThemeManager(html.Div):
                 return window.dash_clientside.no_update;
             }
             """,
-            Output('theme-store', 'data'),
-            Input('url', 'pathname'),
-            State('theme-store', 'data'),
+            Output("theme-store", "data"),
+            Input("url", "pathname"),
+            State("theme-store", "data"),
         )
 
         clientside_callback(
@@ -76,5 +76,5 @@ class ThemeManager(html.Div):
             """,
             Output("attio-table", "themeName"),
             Input("theme-store", "data"),
-            prevent_initial_call=False
+            prevent_initial_call=False,
         )

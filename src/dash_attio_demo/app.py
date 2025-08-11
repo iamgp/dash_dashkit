@@ -4,8 +4,8 @@ from pathlib import Path
 # Add the src directory to the path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from dash import Dash, html, dcc
 import dash
+from dash import Dash, html
 
 from dash_attio_components import create_layout
 from dash_attio_components.theme_manager import ThemeManager
@@ -61,7 +61,7 @@ app.index_string = """
 
 # Configuration for the demo app
 sidebar_config = {
-    "brand_name": "Rhinoe", 
+    "brand_name": "Rhinoe",
     "brand_initial": "R",
     "nav_items": [
         {"icon": "fas fa-bolt", "label": "Quick actions"},
@@ -82,11 +82,11 @@ sidebar_config = {
         },
         {"title": "Favorites", "items": ["No favorites"], "expanded": True},
         {
-            "title": "Records", 
+            "title": "Records",
             "items": [
                 {
                     "type": "nav_item",
-                    "icon": "fas fa-building", 
+                    "icon": "fas fa-building",
                     "label": "Companies",
                     "href": "/",
                 },
@@ -100,30 +100,32 @@ sidebar_config = {
     ],
 }
 
-import pages  # Import pages to register them AFTER app creation
 
-app.layout = html.Div([
-    ThemeManager(),
-    create_layout(
-        content=dash.page_container,
-        sidebar_config=sidebar_config,
-        header_config={
-            "page_title": "",  # Will be set by individual pages
-            "page_icon": "",
-            "search_placeholder": "Search...",
-            "actions": [],
-            "filter_items": [],
-        }
-    )
-])
-
+app.layout = html.Div(
+    [
+        ThemeManager(),
+        create_layout(
+            content=dash.page_container,
+            sidebar_config=sidebar_config,
+            header_config={
+                "page_title": "",  # Will be set by individual pages
+                "page_icon": "",
+                "search_placeholder": "Search...",
+                "actions": [],
+                "filter_items": [],
+            },
+        ),
+    ]
+)
 
 
 if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(description="Run the Dash app")
-    parser.add_argument("--port", type=int, default=8050, help="Port to run the app on")
+    _ = parser.add_argument(
+        "--port", type=int, default=8050, help="Port to run the app on"
+    )
     args = parser.parse_args()
 
     app.run(debug=True, port=args.port)

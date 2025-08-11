@@ -1,4 +1,3 @@
-import os
 from pathlib import Path
 
 from ._imports_ import *  # noqa: F401,F403
@@ -11,10 +10,7 @@ _current_dir = Path(__file__).parent
 
 # Define the JavaScript distribution files for Dash
 _js_dist = [
-    {
-        "relative_package_path": "dash_attio_table.js",
-        "namespace": "dash_attio_table"
-    }
+    {"relative_package_path": "dash_attio_table.js", "namespace": "dash_attio_table"}
 ]
 
 # Set the _js_dist attribute on the AttioTable class so Dash can find it

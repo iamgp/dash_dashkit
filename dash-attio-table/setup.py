@@ -4,7 +4,9 @@ from pathlib import Path
 from setuptools import setup
 
 # Read metadata from package-info.json
-package_json = json.loads((Path(__file__).parent / "dash_attio_table" / "package-info.json").read_text())
+package_json = json.loads(
+    (Path(__file__).parent / "dash_attio_table" / "package-info.json").read_text()
+)
 
 setup(
     name="dash-attio-table",
@@ -15,7 +17,7 @@ setup(
     package_data={
         "dash_attio_table": [
             "*.js",
-            "*.js.map", 
+            "*.js.map",
             "*.json",
             "*.txt",
             "*.py",

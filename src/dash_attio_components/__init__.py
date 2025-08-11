@@ -9,9 +9,9 @@ from .attio_table import AttioTable
 from .buttons import PrimaryButton, SecondaryButton
 from .header import create_header
 from .layout import create_layout
+from .markdown_report import MarkdownReport
 from .sidebar import create_sidebar
 from .table import AttioTableWithStats
-from .markdown_report import MarkdownReport
 
 __version__ = "1.0.0"
 __all__ = [

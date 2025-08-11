@@ -1,6 +1,6 @@
 from typing import Any
 
-from dash import html, clientside_callback, Input, Output
+from dash import Input, Output, clientside_callback, html
 
 from .logo import LogoSection
 from .navigation import SidebarNavigation
@@ -11,19 +11,23 @@ def _register_section_callback(section_id: str):
     toggle_id = f"{section_id}-toggle"
     content_id = f"{section_id}-content"
     chevron_id = f"{section_id}-chevron"
-    
+
     try:
         clientside_callback(
             """
             function(n_clicks) {
                 if (!n_clicks) return window.dash_clientside.no_update;
-                
-                const content = document.getElementById('""" + content_id + """');
-                const chevron = document.getElementById('""" + chevron_id + """');
-                
+
+                const content = document.getElementById('"""
+            + content_id
+            + """');
+                const chevron = document.getElementById('"""
+            + chevron_id
+            + """');
+
                 if (content && chevron) {
                     const isHidden = content.classList.contains('hidden');
-                    
+
                     if (isHidden) {
                         content.classList.remove('hidden');
                         content.classList.add('block');
@@ -34,13 +38,13 @@ def _register_section_callback(section_id: str):
                         chevron.className = chevron.className.replace('fa-chevron-down', 'fa-chevron-right');
                     }
                 }
-                
+
                 return window.dash_clientside.no_update;
             }
             """,
             Output(toggle_id, "n_clicks", allow_duplicate=True),
             Input(toggle_id, "n_clicks"),
-            prevent_initial_call=True
+            prevent_initial_call=True,
         )
     except Exception:
         # Callback might already be registered, skip silently
@@ -78,7 +82,7 @@ def create_sidebar(
     for section in sections:
         section_items = []
         section_id = f"sidebar-section-{section['title'].lower().replace(' ', '-')}"
-        
+
         for item in section["items"]:
             if isinstance(item, str):
                 # Plain text item
@@ -105,13 +109,13 @@ def create_sidebar(
 
         rendered_sections.append(
             nav.create_section(
-                section["title"], 
-                section_items, 
+                section["title"],
+                section_items,
                 expanded=section.get("expanded", False),
-                section_id=section_id
+                section_id=section_id,
             )
         )
-        
+
         # Register clientside callback for this section
         _register_section_callback(section_id)
 
