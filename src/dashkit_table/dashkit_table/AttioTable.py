@@ -1,8 +1,7 @@
 # AUTO GENERATED FILE - DO NOT EDIT
 
 import typing  # noqa: F401
-from typing import Literal, NotRequired  # noqa: F401
-
+from typing_extensions import TypedDict, NotRequired, Literal # noqa: F401
 from dash.development.base_component import Component, _explicitize_args
 
 ComponentType = typing.Union[
@@ -11,7 +10,7 @@ ComponentType = typing.Union[
     float,
     Component,
     None,
-    typing.Sequence[str | int | float | Component | None],
+    typing.Sequence[typing.Union[str, int, float, Component, None]],
 ]
 
 NumberType = typing.Union[
@@ -95,26 +94,26 @@ Keyword arguments:
 
     def __init__(
         self,
-        id: str | dict | None = None,
-        data: typing.Sequence[typing.Sequence[typing.Any]] | None = None,
-        columns: typing.Sequence[typing.Any] | None = None,
-        themeName: str | None = None,
-        className: str | None = None,
-        cellClassName: str | None = None,
-        headerClassName: str | None = None,
-        height: str | NumberType | None = None,
-        width: str | NumberType | None = None,
-        rowHeaders: typing.Any | None = None,
-        colHeaders: typing.Any | None = None,
-        licenseKey: str | None = None,
-        columnSorting: typing.Any | None = None,
-        multiColumnSorting: typing.Any | None = None,
-        filters: typing.Any | None = None,
-        dropdownMenu: typing.Any | None = None,
-        contextMenu: typing.Any | None = None,
-        rowHeight: NumberType | None = None,
-        stretchH: str | None = None,
-        settings: typing.Any | None = None,
+        id: typing.Optional[typing.Union[str, dict]] = None,
+        data: typing.Optional[typing.Union[typing.Sequence[typing.Sequence[typing.Any]]]] = None,
+        columns: typing.Optional[typing.Union[typing.Sequence[typing.Any]]] = None,
+        themeName: typing.Optional[typing.Union[str]] = None,
+        className: typing.Optional[typing.Union[str]] = None,
+        cellClassName: typing.Optional[typing.Union[str]] = None,
+        headerClassName: typing.Optional[typing.Union[str]] = None,
+        height: typing.Optional[typing.Union[str, NumberType]] = None,
+        width: typing.Optional[typing.Union[str, NumberType]] = None,
+        rowHeaders: typing.Optional[typing.Any] = None,
+        colHeaders: typing.Optional[typing.Any] = None,
+        licenseKey: typing.Optional[typing.Union[str]] = None,
+        columnSorting: typing.Optional[typing.Any] = None,
+        multiColumnSorting: typing.Optional[typing.Any] = None,
+        filters: typing.Optional[typing.Any] = None,
+        dropdownMenu: typing.Optional[typing.Any] = None,
+        contextMenu: typing.Optional[typing.Any] = None,
+        rowHeight: typing.Optional[typing.Union[NumberType]] = None,
+        stretchH: typing.Optional[typing.Union[str]] = None,
+        settings: typing.Optional[typing.Any] = None,
         **kwargs
     ):
         self._prop_names = ['id', 'cellClassName', 'className', 'colHeaders', 'columnSorting', 'columns', 'contextMenu', 'data', 'dropdownMenu', 'filters', 'headerClassName', 'height', 'licenseKey', 'multiColumnSorting', 'rowHeaders', 'rowHeight', 'setProps', 'settings', 'stretchH', 'themeName', 'width']
@@ -128,4 +127,4 @@ Keyword arguments:
 
         super(AttioTable, self).__init__(**args)
 
-AttioTable.__init__ = _explicitize_args(AttioTable.__init__)
+setattr(AttioTable, "__init__", _explicitize_args(AttioTable.__init__))

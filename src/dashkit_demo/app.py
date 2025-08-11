@@ -8,6 +8,7 @@ import dash
 from dash import Dash, html
 
 from dashkit import create_layout, setup_app
+import dashkit_table
 from dashkit.theme_manager import ThemeManager
 
 # External stylesheets including Font Awesome for icons

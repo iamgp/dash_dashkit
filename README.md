@@ -33,9 +33,14 @@ dashkit/
 
 ```bash
 # Install dependencies
-uv sync
+uv sync --group dev
+
+# Setup the table component (builds TypeScript and installs)
+uv run task setup
 
 # Run the demo application
+uv run task dev
+# or manually:
 python run.py
 # or
 python src/dashkit_demo/app.py
@@ -46,7 +51,12 @@ Visit http://localhost:8050 to see the demo.
 ### Using Components in Your Project
 
 ```python
-from dashkit import create_layout, Table
+from dashkit import create_layout, setup_app, Table
+
+app = Dash(__name__)
+
+# Configure app with dashkit styling (handles CSS and theme injection)
+setup_app(app)
 
 # Configure sidebar
 sidebar_config = {
@@ -113,6 +123,35 @@ app.layout = create_layout(
 
 ## Development
 
+### Available Tasks
+
+This project uses taskipy for common development tasks:
+
+```bash
+# Complete setup (install npm deps, build table component, install Python package)
+uv run task setup
+
+# Build only the table component
+uv run task build-table
+
+# Install only the table component  
+uv run task install-table
+
+# Run linting and formatting
+uv run task lint
+
+# Run type checking
+uv run task typecheck
+
+# Run both linting and type checking
+uv run task check
+
+# Start the development server
+uv run task dev
+```
+
+### Manual Development Commands
+
 ```bash
 # Run linting
 ruff check .
@@ -123,6 +162,12 @@ basedpyright src
 
 # Build CSS (if modified)
 npx tailwindcss -i src/assets/input.css -o src/assets/style.css --watch
+
+# Manual table component build
+cd src/dashkit_table
+npm install
+npm run build
+uv pip install -e .
 ```
 
 ## Configuration Examples

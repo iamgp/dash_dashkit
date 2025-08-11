@@ -83,5 +83,5 @@ layout = Table(
     data=table_data,
     columns=columns,
     height=600,
-    theme_name="ht-theme-horizon"
+    theme_name="ht-theme-horizon",
 )
