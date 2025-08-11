@@ -1,0 +1,107 @@
+from typing import Any
+
+from dash import html
+from dashkit_table.AttioTable import AttioTable as CustomAttioTable
+
+
+def Table(
+    id: str,
+    data: list[dict[str, Any]] | None = None,
+    columns: list[dict[str, Any]] | None = None,
+    height: int = 400,
+    theme_name: str = "ht-theme-main",
+    class_name: str = "",
+    row_headers: bool = False,
+    col_headers: bool = True,
+    context_menu: bool = False,
+    allow_empty: bool = True,
+    fill_handle: bool = False,
+    **kwargs: Any,
+) -> html.Div:
+    """
+    Modern dashboard table component with native Handsontable theming support.
+
+    Args:
+        id: The ID used to identify this component in Dash callbacks
+        data: List of dictionaries or 2D array of table data
+        columns: List of column configurations
+        height: Table height in pixels
+        theme_name: Handsontable theme ('ht-theme-main', 'ht-theme-main-dark', 'ht-theme-horizon', 'ht-theme-horizon-dark')
+        class_name: Custom CSS class for the table container
+        **kwargs: Additional Handsontable options
+    """
+
+    # Using our custom table component with latest Handsontable v16.0.1
+    return CustomAttioTable(
+        id=id,
+        data=data or [],
+        columns=columns,
+        height=height,
+        themeName=theme_name,
+        className=class_name,
+        rowHeaders=row_headers,
+        colHeaders=col_headers,
+        contextMenu=context_menu,
+        licenseKey="non-commercial-and-evaluation",
+        columnSorting=True,
+        filters=True,
+        dropdownMenu=True,
+        stretchH="all",
+        **kwargs,
+    )
+
+
+def TableWithStats(
+    data: list[dict[str, Any]],
+    columns: list[dict[str, Any]] | None = None,
+    count_label: str = "count",
+    actions: list[Any] | None = None,
+    **table_kwargs: Any,
+) -> html.Div:
+    """
+    Table component with dashboard-style header showing count and actions.
+
+    Args:
+        data: Table data
+        columns: Column configurations
+        title: Table title
+        count_label: Label for the count display
+        actions: List of action buttons/components
+        **table_kwargs: Additional table configuration
+    """
+
+    # Calculate row count
+    row_count = len(data)
+
+    header_content = [
+        # Left side - count
+        html.Div(
+            [
+                html.Span(
+                    f"{row_count} {count_label}", className="text-sm text-gray-600"
+                ),
+            ],
+            className="flex items-center",
+        ),
+        # Right side - actions
+        html.Div(actions or [], className="flex items-center space-x-2"),
+    ]
+
+    # Use Handsontable component
+    table_component = Table(id="table", data=data, columns=columns, **table_kwargs)
+
+    return html.Div(
+        [
+            # Header with count and actions
+            html.Div(
+                header_content,
+                className="flex items-center justify-between px-6 py-3 border-b border-gray-200 bg-gray-50",
+            ),
+            # Table
+            html.Div([table_component], className="overflow-x-auto"),
+        ],
+        className="bg-white dark:bg-[#1B1D21] border border-gray-200 dark:border-[#27282B] ",
+    )
+
+
+# Demo-specific functions moved to dashkit_demo package

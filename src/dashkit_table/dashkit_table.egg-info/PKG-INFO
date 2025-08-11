@@ -1,0 +1,13 @@
+Metadata-Version: 2.4
+Name: dashkit_table
+Version: 1.0.0
+Summary: Modern Handsontable component for Dash with native theming support
+Author: Dashkit Team
+License: MIT
+Requires-Python: >=3.8
+Requires-Dist: dash>=2.0.0
+Dynamic: author
+Dynamic: license
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary

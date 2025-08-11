@@ -1,13 +1,13 @@
-# Dash Attio Components
+# Dashkit
 
-Production-ready UI components for Dash applications styled to match Attio's design system. All components are configurable and can be used across different projects.
+Production-ready UI components for Dash applications with modern dashboard styling. All components are configurable and can be used across different projects.
 
 ## Project Structure
 
 ```
-dash-attio/
+dashkit/
 ├── src/
-│   ├── dash_attio_components/     # Reusable components package
+│   ├── dashkit/                   # Reusable components package
 │   │   ├── __init__.py
 │   │   ├── layout.py              # Main layout component
 │   │   ├── sidebar.py             # Configurable sidebar
@@ -17,7 +17,7 @@ dash-attio/
 │   │   ├── logo.py                # Logo components
 │   │   ├── navigation.py          # Navigation components
 │   │   └── attio_table/           # Advanced table components
-│   ├── dash_attio_demo/           # Demo application
+│   ├── dashkit_demo/              # Demo application
 │   │   ├── __init__.py
 │   │   └── app.py                 # Example usage
 │   └── assets/
@@ -38,7 +38,7 @@ uv sync
 # Run the demo application
 python run.py
 # or
-python src/dash_attio_demo/app.py
+python src/dashkit_demo/app.py
 ```
 
 Visit http://localhost:8050 to see the demo.
@@ -46,7 +46,7 @@ Visit http://localhost:8050 to see the demo.
 ### Using Components in Your Project
 
 ```python
-from dash_attio_components import create_layout, AttioTable
+from dashkit import create_layout, Table
 
 # Configure sidebar
 sidebar_config = {
@@ -75,7 +75,7 @@ header_config = {
 }
 
 # Create your content
-table = AttioTable(data=your_data, columns=your_columns)
+table = Table(id="my-table", data=your_data, columns=your_columns)
 
 # Build the layout
 app.layout = create_layout(
@@ -93,9 +93,8 @@ app.layout = create_layout(
 - `create_header()` - Two-tier header with search and actions
 
 ### Table Components  
-- `AttioTable()` - Modern table using Handsontable
-- `AttioTableWithStats()` - Table with count header
-- `AttioHTMLTable()` - Pure HTML table variant
+- `Table()` - Modern table using Handsontable
+- `TableWithStats()` - Table with count header
 
 ### UI Components
 - `PrimaryButton()` - Primary action buttons
@@ -104,7 +103,7 @@ app.layout = create_layout(
 ## Features
 
 - ✅ Fully configurable components
-- ✅ Attio-style design system
+- ✅ Modern dashboard design system
 - ✅ TypeScript support for tables
 - ✅ Modern Handsontable v16.0.1 integration
 - ✅ Responsive layout
@@ -128,7 +127,7 @@ npx tailwindcss -i src/assets/input.css -o src/assets/style.css --watch
 
 ## Configuration Examples
 
-See `src/dash_attio_demo/app.py` for complete configuration examples including:
+See `src/dashkit_demo/app.py` for complete configuration examples including:
 - Sidebar navigation structure
 - Header actions and filters
 - Table data formatting

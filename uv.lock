@@ -141,12 +141,25 @@ dev = [
 ]
 
 [[package]]
-name = "dash-attio"
+name = "dash-bootstrap-components"
+version = "2.0.3"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "dash" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/49/8d/0f641e7c7878ac65b4bb78a2c7cb707db036f82da13fd61948adec44d5aa/dash_bootstrap_components-2.0.3.tar.gz", hash = "sha256:5c161b04a6e7ed19a7d54e42f070c29fd6c385d5a7797e7a82999aa2fc15b1de", size = 115466 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/f7/f6/b4652aacfbc8d684c9ca8efc5178860a50b54abf82cd1960013c59f8258f/dash_bootstrap_components-2.0.3-py3-none-any.whl", hash = "sha256:82754d3d001ad5482b8a82b496c7bf98a1c68d2669d607a89dda7ec627304af5", size = 203706 },
+]
+
+[[package]]
+name = "dashkit"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "dash", extra = ["dev"] },
     { name = "dash-bootstrap-components" },
+    { name = "dashkit-table" },
     { name = "plotly" },
 ]
 
@@ -167,6 +180,7 @@ requires-dist = [
     { name = "basedpyright", marker = "extra == 'dev'", specifier = ">=1.10.0" },
     { name = "dash", extras = ["dev"], specifier = ">=2.17.0" },
     { name = "dash-bootstrap-components", specifier = ">=1.5.0" },
+    { name = "dashkit-table", directory = "src/dashkit_table" },
     { name = "plotly", specifier = ">=5.17.0" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.1.0" },
 ]
@@ -179,16 +193,15 @@ dev = [
 ]
 
 [[package]]
-name = "dash-bootstrap-components"
-version = "2.0.3"
-source = { registry = "https://pypi.org/simple" }
+name = "dashkit-table"
+version = "1.0.0"
+source = { directory = "src/dashkit_table" }
 dependencies = [
     { name = "dash" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/49/8d/0f641e7c7878ac65b4bb78a2c7cb707db036f82da13fd61948adec44d5aa/dash_bootstrap_components-2.0.3.tar.gz", hash = "sha256:5c161b04a6e7ed19a7d54e42f070c29fd6c385d5a7797e7a82999aa2fc15b1de", size = 115466 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/f7/f6/b4652aacfbc8d684c9ca8efc5178860a50b54abf82cd1960013c59f8258f/dash_bootstrap_components-2.0.3-py3-none-any.whl", hash = "sha256:82754d3d001ad5482b8a82b496c7bf98a1c68d2669d607a89dda7ec627304af5", size = 203706 },
-]
+
+[package.metadata]
+requires-dist = [{ name = "dash", specifier = ">=2.0.0" }]
 
 [[package]]
 name = "fire"

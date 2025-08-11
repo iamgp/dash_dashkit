@@ -1,0 +1,6 @@
+include dashkit_table/*.js
+include dashkit_table/*.js.map
+include dashkit_table/*.json
+include dashkit_table/*.txt
+include dashkit_table/*.py
+recursive-include dashkit_table *
