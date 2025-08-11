@@ -41,7 +41,8 @@ def BrandHeader(brand_name, icon=None, subtitle=None):
 
     header_content.append(
         html.Span(
-            brand_name,
+            brand_name or "",
+            id="brand-header-title",
             className="text-sm font-[500]  text-[#242529] dark:text-[#EEEFF1]",
         )
     )

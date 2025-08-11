@@ -1,6 +1,6 @@
 from typing import Any
 
-from dash import html
+from dash import Input, Output, clientside_callback, html
 
 from .buttons import PrimaryButton, SecondaryButton
 from .logo import BrandHeader
@@ -27,6 +27,25 @@ def create_header(
     # Create navigation instances
     top_nav = TopNavigationBar()
     filter_bar = FilterBar()
+
+    # Register a clientside callback to update the header title from pages
+    try:
+        clientside_callback(
+            """
+            function(data) {
+                if (data && data.title) {
+                    return data.title;
+                }
+                return window.dash_clientside.no_update;
+            }
+            """,
+            Output("brand-header-title", "children"),
+            Input("page_header_config", "data"),
+            prevent_initial_call=False,
+        )
+    except Exception:
+        # Callback might already be registered
+        pass
 
     # Top tier content
     left_content = BrandHeader(page_title, page_icon)
@@ -70,9 +89,7 @@ def create_header(
 
     return html.Div(
         [
-            # Top tier
             top_nav.render(left_content, center_content, right_content),
-            # Bottom tier (only render if filter_items provided)
             filter_bar.render(filter_content) if filter_items else None,
         ]
     )

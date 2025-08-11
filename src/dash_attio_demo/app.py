@@ -21,7 +21,7 @@ app = Dash(
     suppress_callback_exceptions=True,
     assets_folder=str(Path(__file__).parent.parent / "assets"),
     use_pages=True,
-    pages_folder="pages",
+    pages_folder=str(Path(__file__).parent / "pages"),
 )
 
 # Serve custom CSS by embedding it in the index string

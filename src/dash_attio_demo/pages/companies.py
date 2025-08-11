@@ -7,8 +7,7 @@ import dash
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
 from dash_attio_components import AttioTable
-
-from ..demo_utils import create_company_columns, format_company_data
+from dash_attio_demo.demo_utils import create_company_columns, format_company_data
 
 # Sample company data (moved from app.py)
 companies_data = [
