@@ -34,7 +34,7 @@ themeName=NULL, width=NULL)
 
 \item{contextMenu}{Logical | numeric | character | named list | unnamed list. Enable context menu}
 
-\item{data}{List of list of logical | numeric | character | named list | unnamed listss. Data for the table}
+\item{data}{List of logical | numeric | character | named list | unnamed lists | list of list of logical | numeric | character | named list | unnamed listss. Data for the table. Supports either a 2D array (matrix) or an array of objects.}
 
 \item{dropdownMenu}{Logical | numeric | character | named list | unnamed list. Enable dropdown menu}
 

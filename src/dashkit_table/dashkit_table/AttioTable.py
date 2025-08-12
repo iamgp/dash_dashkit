@@ -45,8 +45,9 @@ Keyword arguments:
 - contextMenu (boolean | number | string | dict | list; optional):
     Enable context menu.
 
-- data (list of list of boolean | number | string | dict | listss; optional):
-    Data for the table.
+- data (list of boolean | number | string | dict | lists | list of list of boolean | number | string | dict | listss; optional):
+    Data for the table. Supports either a 2D array (matrix) or an
+    array of objects.
 
 - dropdownMenu (boolean | number | string | dict | list; optional):
     Enable dropdown menu.
@@ -95,7 +96,7 @@ Keyword arguments:
     def __init__(
         self,
         id: typing.Optional[typing.Union[str, dict]] = None,
-        data: typing.Optional[typing.Union[typing.Sequence[typing.Sequence[typing.Any]]]] = None,
+        data: typing.Optional[typing.Union[typing.Sequence[typing.Any], typing.Sequence[typing.Sequence[typing.Any]]]] = None,
         columns: typing.Optional[typing.Union[typing.Sequence[typing.Any]]] = None,
         themeName: typing.Optional[typing.Union[str]] = None,
         className: typing.Optional[typing.Union[str]] = None,

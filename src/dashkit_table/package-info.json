@@ -13,7 +13,7 @@
   "homepage": "https://github.com/attio/dashkit_table",
   "scripts": {
     "build:js::dev": "webpack --mode development",
-    "build:js": "webpack", 
+    "build:js": "webpack",
     "build:backends": "dash-generate-components ./src/ts/components dashkit_table -p package-info.json --r-prefix '' --jl-prefix '' --ignore \\.test\\.",
     "build": "npm run build:js && npm run build:backends",
     "watch": "npm run build:js::dev -- --watch"
@@ -40,6 +40,6 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
-  "author": "Dashkit Team",
+  "author": "Dashkit Team <team@dashkit.dev>",
   "license": "MIT"
 }

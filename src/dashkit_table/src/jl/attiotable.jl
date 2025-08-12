@@ -15,7 +15,7 @@ Keyword arguments:
 - `columnSorting` (Bool | Real | String | Dict | Array; optional): Enable column sorting
 - `columns` (Array of Bool | Real | String | Dict | Arrays; optional): Column configuration
 - `contextMenu` (Bool | Real | String | Dict | Array; optional): Enable context menu
-- `data` (Array of Array of Bool | Real | String | Dict | Arrayss; optional): Data for the table
+- `data` (Array of Bool | Real | String | Dict | Arrays | Array of Array of Bool | Real | String | Dict | Arrayss; optional): Data for the table. Supports either a 2D array (matrix) or an array of objects.
 - `dropdownMenu` (Bool | Real | String | Dict | Array; optional): Enable dropdown menu
 - `filters` (Bool | Real | String | Dict | Array; optional): Enable filters
 - `headerClassName` (String; optional): Custom CSS class for headers

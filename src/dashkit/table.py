@@ -2,7 +2,10 @@ from typing import Any
 
 from dash import html
 
-from dashkit_table.AttioTable import AttioTable as CustomAttioTable
+try:
+    from dashkit_table import DashkitTable as CustomAttioTable
+except ImportError:  # Fallback if export name differs
+    from dashkit_table.AttioTable import AttioTable as CustomAttioTable
 
 
 def Table(
@@ -32,11 +35,31 @@ def Table(
         **kwargs: Additional Handsontable options
     """
 
+    # If provided data is a list of dicts (records), convert to 2D array with
+    # column order derived from the provided columns. Adjust columns to index-based
+    # access to satisfy current PropTypes and Handsontable expectations.
+    processed_data = data or []
+    processed_columns = columns
+
+    if processed_data and isinstance(processed_data[0], dict) and columns:
+        column_keys = [c.get("data") for c in columns]
+        # Only include keys that are strings/valid identifiers
+        column_keys = [k for k in column_keys if isinstance(k, str)]
+
+        # Build 2D array in the order of column_keys
+        processed_data = [
+            [row.get(key) for key in column_keys]  # type: ignore[arg-type]
+            for row in processed_data  # type: ignore[assignment]
+        ]
+
+        # Convert columns to index-based access for array-of-arrays data
+        processed_columns = [{**col, "data": idx} for idx, col in enumerate(columns)]
+
     # Using our custom table component with latest Handsontable v16.0.1
     return CustomAttioTable(
         id=id,
-        data=data or [],
-        columns=columns,
+        data=processed_data,
+        columns=processed_columns,
         height=height,
         themeName=theme_name,
         className=class_name,

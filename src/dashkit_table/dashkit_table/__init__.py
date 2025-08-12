@@ -13,5 +13,11 @@ _js_dist = [
     {"relative_package_path": "dashkit_table.js", "namespace": "dashkit_table"}
 ]
 
-# Set the _js_dist attribute on the AttioTable class so Dash can find it
+_js_dist.append(dict(
+    dev_package_path="proptypes.js",
+    dev_only=True,
+    namespace="dashkit_table"
+))
+
+# Set the _js_diswt attribute on the AttioTable class so Dash can find it
 AttioTable._js_dist = _js_dist

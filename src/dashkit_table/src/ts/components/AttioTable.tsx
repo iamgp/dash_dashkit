@@ -1,14 +1,14 @@
-import React, { useEffect, useRef } from "react";
 import { HotTable, HotTableClass } from "@handsontable/react";
 import Handsontable from "handsontable";
+import React, { useRef } from "react";
 
 // Import Handsontable cell types
-import { registerCellType, NumericCellType } from "handsontable/cellTypes";
+import { NumericCellType, registerCellType } from "handsontable/cellTypes";
 
 // Import Handsontable styles
 import "handsontable/styles/handsontable.min.css";
-import "handsontable/styles/ht-theme-main.min.css";
 import "handsontable/styles/ht-theme-horizon.min.css";
+import "handsontable/styles/ht-theme-main.min.css";
 
 // Register cell types
 registerCellType("numeric", NumericCellType);
@@ -26,9 +26,9 @@ export interface AttioTableProps {
   id?: string;
 
   /**
-   * Data for the table
+   * Data for the table. Supports either a 2D array (matrix) or an array of objects.
    */
-  data?: any[][];
+  data?: any[] | any[][];
 
   /**
    * Column configuration
@@ -197,9 +197,7 @@ const AttioTable: React.FC<AttioTableProps> = ({
   };
 
   return (
-    <div
-      className={`attio-table-container ${className || ""}`.trim()}
-    >
+    <div className={`attio-table-container ${className || ""}`.trim()}>
       <HotTable
         key={themeName} // Force re-render when theme changes
         ref={hotRef}

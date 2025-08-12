@@ -4,7 +4,7 @@ var pt = window.PropTypes;
 var pk = window['dashkit_table'];
 
 pk.AttioTable.propTypes = {id:pt.oneOfType([pt.string]),
- data:pt.oneOfType([pt.arrayOf(pt.arrayOf(pt.any))]),
+ data:pt.oneOfType([pt.arrayOf(pt.any),pt.arrayOf(pt.arrayOf(pt.any))]),
  columns:pt.oneOfType([pt.arrayOf(pt.any)]),
  themeName:pt.oneOfType([pt.string]),
  className:pt.oneOfType([pt.string]),

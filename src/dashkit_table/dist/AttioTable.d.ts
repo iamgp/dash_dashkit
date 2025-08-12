@@ -8,9 +8,9 @@ export interface AttioTableProps {
      */
     id?: string;
     /**
-     * Data for the table
+     * Data for the table. Supports either a 2D array (matrix) or an array of objects.
      */
-    data?: any[][];
+    data?: any[] | any[][];
     /**
      * Column configuration
      */
