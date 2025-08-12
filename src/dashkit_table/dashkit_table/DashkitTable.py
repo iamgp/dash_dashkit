@@ -20,51 +20,79 @@ NumberType = typing.Union[
 
 class DashkitTable(Component):
     """A DashkitTable component.
-
+DashkitTable is a modern Handsontable component for Dash with native theme support.
+*
+Provides a full-featured data grid with ergonomic defaults and theme-aware styling.
+Supports both record-style rows and 2D arrays. Pass additional Handsontable options via `settings`.
 
 Keyword arguments:
 
-- id (string; optional)
+- id (string; optional):
+    The ID used to identify this component in Dash callbacks.
 
-- cellClassName (string; optional)
+- cellClassName (string; default ''):
+    Custom CSS class applied to all table cells.
 
-- className (string; optional)
+- className (string; default ''):
+    Custom CSS class for the outer table container.
 
-- colHeaders (boolean | number | string | dict | list; optional)
+- colHeaders (boolean | number | string | dict | list; default True):
+    Show column headers.
 
-- columnSorting (boolean | number | string | dict | list; optional)
+- columnSorting (boolean | number | string | dict | list; default True):
+    Enable single-column sorting.
 
-- columns (list of boolean | number | string | dict | lists; optional)
+- columns (list of boolean | number | string | dict | lists; optional):
+    Column configuration passed through to Handsontable.
 
-- contextMenu (boolean | number | string | dict | list; optional)
+- contextMenu (boolean | number | string | dict | list; default False):
+    Enable context menu.
 
-- data (list of boolean | number | string | dict | lists | list of list of boolean | number | string | dict | listss; optional)
+- data (list of boolean | number | string | dict | lists | list of list of boolean | number | string | dict | listss; optional):
+    Data for the table. Accepts either: - Array of objects (records)
+    when used with column definitions using `data: <fieldName>` - 2D
+    array (matrix) when used with index-based columns (`data:
+    <columnIndex>`).
 
-- dropdownMenu (boolean | number | string | dict | list; optional)
+- dropdownMenu (boolean | number | string | dict | list; default False):
+    Enable dropdown menu.
 
-- filters (boolean | number | string | dict | list; optional)
+- filters (boolean | number | string | dict | list; default False):
+    Enable filter functionality.
 
-- headerClassName (string; optional)
+- headerClassName (string; default ''):
+    Custom CSS class applied to all column/row headers.
 
-- height (string | number; optional)
+- height (string | number; default 400):
+    Table height in pixels or CSS size.
 
-- licenseKey (string; optional)
+- licenseKey (string; default 'non-commercial-and-evaluation'):
+    Handsontable license key string.
 
-- multiColumnSorting (boolean | number | string | dict | list; optional)
+- multiColumnSorting (boolean | number | string | dict | list; default False):
+    Enable multi-column sorting.
 
-- rowHeaders (boolean | number | string | dict | list; optional)
+- rowHeaders (boolean | number | string | dict | list; default False):
+    Show row headers.
 
-- rowHeight (number; optional)
+- rowHeight (number; default 35):
+    Row height in pixels.
 
-- setProps (optional)
+- setProps (optional):
+    Callback used by Dash to push prop changes from the client.
 
-- settings (boolean | number | string | dict | list; optional)
+- settings (boolean | number | string | dict | list; optional):
+    Additional Handsontable settings to merge into the base config.
 
-- stretchH (string; optional)
+- stretchH (string; default 'all'):
+    Column stretching behaviour.
 
-- themeName (string; optional)
+- themeName (string; default 'ht-theme-main'):
+    Theme name for native Handsontable themes (e.g. `ht-theme-main`,
+    `ht-theme-horizon`).
 
-- width (string | number; optional)"""
+- width (string | number; default '100%'):
+    Table width in pixels or CSS size."""
     _children_props = []
     _base_nodes = ['children']
     _namespace = 'dashkit_table'

@@ -12,11 +12,11 @@ dashkit/
 │   │   ├── layout.py              # Main layout component
 │   │   ├── sidebar.py             # Configurable sidebar
 │   │   ├── header.py              # Configurable header
-│   │   ├── table.py               # Attio-style tables
+│   │   ├── table.py               # Dashkit-style tables
 │   │   ├── buttons.py             # Button components
 │   │   ├── logo.py                # Logo components
 │   │   ├── navigation.py          # Navigation components
-│   │   └── attio_table/           # Advanced table components
+│   │   └── dashkit_table/         # Advanced table components
 │   ├── dashkit_demo/              # Demo application
 │   │   ├── __init__.py
 │   │   └── app.py                 # Example usage
@@ -67,7 +67,7 @@ sidebar_config = {
     ],
     "sections": [
         {
-            "title": "Records", 
+            "title": "Records",
             "items": [
                 {"type": "nav_item", "icon": "fas fa-users", "label": "Users"}
             ]
@@ -98,15 +98,18 @@ app.layout = create_layout(
 ## Available Components
 
 ### Layout Components
+
 - `create_layout()` - Main application layout
 - `create_sidebar()` - Configurable sidebar with navigation
 - `create_header()` - Two-tier header with search and actions
 
-### Table Components  
+### Table Components
+
 - `Table()` - Modern table using Handsontable
 - `TableWithStats()` - Table with count header
 
 ### UI Components
+
 - `PrimaryButton()` - Primary action buttons
 - `SecondaryButton()` - Secondary action buttons
 
@@ -134,7 +137,7 @@ uv run task setup
 # Build only the table component
 uv run task build-table
 
-# Install only the table component  
+# Install only the table component
 uv run task install-table
 
 # Run linting and formatting
@@ -157,7 +160,7 @@ uv run task dev
 ruff check .
 ruff format .
 
-# Run type checking  
+# Run type checking
 basedpyright src
 
 # Build CSS (if modified)
@@ -173,6 +176,7 @@ uv pip install -e .
 ## Configuration Examples
 
 See `src/dashkit_demo/app.py` for complete configuration examples including:
+
 - Sidebar navigation structure
 - Header actions and filters
 - Table data formatting

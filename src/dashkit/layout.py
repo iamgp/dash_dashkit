@@ -22,7 +22,7 @@ def create_layout(
         content = html.Div(
             [
                 html.H2(
-                    "Welcome to Attio-style Dashboard",
+                    "Welcome to Dashkit-style Dashboard",
                     className="text-2xl font-semibold text-[#242529] dark:text-[#EEEFF1] mb-4",
                 ),
                 html.P("This is the main content area.", className="text-gray-600"),

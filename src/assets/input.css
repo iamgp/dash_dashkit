@@ -10,130 +10,130 @@
 @import url("https://cdn.jsdelivr.net/npm/handsontable@16.0.1/styles/ht-theme-horizon.min.css");
 
 @layer base {
-    html {
-        font-family: "Inter", system-ui, sans-serif;
-    }
-    body {
-        @apply bg-white dark:bg-attio-gray-900;
-    }
+  html {
+    font-family: "Inter", system-ui, sans-serif;
+  }
+  body {
+    @apply bg-white dark:bg-dashkit-gray-900;
+  }
 }
 
 @layer components {
-    .sidebar-item {
-        @apply flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-100 hover:text-gray-900 transition-colors duration-150 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white;
-    }
+  .sidebar-item {
+    @apply flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-100 hover:text-gray-900 transition-colors duration-150 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white;
+  }
 
-    .sidebar-item.active {
-        @apply bg-blue-50 text-blue-700 border-r-2 border-blue-600 dark:bg-blue-900/50 dark:text-blue-300 dark:border-blue-500;
-    }
+  .sidebar-item.active {
+    @apply bg-blue-50 text-blue-700 border-r-2 border-blue-600 dark:bg-blue-900/50 dark:text-blue-300 dark:border-blue-500;
+  }
 
-    .nav-button {
-        @apply inline-flex items-center px-3 py-1 border border-gray-200 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-150 dark:bg-[#1B1D21] dark:border-[#2B2C30] dark:text-[#EEEFF1] dark:hover:bg-[#1B1D21];
-    }
+  .nav-button {
+    @apply inline-flex items-center px-3 py-1 border border-gray-200 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-150 dark:bg-[#1B1D21] dark:border-[#2B2C30] dark:text-[#EEEFF1] dark:hover:bg-[#1B1D21];
+  }
 
-    .primary-button {
-        @apply inline-flex items-center px-4 py-1.5 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-colors duration-150 dark:bg-blue-500 dark:hover:bg-blue-600;
-    }
-    
-    /* Typography/Prose styles */
-    .prose {
-        @apply text-gray-700 dark:text-gray-300 max-w-none;
-        line-height: 1.75;
-    }
-    
-    .prose h1 {
-        @apply text-3xl font-bold text-gray-900 dark:text-white mt-8 mb-6 leading-tight;
-    }
-    
-    .prose h2 {
-        @apply text-2xl font-semibold text-gray-900 dark:text-white mt-8 mb-4 leading-tight;
-    }
-    
-    .prose h3 {
-        @apply text-xl font-semibold text-gray-900 dark:text-white mt-6 mb-4 leading-tight;
-    }
-    
-    .prose h4 {
-        @apply text-lg font-semibold text-gray-900 dark:text-white mt-6 mb-3 leading-tight;
-    }
-    
-    .prose p {
-        @apply mb-4 leading-relaxed;
-    }
-    
-    .prose strong {
-        @apply font-semibold text-gray-900 dark:text-white;
-    }
-    
-    .prose em {
-        @apply italic;
-    }
-    
-    .prose ul {
-        @apply list-disc list-inside mb-4 space-y-2;
-    }
-    
-    .prose ol {
-        @apply list-decimal list-inside mb-4 space-y-2;
-    }
-    
-    .prose li {
-        @apply pl-2;
-    }
-    
-    .prose blockquote {
-        @apply border-l-4 border-blue-500 pl-4 py-2 my-6 bg-blue-50 dark:bg-blue-900/20 italic text-blue-900 dark:text-blue-100;
-    }
-    
-    .prose code {
-        @apply bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 px-2 py-1 rounded text-sm font-mono;
-    }
-    
-    .prose pre {
-        @apply bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 p-4 rounded-lg overflow-x-auto mb-6;
-    }
-    
-    .prose pre code {
-        @apply bg-transparent p-0 text-sm;
-    }
-    
-    .prose table {
-        @apply w-full border-collapse border border-gray-300 dark:border-gray-700 mb-6;
-    }
-    
-    .prose th {
-        @apply border border-gray-300 dark:border-gray-700 px-4 py-2 bg-gray-100 dark:bg-gray-800 font-semibold text-left;
-    }
-    
-    .prose td {
-        @apply border border-gray-300 dark:border-gray-700 px-4 py-2;
-    }
-    
-    .prose hr {
-        @apply border-gray-300 dark:border-gray-700 my-8;
-    }
-    
-    .prose a {
-        @apply text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200 underline;
-    }
+  .primary-button {
+    @apply inline-flex items-center px-4 py-1.5 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-colors duration-150 dark:bg-blue-500 dark:hover:bg-blue-600;
+  }
+
+  /* Typography/Prose styles */
+  .prose {
+    @apply text-gray-700 dark:text-gray-300 max-w-none;
+    line-height: 1.75;
+  }
+
+  .prose h1 {
+    @apply text-3xl font-bold text-gray-900 dark:text-white mt-8 mb-6 leading-tight;
+  }
+
+  .prose h2 {
+    @apply text-2xl font-semibold text-gray-900 dark:text-white mt-8 mb-4 leading-tight;
+  }
+
+  .prose h3 {
+    @apply text-xl font-semibold text-gray-900 dark:text-white mt-6 mb-4 leading-tight;
+  }
+
+  .prose h4 {
+    @apply text-lg font-semibold text-gray-900 dark:text-white mt-6 mb-3 leading-tight;
+  }
+
+  .prose p {
+    @apply mb-4 leading-relaxed;
+  }
+
+  .prose strong {
+    @apply font-semibold text-gray-900 dark:text-white;
+  }
+
+  .prose em {
+    @apply italic;
+  }
+
+  .prose ul {
+    @apply list-disc list-inside mb-4 space-y-2;
+  }
+
+  .prose ol {
+    @apply list-decimal list-inside mb-4 space-y-2;
+  }
+
+  .prose li {
+    @apply pl-2;
+  }
+
+  .prose blockquote {
+    @apply border-l-4 border-blue-500 pl-4 py-2 my-6 bg-blue-50 dark:bg-blue-900/20 italic text-blue-900 dark:text-blue-100;
+  }
+
+  .prose code {
+    @apply bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 px-2 py-1 rounded text-sm font-mono;
+  }
+
+  .prose pre {
+    @apply bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 p-4 rounded-lg overflow-x-auto mb-6;
+  }
+
+  .prose pre code {
+    @apply bg-transparent p-0 text-sm;
+  }
+
+  .prose table {
+    @apply w-full border-collapse border border-gray-300 dark:border-gray-700 mb-6;
+  }
+
+  .prose th {
+    @apply border border-gray-300 dark:border-gray-700 px-4 py-2 bg-gray-100 dark:bg-gray-800 font-semibold text-left;
+  }
+
+  .prose td {
+    @apply border border-gray-300 dark:border-gray-700 px-4 py-2;
+  }
+
+  .prose hr {
+    @apply border-gray-300 dark:border-gray-700 my-8;
+  }
+
+  .prose a {
+    @apply text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200 underline;
+  }
 }
 
 .ht-theme-main-dark {
-    --ht-border-color: #27282b !important;
-    --ht-background-color: rgba(0, 0, 0, 0) !important;
-    --ht-wrapper-border-radius: 0px !important;
-    --ht-wrapper-border-width: 0px !important;
-    --ht-wrapper-border-color: rgba(0, 0, 0, 0) !important;
-    --ht-letter-spacing: -0.02em !important;
-    --ht-font-weight: 500 !important;
-    --ht-line-height: 20px !important;
-    --ht-row-header-even-background-color: rgba(0, 0, 0, 0) !important;
-    --ht-cell-editor-background-color: rgba(0, 0, 0, 0) !important;
-    --ht-header-background-color: rgba(0, 0, 0, 0) !important;
+  --ht-border-color: #27282b !important;
+  --ht-background-color: rgba(0, 0, 0, 0) !important;
+  --ht-wrapper-border-radius: 0px !important;
+  --ht-wrapper-border-width: 0px !important;
+  --ht-wrapper-border-color: rgba(0, 0, 0, 0) !important;
+  --ht-letter-spacing: -0.02em !important;
+  --ht-font-weight: 500 !important;
+  --ht-line-height: 20px !important;
+  --ht-row-header-even-background-color: rgba(0, 0, 0, 0) !important;
+  --ht-cell-editor-background-color: rgba(0, 0, 0, 0) !important;
+  --ht-header-background-color: rgba(0, 0, 0, 0) !important;
 }
 
 .ht-theme-main thead,
 .ht-theme-main-dark thead {
-    --ht-cell-vertical-padding: 8px !important;
-    --ht-line-height: 24px !important;
+  --ht-cell-vertical-padding: 8px !important;
+  --ht-line-height: 24px !important;
 }

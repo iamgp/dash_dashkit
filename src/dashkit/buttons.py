@@ -2,7 +2,7 @@ from dash import html
 
 
 def PrimaryButton(children, icon=None, onClick=None, className="", **kwargs):
-    """Primary action button with Attio styling."""
+    """Primary action button with Dashkit styling."""
     button_children = []
 
     if icon:
@@ -31,7 +31,7 @@ def PrimaryButton(children, icon=None, onClick=None, className="", **kwargs):
 def SecondaryButton(
     children, icon=None, dropdown=False, onClick=None, className="", **kwargs
 ):
-    """Secondary/navigation button with Attio styling."""
+    """Secondary/navigation button with Dashkit styling."""
     button_children = []
 
     if icon:

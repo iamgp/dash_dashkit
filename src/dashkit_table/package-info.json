@@ -1,27 +1,13 @@
 {
-  "name": "dashkit_table",
-  "version": "1.0.0",
-  "description": "Modern Handsontable component for Dash with native theming support",
-  "main": "index.ts",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/attio/dashkit_table.git"
-  },
+  "author": "Dashkit Team <team@dashkit.dev>",
   "bugs": {
-    "url": "https://github.com/attio/dashkit_table/issues"
-  },
-  "homepage": "https://github.com/attio/dashkit_table",
-  "scripts": {
-    "build:js::dev": "webpack --mode development",
-    "build:js": "webpack",
-    "build:backends": "dash-generate-components ./src/ts/components dashkit_table -p package-info.json --r-prefix '' --jl-prefix '' --ignore \\.test\\.",
-    "build": "npm run build:js && npm run build:backends",
-    "watch": "npm run build:js::dev -- --watch"
+    "url": "https://github.com/iamgp/dashkit/dashkit_table/issues"
   },
   "dependencies": {
     "@handsontable/react": "^16.0.1",
     "handsontable": "^16.0.1"
   },
+  "description": "DashkitTable: a modern Handsontable component for Dash with native theming and ergonomic defaults",
   "devDependencies": {
     "@types/react": "^18.2.0",
     "css-loader": "^6.11.0",
@@ -36,10 +22,24 @@
     "webpack": "^5.92.0",
     "webpack-cli": "^5.1.0"
   },
+  "homepage": "https://github.com/iamgp/dashkit/dashkit_table",
+  "license": "MIT",
+  "main": "index.ts",
+  "name": "dashkit_table",
   "peerDependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
-  "author": "Dashkit Team <team@dashkit.dev>",
-  "license": "MIT"
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/iamgp/dashkit/dashkit_table.git"
+  },
+  "scripts": {
+    "build": "npm run build:js && npm run build:backends",
+    "build:backends": "dash-generate-components ./src/ts/components dashkit_table -p package-info.json --r-prefix '' --jl-prefix '' --ignore \\.test\\.",
+    "build:js": "webpack",
+    "build:js::dev": "webpack --mode development",
+    "watch": "npm run build:js::dev -- --watch"
+  },
+  "version": "1.0.0"
 }

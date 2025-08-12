@@ -1,58 +1,58 @@
-"""Demo-specific utility functions for the Attio components showcase."""
+"""Demo-specific utility functions for the Dashkit components showcase."""
 
 from typing import Any
 
 
 def create_company_columns() -> list[dict[str, Any]]:
-    """Create column configuration for the companies table matching Attio style."""
+    """Create column configuration for the companies table matching Dashkit style."""
     return [
         {
             "data": "company_name",
             "title": "Company",
             "type": "text",
-            "className": "attio-cell attio-primary-cell",
+            "className": "dashkit-cell dashkit-primary-cell",
             "width": 200,
         },
         {
             "data": "categories",
             "title": "Categories",
             "type": "text",
-            "className": "attio-cell attio-categories-cell",
+            "className": "dashkit-cell dashkit-categories-cell",
             "width": 300,
         },
         {
             "data": "linkedin",
             "title": "LinkedIn",
             "type": "text",
-            "className": "attio-cell attio-link-cell",
+            "className": "dashkit-cell dashkit-link-cell",
             "width": 120,
         },
         {
             "data": "last_interaction",
             "title": "Last interaction",
             "type": "text",
-            "className": "attio-cell attio-center-cell",
+            "className": "dashkit-cell dashkit-center-cell",
             "width": 150,
         },
         {
             "data": "connection_strength",
             "title": "Connection strength",
             "type": "text",
-            "className": "attio-cell attio-center-cell",
+            "className": "dashkit-cell dashkit-center-cell",
             "width": 150,
         },
         {
             "data": "twitter_followers",
             "title": "Twitter followers",
             "type": "numeric",
-            "className": "attio-cell attio-right-cell",
+            "className": "dashkit-cell dashkit-right-cell",
             "width": 150,
         },
         {
             "data": "twitter_handle",
             "title": "Twitter",
             "type": "text",
-            "className": "attio-cell attio-link-cell",
+            "className": "dashkit-cell dashkit-link-cell",
             "width": 120,
         },
     ]

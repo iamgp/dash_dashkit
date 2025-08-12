@@ -2,4 +2,3 @@
 
 export(DashkitTable)
 export(dashkitTable)
-export(attioTable)

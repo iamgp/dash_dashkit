@@ -1,1 +1,1 @@
-"""Demo application showcasing Dash Attio Components."""
+"""Demo application showcasing Dashkit Components."""

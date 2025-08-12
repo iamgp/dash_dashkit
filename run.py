@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Simple runner script for the Attio-style Dash app."""
+"""Simple runner script for the Dashkit-style Dash app."""
 
 import subprocess
 import sys

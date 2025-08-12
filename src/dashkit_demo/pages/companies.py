@@ -42,7 +42,7 @@ companies_data = [
         "twitter_handle": "Airbnb",
     },
     {
-        "name": "Attio",
+        "name": "Dashkit",
         "icon": "⚡",
         "categories": [
             {"name": "Automation", "color": "#FEE2E2"},
@@ -50,11 +50,11 @@ companies_data = [
             {"name": "Enterprise", "color": "#E0E7FF"},
             {"name": "Information", "color": "#FEF3C7"},
         ],
-        "linkedin": "attio",
+        "linkedin": "dashkit",
         "last_interaction": "No communication",
         "connection_strength": "",
         "twitter_followers": 1340,
-        "twitter_handle": "attio",
+        "twitter_handle": "dashkit",
     },
     {
         "name": "Google",
