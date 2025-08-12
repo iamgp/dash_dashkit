@@ -1,11 +1,7 @@
 from typing import Any
 
 from dash import html
-
-try:
-    from dashkit_table import DashkitTable as CustomAttioTable
-except ImportError:  # Fallback if export name differs
-    from dashkit_table.AttioTable import AttioTable as CustomAttioTable
+from dashkit_table import DashkitTable as CustomDashkitTable
 
 
 def Table(
@@ -56,7 +52,7 @@ def Table(
         processed_columns = [{**col, "data": idx} for idx, col in enumerate(columns)]
 
     # Using our custom table component with latest Handsontable v16.0.1
-    return CustomAttioTable(
+    return CustomDashkitTable(
         id=id,
         data=processed_data,
         columns=processed_columns,
