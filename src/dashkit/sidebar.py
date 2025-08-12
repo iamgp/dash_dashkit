@@ -1,6 +1,6 @@
 from typing import Any
 
-from dash import Input, Output, clientside_callback, html
+from dash import Input, Output, clientside_callback, html, page_registry
 
 from .logo import LogoSection
 from .navigation import SidebarNavigation
@@ -54,77 +54,166 @@ def _register_section_callback(section_id: str):
 def create_sidebar(
     brand_name: str,
     brand_initial: str,
-    nav_items: list[dict[str, Any]],
-    sections: list[dict[str, Any]],
+    nav_items: list[dict[str, Any]] | None = None,
+    sections: list[dict[str, Any]] | None = None,
+    use_pages: bool = True,
 ) -> html.Div:
     """Create a reusable sidebar component.
+
+    If ``use_pages`` is True, the sidebar is built dynamically from Dash's
+    page registry. You can control sidebar behaviour per page by passing
+    extra keyword arguments to ``dash.register_page``. Supported keys:
+
+    - ``sidebar_section``: str section name (default: "Main")
+    - ``sidebar_visible``: bool include page in sidebar (default: True)
+    - ``sidebar_expanded``: bool expand the section by default (default: True)
+    - ``sidebar_order``: int order within section (fallback to ``order`` or title)
+    - ``icon``: string icon class (e.g., "fas fa-home") for the nav item
 
     Args:
         brand_name: The brand/company name for the logo
         brand_initial: Initial letter for the logo
-        nav_items: List of navigation items with icon, label, and optional active state
-        sections: List of sections with title and items
+        nav_items: Explicit navigation items (ignored if ``use_pages`` is True)
+        sections: Explicit sections config (ignored if ``use_pages`` is True)
+        use_pages: When True, generate items from ``dash.page_registry``
     """
+
     # Create navigation instance
     nav = SidebarNavigation()
 
-    # Convert nav_items config to actual nav items
-    rendered_nav_items = []
-    for item in nav_items:
-        rendered_nav_items.append(
-            nav.create_nav_item(
-                item["icon"], item["label"], active=item.get("active", False)
+    # If using pages, generate nav_items/sections from page_registry
+    if use_pages:
+        generated_sections: dict[str, dict[str, Any]] = {}
+
+        for _page in page_registry.values():
+            supplied: dict[str, Any] = _page.get("supplied", {}) or {}
+
+            # visibility
+            if supplied.get("sidebar_visible", True) is False:
+                continue
+
+            section_name: str = supplied.get("sidebar_section", "Main")
+            expanded: bool = supplied.get("sidebar_expanded", True)
+
+            section_bucket = generated_sections.setdefault(
+                section_name,
+                {"expanded": expanded, "items": []},
             )
-        )
 
-    # Convert sections config to actual sections
-    rendered_sections = []
-    for section in sections:
-        section_items = []
-        section_id = f"sidebar-section-{section['title'].lower().replace(' ', '-')}"
+            # Prefer sidebar-specific order; fallback to page order
+            order = supplied.get("sidebar_order", _page.get("order", 0))
 
-        for item in section["items"]:
-            if isinstance(item, str):
-                # Plain text item
-                section_items.append(item)
-            elif item.get("type") == "nav_item":
-                # Navigation item
-                section_items.append(
-                    html.Li(
-                        nav.create_nav_item(
-                            item["icon"],
-                            item["label"],
-                            active=item.get("active", False),
-                        )
+            # Compose item
+            item = {
+                "type": "nav_item",
+                "icon": supplied.get("icon", "fas fa-circle"),
+                "label": _page.get("name") or _page.get("title") or _page.get("path"),
+                "href": _page.get("path"),
+                "order": order,
+            }
+
+            section_bucket["items"].append(item)
+
+        # Sort items within sections and build rendered structures
+        nav_items = []  # type: ignore[assignment]
+        rendered_sections = []
+        for section_title, meta in sorted(
+            generated_sections.items(), key=lambda kv: kv[0] or ""
+        ):
+
+            def _safe_order(value: Any) -> int:
+                try:
+                    return int(value)
+                except Exception:
+                    return 0
+
+            items_sorted = sorted(
+                meta["items"],
+                key=lambda it: (_safe_order(it.get("order")), str(it.get("label", ""))),
+            )
+
+            section_items = [
+                html.Li(
+                    nav.create_nav_item(
+                        it["icon"], it["label"], href=it.get("href", "#"), active=False
                     )
                 )
-            elif item.get("type") == "button":
-                # Button item
-                section_items.append(
-                    html.Button(
-                        [html.I(className=f"{item['icon']} mr-2"), item["label"]],
-                        className="text-sm text-blue-600 hover:text-blue-700 px-3 py-2 w-full text-left",
-                    )
-                )
+                for it in items_sorted
+            ]
 
-        rendered_sections.append(
-            nav.create_section(
-                section["title"],
+            section_id = f"sidebar-section-{section_title.lower().replace(' ', '-')}"
+            rendered_section = nav.create_section(
+                section_title,
                 section_items,
-                expanded=section.get("expanded", False),
+                expanded=meta.get("expanded", True),
                 section_id=section_id,
             )
-        )
+            rendered_sections.append(rendered_section)
+            _register_section_callback(section_id)
 
-        # Register clientside callback for this section
-        _register_section_callback(section_id)
+    else:
+        # Manual mode: Convert provided configs
+        nav_items = nav_items or []
+        sections = sections or []
+
+        # Convert nav_items config to actual nav items
+        rendered_nav_items = []
+        for item in nav_items:
+            rendered_nav_items.append(
+                nav.create_nav_item(
+                    item["icon"], item["label"], active=item.get("active", False)
+                )
+            )
+
+        # Convert sections config to actual sections
+        rendered_sections = []
+        for section in sections:
+            section_items = []
+            section_id = f"sidebar-section-{section['title'].lower().replace(' ', '-')}"
+
+            for item in section["items"]:
+                if isinstance(item, str):
+                    section_items.append(item)
+                elif item.get("type") == "nav_item":
+                    section_items.append(
+                        html.Li(
+                            nav.create_nav_item(
+                                item["icon"],
+                                item["label"],
+                                active=item.get("active", False),
+                            )
+                        )
+                    )
+                elif item.get("type") == "button":
+                    section_items.append(
+                        html.Button(
+                            [html.I(className=f"{item['icon']} mr-2"), item["label"]],
+                            className="text-sm text-blue-600 hover:text-blue-700 px-3 py-2 w-full text-left",
+                        )
+                    )
+
+            rendered_sections.append(
+                nav.create_section(
+                    section["title"],
+                    section_items,
+                    expanded=section.get("expanded", False),
+                    section_id=section_id,
+                )
+            )
+            _register_section_callback(section_id)
+
+        # In manual mode, also expose the items list
+        rendered_nav_items = [
+            html.Li(it, className="mb-1") for it in rendered_nav_items
+        ]
 
     return html.Div(
         [
-            # Logo section
             LogoSection(brand_name, brand_initial),
-            # Navigation
-            nav.render(rendered_nav_items, rendered_sections),
+            # Navigation (in pages mode, nav items go into sections; we still render any standalone items if present)
+            SidebarNavigation().render(
+                [] if use_pages else rendered_nav_items, rendered_sections
+            ),
         ],
         className="bg-[#FBFBFB] dark:bg-[#16181C] w-64 h-screen border-r border-[#EEEFF1] dark:border-[#27282B] flex flex-col shrink-0",
     )

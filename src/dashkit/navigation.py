@@ -95,15 +95,18 @@ class SidebarNavigation(BaseNavigationBar):
         for item in nav_items:
             all_items.append(html.Li(item, className="mb-1"))
 
-        # Add separator
-        if sections:
-            all_items.append(
-                html.Li(html.Hr(className="my-3 border-gray-200 dark:border-[#27282B]"))
-            )
-
         # Add sections
         if sections:
-            for section in sections:
+            for idx, section in enumerate(sections):
+                # Add separator only before subsequent sections (not before the first)
+                if idx > 0:
+                    all_items.append(
+                        html.Li(
+                            html.Hr(
+                                className="my-3 border-gray-200 dark:border-[#27282B]"
+                            )
+                        )
+                    )
                 all_items.append(section)
 
         return html.Nav(
