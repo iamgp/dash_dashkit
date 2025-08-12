@@ -1,5 +1,5 @@
 {
-  "author": "Dashkit Team",
+  "author": "Dashkit Team <team@dashkit.dev>",
   "dependencies": {
     "@handsontable/react": "^16.0.1",
     "handsontable": "^16.0.1"

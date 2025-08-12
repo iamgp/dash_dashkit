@@ -1,1 +1,1 @@
-export { default as AttioTable } from './AttioTable';
+export { default as DashkitTable } from './DashkitTable';

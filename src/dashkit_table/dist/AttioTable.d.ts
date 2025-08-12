@@ -1,7 +1,7 @@
 import React from "react";
 import "handsontable/styles/handsontable.min.css";
-import "handsontable/styles/ht-theme-main.min.css";
 import "handsontable/styles/ht-theme-horizon.min.css";
+import "handsontable/styles/ht-theme-main.min.css";
 export interface AttioTableProps {
     /**
      * The ID used to identify this component in Dash callbacks

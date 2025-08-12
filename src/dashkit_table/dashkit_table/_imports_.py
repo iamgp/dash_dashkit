@@ -1,5 +1,5 @@
-from .AttioTable import AttioTable
+from .DashkitTable import DashkitTable
 
 __all__ = [
-    "AttioTable"
+    "DashkitTable"
 ]

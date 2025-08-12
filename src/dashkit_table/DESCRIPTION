@@ -1,0 +1,13 @@
+Package: dashkitTable
+Title: Modern Handsontable component for Dash with native theming support
+Version: 1.0.0
+Description: Modern Handsontable component for Dash with native theming support
+Depends: R (>= 3.0.2)
+Imports: 
+Suggests: 
+License: MIT
+URL: 
+BugReports: 
+Encoding: UTF-8
+LazyData: true
+KeepSource: true

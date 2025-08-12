@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from ._imports_ import *  # noqa: F401,F403
-from .AttioTable import AttioTable  # noqa: F401
+from .DashkitTable import DashkitTable  # noqa: F401
 
 __version__ = "1.0.0"
 
@@ -19,5 +19,5 @@ _js_dist.append(dict(
     namespace="dashkit_table"
 ))
 
-# Set the _js_diswt attribute on the AttioTable class so Dash can find it
-AttioTable._js_dist = _js_dist
+# Set the _js_dist attribute on the DashkitTable class so Dash can find it
+DashkitTable._js_dist = _js_dist
