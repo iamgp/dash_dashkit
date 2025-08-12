@@ -103,7 +103,7 @@ class SidebarNavigation(BaseNavigationBar):
                     all_items.append(
                         html.Li(
                             html.Hr(
-                                className="my-3 border-gray-200 dark:border-[#27282B]"
+                                className="my-3 border-gray-200 dark:border-dashkit-border-dark"
                             )
                         )
                     )
@@ -135,7 +135,7 @@ class TopNavigationBar(BaseNavigationBar):
                 # Right content
                 html.Div(right_content or [], className="flex items-center"),
             ],
-            className=f"bg-white dark:bg-[#1B1D21] border-b border-gray-200 dark:border-[#27282B] px-6 py-4 flex items-center justify-between {self.height}",
+            className=f"bg-white dark:bg-dashkit-panel-dark border-b border-gray-200 dark:border-dashkit-border-dark px-6 py-4 flex items-center justify-between {self.height}",
         )
 
 
@@ -155,5 +155,5 @@ class FilterBar(BaseNavigationBar):
                 # Right content
                 html.Div(right_content or [], className="flex items-center"),
             ],
-            className=f"bg-white dark:bg-[#1B1D21] border-b border-gray-200 dark:border-[#27282B] px-6 py-3 flex items-center justify-between {self.height}",
+            className=f"bg-white dark:bg-dashkit-panel-dark border-b border-gray-200 dark:border-dashkit-border-dark px-6 py-3 flex items-center justify-between {self.height}",
         )

@@ -1,13 +1,25 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-/* Force rebuild */
+@plugin "@tailwindcss/forms";
+
+@custom-variant dark (&:where(.dark, .dark *));
 
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
 @import url("https://cdn.jsdelivr.net/npm/handsontable@16.0.1/styles/handsontable.min.css");
 @import url("https://cdn.jsdelivr.net/npm/handsontable@16.0.1/styles/ht-theme-main.min.css");
 @import url("https://cdn.jsdelivr.net/npm/handsontable@16.0.1/styles/ht-theme-horizon.min.css");
+
+@theme {
+  --color-dashkit-panel-light: #fbfbfb;
+  --color-dashkit-panel-dark: #16181c;
+  --color-dashkit-border-light: #eeeff1;
+  --color-dashkit-border-dark: #27282b;
+  --color-dashkit-text: #242529;
+  --color-dashkit-text-invert: #eeeff1;
+  --color-dashkit-gray-900: #111827;
+  --color-dashkit-surface: #1b1d21;
+  --color-dashkit-border-alt: #2b2c30;
+}
 
 @layer base {
   html {
@@ -28,7 +40,7 @@
   }
 
   .nav-button {
-    @apply inline-flex items-center px-3 py-1 border border-gray-200 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-150 dark:bg-[#1B1D21] dark:border-[#2B2C30] dark:text-[#EEEFF1] dark:hover:bg-[#1B1D21];
+    @apply inline-flex items-center px-3 py-1 border border-gray-200 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-150 dark:bg-dashkit-surface dark:border-dashkit-border-alt dark:text-dashkit-text-invert dark:hover:bg-dashkit-surface;
   }
 
   .primary-button {
@@ -70,11 +82,19 @@
   }
 
   .prose ul {
-    @apply list-disc list-inside mb-4 space-y-2;
+    @apply mb-4 list-disc list-inside;
+  }
+
+  .prose ul > :not(:last-child) {
+    @apply mb-2;
   }
 
   .prose ol {
-    @apply list-decimal list-inside mb-4 space-y-2;
+    @apply mb-4 list-decimal list-inside;
+  }
+
+  .prose ol > :not(:last-child) {
+    @apply mb-2;
   }
 
   .prose li {
@@ -82,42 +102,43 @@
   }
 
   .prose blockquote {
-    @apply border-l-4 border-blue-500 pl-4 py-2 my-6 bg-blue-50 dark:bg-blue-900/20 italic text-blue-900 dark:text-blue-100;
+    @apply my-6 border-l-4 border-blue-500 bg-blue-50 py-2 pl-4 text-blue-900 italic dark:bg-blue-900/20 dark:text-blue-100;
   }
 
   .prose code {
-    @apply bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 px-2 py-1 rounded text-sm font-mono;
+    @apply bg-gray-100 px-2 py-1 font-mono text-sm text-gray-900 rounded dark:bg-gray-800 dark:text-gray-100;
   }
 
   .prose pre {
-    @apply bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 p-4 rounded-lg overflow-x-auto mb-6;
+    @apply mb-6 rounded-lg bg-gray-100 p-4 text-gray-900 overflow-x-auto dark:bg-gray-800 dark:text-gray-100;
   }
 
   .prose pre code {
-    @apply bg-transparent p-0 text-sm;
+    @apply p-0 text-sm bg-transparent;
   }
 
   .prose table {
-    @apply w-full border-collapse border border-gray-300 dark:border-gray-700 mb-6;
+    @apply mb-6 border-collapse border border-gray-300 w-full dark:border-gray-700;
   }
 
   .prose th {
-    @apply border border-gray-300 dark:border-gray-700 px-4 py-2 bg-gray-100 dark:bg-gray-800 font-semibold text-left;
+    @apply border border-gray-300 bg-gray-100 px-4 py-2 text-left font-semibold dark:border-gray-700 dark:bg-gray-800;
   }
 
   .prose td {
-    @apply border border-gray-300 dark:border-gray-700 px-4 py-2;
+    @apply border border-gray-300 px-4 py-2 dark:border-gray-700;
   }
 
   .prose hr {
-    @apply border-gray-300 dark:border-gray-700 my-8;
+    @apply my-8 border-gray-300 dark:border-gray-700;
   }
 
   .prose a {
-    @apply text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200 underline;
+    @apply text-blue-600 underline hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200;
   }
 }
 
+/* Handsontable theme overrides */
 .ht-theme-main-dark {
   --ht-border-color: #27282b !important;
   --ht-background-color: rgba(0, 0, 0, 0) !important;

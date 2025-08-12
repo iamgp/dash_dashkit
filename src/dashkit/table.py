@@ -1,6 +1,7 @@
 from typing import Any
 
 from dash import html
+
 from dashkit_table import DashkitTable as CustomDashkitTable
 
 
@@ -120,7 +121,7 @@ def TableWithStats(
             # Table
             html.Div([table_component], className="overflow-x-auto"),
         ],
-        className="bg-white dark:bg-[#1B1D21] border border-gray-200 dark:border-[#27282B] ",
+        className="bg-white dark:bg-dashkit-panel-dark border border-gray-200 dark:border-dashkit-border-dark ",
     )
 
 

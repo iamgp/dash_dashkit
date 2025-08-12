@@ -23,7 +23,7 @@ def create_layout(
             [
                 html.H2(
                     "Welcome to Dashkit-style Dashboard",
-                    className="text-2xl font-semibold text-[#242529] dark:text-[#EEEFF1] mb-4",
+                    className="text-2xl font-semibold text-dashkit-text dark:text-dashkit-text-invert mb-4",
                 ),
                 html.P("This is the main content area.", className="text-gray-600"),
             ],
@@ -83,11 +83,11 @@ def create_layout(
                                 className="",
                             )
                         ],
-                        className="flex-1 overflow-auto dark:bg-[#1B1D21]",
+                        className="flex-1 overflow-auto dark:bg-dashkit-panel-dark",
                     ),
                 ],
                 className="flex-1 flex flex-col",
             ),
         ],
-        className="flex h-screen bg-white dark:bg-[#1B1D21] font-sans",
+        className="flex h-screen bg-white dark:bg-dashkit-panel-dark font-sans",
     )

@@ -215,5 +215,5 @@ def create_sidebar(
                 [] if use_pages else rendered_nav_items, rendered_sections
             ),
         ],
-        className="bg-[#FBFBFB] dark:bg-[#16181C] w-64 h-screen border-r border-[#EEEFF1] dark:border-[#27282B] flex flex-col shrink-0",
+        className="bg-dashkit-panel-light dark:bg-dashkit-panel-dark w-64 h-screen border-r border-dashkit-border-light dark:border-dashkit-border-dark flex flex-col shrink-0",
     )
