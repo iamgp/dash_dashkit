@@ -3,13 +3,14 @@
   "version": "1.0.0",
   "description": "TailwindCSS build for Dashkit components",
   "scripts": {
-    "build-css": "tailwindcss -i ./src/assets/input.css -o ./src/assets/style.css --minify",
+    "build-css": "tailwindcss -i ./src/assets/input.css -o ./src/assets/style.css --watch",
     "build-css-prod": "tailwindcss -i ./src/assets/input.css -o ./src/assets/style.css --minify",
     "tw": "tailwindcss -i ./src/assets/input.css -o ./src/assets/style.css --minify"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.0.0",
     "@tailwindcss/forms": "^0.5.7",
+    "@tailwindcss/typography": "^0.5.16",
     "tailwindcss": "^4.0.0"
   }
 }

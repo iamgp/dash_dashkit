@@ -71,13 +71,21 @@ reportUnnecessaryIsInstance = false
 dashkit-table = { path = "src/dashkit_table" }
 
 [dependency-groups]
-dev = ["basedpyright>=1.31.0", "ruff>=0.12.7", "taskipy>=1.12.0"]
+dev = [
+    "basedpyright>=1.31.0",
+    "honcho>=2.0.0",
+    "ruff>=0.12.7",
+    "taskipy>=1.12.0",
+]
 
 [tool.taskipy.tasks]
 setup = "cd src/dashkit_table && npm install && npm run build; uv pip install -e . --force-reinstall"
 build-table = "cd src/dashkit_table && npm run build"
 install-table = "cd src/dashkit_table && uv pip install -e ."
+build-css = "npm run tw"
+build-css-watch = "npm run build-css"
 lint = "ruff check src/ && ruff format src/"
 typecheck = "basedpyright src/"
 check = "task lint && task typecheck"
 dev = "python src/dashkit_demo/app.py"
+dev-all = "honcho start"

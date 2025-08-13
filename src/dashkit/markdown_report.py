@@ -24,7 +24,9 @@ def MarkdownReport(
     if title:
         children.append(dcc.Store(id="page_header_config", data={"title": title}))
 
-    children.append(dcc.Markdown(content, className="prose prose-lg max-w-none"))
+    children.append(
+        dcc.Markdown(content, className="prose prose-sm dark:prose-invert max-w-none")
+    )
 
     return html.Div(
         [html.Div(children, className="p-8")],

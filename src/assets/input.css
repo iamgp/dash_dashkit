@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 @plugin "@tailwindcss/forms";
+@plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -47,95 +48,6 @@
     @apply inline-flex items-center px-4 py-1.5 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-colors duration-150 dark:bg-blue-500 dark:hover:bg-blue-600;
   }
 
-  /* Typography/Prose styles */
-  .prose {
-    @apply text-gray-700 dark:text-gray-300 max-w-none;
-    line-height: 1.75;
-  }
-
-  .prose h1 {
-    @apply text-3xl font-bold text-gray-900 dark:text-white mt-8 mb-6 leading-tight;
-  }
-
-  .prose h2 {
-    @apply text-2xl font-semibold text-gray-900 dark:text-white mt-8 mb-4 leading-tight;
-  }
-
-  .prose h3 {
-    @apply text-xl font-semibold text-gray-900 dark:text-white mt-6 mb-4 leading-tight;
-  }
-
-  .prose h4 {
-    @apply text-lg font-semibold text-gray-900 dark:text-white mt-6 mb-3 leading-tight;
-  }
-
-  .prose p {
-    @apply mb-4 leading-relaxed;
-  }
-
-  .prose strong {
-    @apply font-semibold text-gray-900 dark:text-white;
-  }
-
-  .prose em {
-    @apply italic;
-  }
-
-  .prose ul {
-    @apply mb-4 list-disc list-inside;
-  }
-
-  .prose ul > :not(:last-child) {
-    @apply mb-2;
-  }
-
-  .prose ol {
-    @apply mb-4 list-decimal list-inside;
-  }
-
-  .prose ol > :not(:last-child) {
-    @apply mb-2;
-  }
-
-  .prose li {
-    @apply pl-2;
-  }
-
-  .prose blockquote {
-    @apply my-6 border-l-4 border-blue-500 bg-blue-50 py-2 pl-4 text-blue-900 italic dark:bg-blue-900/20 dark:text-blue-100;
-  }
-
-  .prose code {
-    @apply bg-gray-100 px-2 py-1 font-mono text-sm text-gray-900 rounded dark:bg-gray-800 dark:text-gray-100;
-  }
-
-  .prose pre {
-    @apply mb-6 rounded-lg bg-gray-100 p-4 text-gray-900 overflow-x-auto dark:bg-gray-800 dark:text-gray-100;
-  }
-
-  .prose pre code {
-    @apply p-0 text-sm bg-transparent;
-  }
-
-  .prose table {
-    @apply mb-6 border-collapse border border-gray-300 w-full dark:border-gray-700;
-  }
-
-  .prose th {
-    @apply border border-gray-300 bg-gray-100 px-4 py-2 text-left font-semibold dark:border-gray-700 dark:bg-gray-800;
-  }
-
-  .prose td {
-    @apply border border-gray-300 px-4 py-2 dark:border-gray-700;
-  }
-
-  .prose hr {
-    @apply my-8 border-gray-300 dark:border-gray-700;
-  }
-
-  .prose a {
-    @apply text-blue-600 underline hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200;
-  }
 }
 
 /* Handsontable theme overrides */
