@@ -5,7 +5,7 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
 @import url("https://cdn.jsdelivr.net/npm/handsontable@16.0.1/styles/handsontable.min.css");
 @import url("https://cdn.jsdelivr.net/npm/handsontable@16.0.1/styles/ht-theme-main.min.css");
 @import url("https://cdn.jsdelivr.net/npm/handsontable@16.0.1/styles/ht-theme-horizon.min.css");
@@ -20,11 +20,16 @@
   --color-dashkit-gray-900: #111827;
   --color-dashkit-surface: #1b1d21;
   --color-dashkit-border-alt: #2b2c30;
+  --color-dashkit-hover-light: #eeeff1;
+  --color-dashkit-hover-dark: #242529;
 }
 
 @layer base {
   html {
     font-family: "Inter", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizelegibility;
   }
   body {
     @apply bg-white dark:bg-dashkit-gray-900;
@@ -33,11 +38,28 @@
 
 @layer components {
   .sidebar-item {
-    @apply flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-100 hover:text-gray-900 transition-colors duration-150 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white;
+    @apply flex items-center px-2 py-1 text-sm font-medium rounded-lg hover:bg-dashkit-hover-light transition-colors duration-150 dark:hover:bg-dashkit-hover-dark text-dashkit-text dark:text-dashkit-text-invert;
+    font-family: Inter;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: -0.28px;
+    line-height: 20px;
+    word-break: break-word;
+    text-rendering: optimizelegibility;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    margin-bottom: 1px;
   }
 
   .sidebar-item.active {
-    @apply bg-blue-50 text-blue-700 border-r-2 border-blue-600 dark:bg-blue-900/50 dark:text-blue-300 dark:border-blue-500;
+    @apply bg-dashkit-hover-light dark:bg-dashkit-hover-dark;
+  }
+
+  .active {
+    @apply bg-dashkit-hover-light dark:bg-dashkit-hover-dark;
   }
 
   .nav-button {
@@ -46,6 +68,10 @@
 
   .primary-button {
     @apply inline-flex items-center px-4 py-1.5 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-colors duration-150 dark:bg-blue-500 dark:hover:bg-blue-600;
+  }
+
+  .sidebar-hover {
+    @apply hover:bg-dashkit-hover-light dark:hover:bg-dashkit-hover-dark;
   }
 
 }

@@ -1,6 +1,13 @@
 from typing import Any
 
-from dash import Input, Output, clientside_callback, html, page_registry
+from dash import (
+    Input,
+    Output,
+    clientside_callback,
+    dcc,
+    html,
+    page_registry,
+)
 
 from .logo import LogoSection
 from .navigation import SidebarNavigation
@@ -51,12 +58,50 @@ def _register_section_callback(section_id: str):
         pass
 
 
+def _register_active_state_callback(url_id: str = "url"):
+    """Register callback to handle active states based on current URL."""
+    try:
+        clientside_callback(
+            """
+            function(pathname) {
+                console.log('Pathname changed to:', pathname);
+
+                // Remove active class from all sidebar items
+                document.querySelectorAll('.sidebar-item').forEach(function(item) {
+                    item.classList.remove('active');
+                    console.log('Removed active from:', item.getAttribute('href'));
+                });
+
+                // Find and activate the current page item
+                document.querySelectorAll('.sidebar-item').forEach(function(item) {
+                    var href = item.getAttribute('href');
+                    console.log('Checking href:', href, 'against pathname:', pathname);
+                    if (href === pathname) {
+                        item.classList.add('active');
+                        console.log('Added active to:', href);
+                    }
+                });
+
+                return window.dash_clientside.no_update;
+            }
+            """,
+            Output(url_id, "pathname", allow_duplicate=True),
+            Input(url_id, "pathname"),
+            prevent_initial_call="initial_duplicate",
+        )
+    except Exception as e:
+        print(f"Error registering active state callback: {e}")
+        # Callback might already be registered, skip silently
+        pass
+
+
 def create_sidebar(
     brand_name: str,
     brand_initial: str,
     nav_items: list[dict[str, Any]] | None = None,
     sections: list[dict[str, Any]] | None = None,
     use_pages: bool = True,
+    include_location: bool = False,
 ) -> html.Div:
     """Create a reusable sidebar component.
 
@@ -76,6 +121,7 @@ def create_sidebar(
         nav_items: Explicit navigation items (ignored if ``use_pages`` is True)
         sections: Explicit sections config (ignored if ``use_pages`` is True)
         use_pages: When True, generate items from ``dash.page_registry``
+        include_location: When True, include dcc.Location component (set to False if you have one already)
     """
 
     # Create navigation instance
@@ -136,7 +182,8 @@ def create_sidebar(
                 html.Li(
                     nav.create_nav_item(
                         it["icon"], it["label"], href=it.get("href", "#"), active=False
-                    )
+                    ),
+                    id=f"nav-item-{it.get('href', '#').replace('/', '-').replace('#', 'hash')}",
                 )
                 for it in items_sorted
             ]
@@ -161,7 +208,10 @@ def create_sidebar(
         for item in nav_items:
             rendered_nav_items.append(
                 nav.create_nav_item(
-                    item["icon"], item["label"], active=item.get("active", False)
+                    item["icon"],
+                    item["label"],
+                    active=False,
+                    href=item.get("href", "#"),
                 )
             )
 
@@ -180,8 +230,10 @@ def create_sidebar(
                             nav.create_nav_item(
                                 item["icon"],
                                 item["label"],
-                                active=item.get("active", False),
-                            )
+                                active=False,
+                                href=item.get("href", "#"),
+                            ),
+                            id=f"nav-item-{item.get('href', '#').replace('/', '-').replace('#', 'hash')}",
                         )
                     )
                 elif item.get("type") == "button":
@@ -204,10 +256,10 @@ def create_sidebar(
 
         # In manual mode, also expose the items list
         rendered_nav_items = [
-            html.Li(it, className="mb-1") for it in rendered_nav_items
+            html.Li(it, className="mb-px") for it in rendered_nav_items
         ]
 
-    return html.Div(
+    sidebar_content = html.Div(
         [
             LogoSection(brand_name, brand_initial),
             # Navigation (in pages mode, nav items go into sections; we still render any standalone items if present)
@@ -217,3 +269,12 @@ def create_sidebar(
         ],
         className="bg-dashkit-panel-light dark:bg-dashkit-panel-dark w-64 h-screen border-r border-dashkit-border-light dark:border-dashkit-border-dark flex flex-col shrink-0",
     )
+
+    # Register callback to handle active states
+    if include_location:
+        url_id = "sidebar-url"
+        _register_active_state_callback(url_id)
+        return html.Div([dcc.Location(id=url_id, refresh=False), sidebar_content])
+    else:
+        _register_active_state_callback("url")
+        return sidebar_content

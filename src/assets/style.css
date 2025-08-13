@@ -7,12 +7,9 @@
       "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
       "Courier New", monospace;
-    --color-blue-50: oklch(97% 0.014 254.604);
-    --color-blue-300: oklch(80.9% 0.105 251.813);
     --color-blue-500: oklch(62.3% 0.214 259.815);
     --color-blue-600: oklch(54.6% 0.245 262.881);
     --color-blue-700: oklch(48.8% 0.243 264.376);
-    --color-blue-900: oklch(37.9% 0.146 265.522);
     --color-gray-50: oklch(98.5% 0.002 247.839);
     --color-gray-100: oklch(96.7% 0.003 264.542);
     --color-gray-200: oklch(92.8% 0.006 264.531);
@@ -21,7 +18,6 @@
     --color-gray-500: oklch(55.1% 0.027 264.364);
     --color-gray-600: oklch(44.6% 0.03 256.802);
     --color-gray-700: oklch(37.3% 0.034 259.733);
-    --color-gray-900: oklch(21% 0.034 264.665);
     --color-white: #fff;
     --spacing: 0.25rem;
     --text-xs: 0.75rem;
@@ -47,6 +43,8 @@
     --color-dashkit-gray-900: #111827;
     --color-dashkit-surface: #1b1d21;
     --color-dashkit-border-alt: #2b2c30;
+    --color-dashkit-hover-light: #eeeff1;
+    --color-dashkit-hover-dark: #242529;
   }
 }
 @layer base {
@@ -869,14 +867,14 @@
   .mr-2 {
     margin-right: calc(var(--spacing) * 2);
   }
-  .mb-1 {
-    margin-bottom: calc(var(--spacing) * 1);
-  }
   .mb-2 {
     margin-bottom: calc(var(--spacing) * 2);
   }
   .mb-4 {
     margin-bottom: calc(var(--spacing) * 4);
+  }
+  .mb-px {
+    margin-bottom: 1px;
   }
   .ml-2 {
     margin-left: calc(var(--spacing) * 2);
@@ -969,6 +967,13 @@
       margin-block-end: calc(calc(var(--spacing) * 1) * calc(1 - var(--tw-space-y-reverse)));
     }
   }
+  .space-y-px {
+    :where(& > :not(:last-child)) {
+      --tw-space-y-reverse: 0;
+      margin-block-start: calc(1px * var(--tw-space-y-reverse));
+      margin-block-end: calc(1px * calc(1 - var(--tw-space-y-reverse)));
+    }
+  }
   .space-x-2 {
     :where(& > :not(:last-child)) {
       --tw-space-x-reverse: 0;
@@ -1029,6 +1034,9 @@
   }
   .p-8 {
     padding: calc(var(--spacing) * 8);
+  }
+  .px-1 {
+    padding-inline: calc(var(--spacing) * 1);
   }
   .px-2 {
     padding-inline: calc(var(--spacing) * 2);
@@ -1216,13 +1224,16 @@
     }
   }
 }
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
 @import url("https://cdn.jsdelivr.net/npm/handsontable@16.0.1/styles/handsontable.min.css");
 @import url("https://cdn.jsdelivr.net/npm/handsontable@16.0.1/styles/ht-theme-main.min.css");
 @import url("https://cdn.jsdelivr.net/npm/handsontable@16.0.1/styles/ht-theme-horizon.min.css");
 @layer base {
   html {
     font-family: "Inter", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizelegibility;
   }
   body {
     background-color: var(--color-white);
@@ -1236,13 +1247,13 @@
     display: flex;
     align-items: center;
     border-radius: var(--radius-lg);
-    padding-inline: calc(var(--spacing) * 3);
-    padding-block: calc(var(--spacing) * 2);
+    padding-inline: calc(var(--spacing) * 2);
+    padding-block: calc(var(--spacing) * 1);
     font-size: var(--text-sm);
     line-height: var(--tw-leading, var(--text-sm--line-height));
     --tw-font-weight: var(--font-weight-medium);
     font-weight: var(--font-weight-medium);
-    color: var(--color-gray-600);
+    color: var(--color-dashkit-text);
     transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
     transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
     transition-duration: var(--tw-duration, var(--default-transition-duration));
@@ -1250,49 +1261,43 @@
     transition-duration: 150ms;
     &:hover {
       @media (hover: hover) {
-        background-color: var(--color-gray-100);
-      }
-    }
-    &:hover {
-      @media (hover: hover) {
-        color: var(--color-gray-900);
+        background-color: var(--color-dashkit-hover-light);
       }
     }
     &:where(.dark, .dark *) {
-      color: var(--color-gray-300);
+      color: var(--color-dashkit-text-invert);
     }
     &:where(.dark, .dark *) {
       &:hover {
         @media (hover: hover) {
-          background-color: var(--color-gray-700);
+          background-color: var(--color-dashkit-hover-dark);
         }
       }
     }
-    &:where(.dark, .dark *) {
-      &:hover {
-        @media (hover: hover) {
-          color: var(--color-white);
-        }
-      }
-    }
+    font-family: Inter;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: -0.28px;
+    line-height: 20px;
+    word-break: break-word;
+    text-rendering: optimizelegibility;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    margin-bottom: 1px;
   }
   .sidebar-item.active {
-    border-right-style: var(--tw-border-style);
-    border-right-width: 2px;
-    border-color: var(--color-blue-600);
-    background-color: var(--color-blue-50);
-    color: var(--color-blue-700);
+    background-color: var(--color-dashkit-hover-light);
     &:where(.dark, .dark *) {
-      border-color: var(--color-blue-500);
+      background-color: var(--color-dashkit-hover-dark);
     }
+  }
+  .active {
+    background-color: var(--color-dashkit-hover-light);
     &:where(.dark, .dark *) {
-      background-color: color-mix(in srgb, oklch(37.9% 0.146 265.522) 50%, transparent);
-      @supports (color: color-mix(in lab, red, red)) {
-        background-color: color-mix(in oklab, var(--color-blue-900) 50%, transparent);
-      }
-    }
-    &:where(.dark, .dark *) {
-      color: var(--color-blue-300);
+      background-color: var(--color-dashkit-hover-dark);
     }
   }
   .nav-button {
@@ -1394,6 +1399,20 @@
       &:hover {
         @media (hover: hover) {
           background-color: var(--color-blue-600);
+        }
+      }
+    }
+  }
+  .sidebar-hover {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-dashkit-hover-light);
+      }
+    }
+    &:where(.dark, .dark *) {
+      &:hover {
+        @media (hover: hover) {
+          background-color: var(--color-dashkit-hover-dark);
         }
       }
     }

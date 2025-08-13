@@ -93,7 +93,7 @@ class SidebarNavigation(BaseNavigationBar):
 
         # Add main navigation items
         for item in nav_items:
-            all_items.append(html.Li(item, className="mb-1"))
+            all_items.append(html.Li(item, className="mb-px"))
 
         # Add sections
         if sections:
@@ -110,7 +110,7 @@ class SidebarNavigation(BaseNavigationBar):
                 all_items.append(section)
 
         return html.Nav(
-            [html.Ul(all_items, className="space-y-1 px-2")], className="flex-1 py-4"
+            [html.Ul(all_items, className="space-y-px px-1")], className="flex-1 py-2"
         )
 
 
