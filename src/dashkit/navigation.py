@@ -62,7 +62,7 @@ class SidebarNavigation(BaseNavigationBar):
                 ),
             ],
             id=toggle_id,
-            className="flex items-center px-3 py-2 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg",
+            className="flex items-center pr-3 pl-2 py-2 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg",
         )
 
         # Content container that will be shown/hidden
@@ -72,7 +72,7 @@ class SidebarNavigation(BaseNavigationBar):
                 content_items = [
                     html.Div(
                         item,
-                        className="text-sm text-gray-400 dark:text-gray-500 px-3 py-1",
+                        className="text-sm text-gray-400 dark:text-gray-500 pr-3 pl-1 py-1",
                     )
                     for item in items
                 ]
@@ -80,9 +80,11 @@ class SidebarNavigation(BaseNavigationBar):
                 content_items = items
 
         content = html.Ul(
-            [html.Li(item, className="mb-px") for item in content_items] if content_items else [],
+            [html.Li(item, className="mb-px") for item in content_items]
+            if content_items
+            else [],
             id=content_id,
-            className=f"ml-4 space-y-px {'block' if expanded else 'hidden'}",
+            className=f" space-y-px {'block' if expanded else 'hidden'}",
         )
 
         return html.Li([header, content], className="mb-2", id=section_id)
