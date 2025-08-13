@@ -179,11 +179,8 @@ def create_sidebar(
             )
 
             section_items = [
-                html.Li(
-                    nav.create_nav_item(
-                        it["icon"], it["label"], href=it.get("href", "#"), active=False
-                    ),
-                    id=f"nav-item-{it.get('href', '#').replace('/', '-').replace('#', 'hash')}",
+                nav.create_nav_item(
+                    it["icon"], it["label"], href=it.get("href", "#"), active=False
                 )
                 for it in items_sorted
             ]
@@ -226,14 +223,11 @@ def create_sidebar(
                     section_items.append(item)
                 elif item.get("type") == "nav_item":
                     section_items.append(
-                        html.Li(
-                            nav.create_nav_item(
-                                item["icon"],
-                                item["label"],
-                                active=False,
-                                href=item.get("href", "#"),
-                            ),
-                            id=f"nav-item-{item.get('href', '#').replace('/', '-').replace('#', 'hash')}",
+                        nav.create_nav_item(
+                            item["icon"],
+                            item["label"],
+                            active=False,
+                            href=item.get("href", "#"),
                         )
                     )
                 elif item.get("type") == "button":

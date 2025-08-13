@@ -79,10 +79,10 @@ class SidebarNavigation(BaseNavigationBar):
             else:  # Navigation items
                 content_items = items
 
-        content = html.Div(
-            content_items,
+        content = html.Ul(
+            [html.Li(item, className="mb-px") for item in content_items] if content_items else [],
             id=content_id,
-            className=f"ml-4 {'block' if expanded else 'hidden'}",
+            className=f"ml-4 space-y-px {'block' if expanded else 'hidden'}",
         )
 
         return html.Li([header, content], className="mb-2", id=section_id)
