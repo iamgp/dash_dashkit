@@ -1,5 +1,6 @@
 from typing import Any
 
+import dash_iconify
 from dash import (
     Input,
     Output,
@@ -38,11 +39,13 @@ def _register_section_callback(section_id: str):
                     if (isHidden) {
                         content.classList.remove('hidden');
                         content.classList.add('block');
-                        chevron.className = chevron.className.replace('fa-chevron-right', 'fa-chevron-down');
+                        // Update iconify icon
+                        chevron.setAttribute('icon', 'mynaui:chevron-down');
                     } else {
                         content.classList.remove('block');
                         content.classList.add('hidden');
-                        chevron.className = chevron.className.replace('fa-chevron-down', 'fa-chevron-right');
+                        // Update iconify icon
+                        chevron.setAttribute('icon', 'mynaui:chevron-right');
                     }
                 }
 
@@ -152,7 +155,7 @@ def create_sidebar(
             # Compose item
             item = {
                 "type": "nav_item",
-                "icon": supplied.get("icon", "fas fa-circle"),
+                "icon": supplied.get("icon", _page.get("icon", "circle")),
                 "label": _page.get("name") or _page.get("title") or _page.get("path"),
                 "href": _page.get("path"),
                 "order": order,
@@ -233,7 +236,14 @@ def create_sidebar(
                 elif item.get("type") == "button":
                     section_items.append(
                         html.Button(
-                            [html.I(className=f"{item['icon']} mr-2"), item["label"]],
+                            [
+                                dash_iconify.DashIconify(
+                                    icon=f"mynaui:{item['icon']}",
+                                    width=16,
+                                    className="mr-2",
+                                ),
+                                item["label"],
+                            ],
                             className="text-sm text-blue-600 hover:text-blue-700 px-3 py-2 w-full text-left",
                         )
                     )

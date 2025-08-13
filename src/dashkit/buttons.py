@@ -1,3 +1,4 @@
+import dash_iconify
 from dash import html
 
 
@@ -6,7 +7,11 @@ def PrimaryButton(children, icon=None, onClick=None, className="", **kwargs):
     button_children = []
 
     if icon:
-        button_children.append(html.I(className=f"{icon} mr-2"))
+        # Check if icon already has a prefix (contains ':')
+        icon_name = icon if ":" in icon else f"mynaui:{icon}"
+        button_children.append(
+            dash_iconify.DashIconify(icon=icon_name, width=16, className="mr-2")
+        )
 
     if isinstance(children, str):
         button_children.append(children)
@@ -35,7 +40,11 @@ def SecondaryButton(
     button_children = []
 
     if icon:
-        button_children.append(html.I(className=f"{icon} mr-2"))
+        # Check if icon already has a prefix (contains ':')
+        icon_name = icon if ":" in icon else f"mynaui:{icon}"
+        button_children.append(
+            dash_iconify.DashIconify(icon=icon_name, width=16, className="mr-2")
+        )
 
     if isinstance(children, str):
         button_children.append(children)
@@ -43,7 +52,11 @@ def SecondaryButton(
         button_children.extend(children if isinstance(children, list) else [children])
 
     if dropdown:
-        button_children.append(html.I(className="fas fa-chevron-down ml-2"))
+        button_children.append(
+            dash_iconify.DashIconify(
+                icon="mynaui:chevron-down", width=16, className="ml-2"
+            )
+        )
 
     # Combine base class with any additional classes
     combined_className = f"nav-button {className}".strip()
@@ -62,7 +75,11 @@ def SecondaryButton(
 
 def IconButton(icon, children=None, active=False, onClick=None, className="", **kwargs):
     """Icon-based button for navigation items."""
-    button_children = [html.I(className=f"{icon} mr-2")]
+    # Check if icon already has a prefix (contains ':')
+    icon_name = icon if ":" in icon else f"mynaui:{icon}"
+    button_children = [
+        dash_iconify.DashIconify(icon=icon_name, width=16, className="mr-2")
+    ]
 
     if children:
         if isinstance(children, str):

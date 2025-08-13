@@ -33,20 +33,20 @@ sidebar_config = {
     "brand_name": "Rhinoe",
     "brand_initial": "R",
     "nav_items": [
-        {"icon": "fas fa-bolt", "label": "Quick actions"},
-        {"icon": "fas fa-bell", "label": "Notifications"},
-        {"icon": "fas fa-tasks", "label": "Tasks"},
-        {"icon": "fas fa-sticky-note", "label": "Notes"},
-        {"icon": "fas fa-envelope", "label": "Emails"},
-        {"icon": "fas fa-phone", "label": "Calls"},
-        {"icon": "fas fa-chart-bar", "label": "Reports"},
+        {"icon": "bolt", "label": "Quick actions"},
+        {"icon": "bell", "label": "Notifications"},
+        {"icon": "list-check", "label": "Tasks"},
+        {"icon": "note", "label": "Notes"},
+        {"icon": "mail", "label": "Emails"},
+        {"icon": "phone", "label": "Calls"},
+        {"icon": "chart-bar", "label": "Reports"},
     ],
     "sections": [
         {
             "title": "Automations",
             "items": [
-                {"type": "nav_item", "icon": "fas fa-list", "label": "Sequences"},
-                {"type": "nav_item", "icon": "fas fa-cogs", "label": "Workflows"},
+                {"type": "nav_item", "icon": "list", "label": "Sequences"},
+                {"type": "nav_item", "icon": "settings", "label": "Workflows"},
             ],
         },
         {"title": "Favorites", "items": ["No favorites"], "expanded": True},
@@ -55,16 +55,16 @@ sidebar_config = {
             "items": [
                 {
                     "type": "nav_item",
-                    "icon": "fas fa-building",
+                    "icon": "building-2",
                     "label": "Companies",
                     "href": "/",
                 },
-                {"type": "nav_item", "icon": "fas fa-users", "label": "People"},
+                {"type": "nav_item", "icon": "users", "label": "People"},
             ],
         },
         {
             "title": "Lists",
-            "items": [{"type": "button", "icon": "fas fa-plus", "label": "New list"}],
+            "items": [{"type": "button", "icon": "plus", "label": "New list"}],
         },
     ],
 }
@@ -83,6 +83,7 @@ app.layout = html.Div(
                 "actions": [],
                 "filter_items": [],
             },
+            use_pages=True,
         ),
     ]
 )

@@ -1,3 +1,4 @@
+import dash_iconify
 from dash import html
 
 from .buttons import IconButton
@@ -47,14 +48,16 @@ class SidebarNavigation(BaseNavigationBar):
         content_id = f"{section_id}-content"
         toggle_id = f"{section_id}-toggle"
 
-        chevron = "fas fa-chevron-down" if expanded else "fas fa-chevron-right"
+        chevron = "chevron-down" if expanded else "chevron-right"
 
         # Header with toggle functionality
         header = html.Div(
             [
-                html.I(
+                dash_iconify.DashIconify(
+                    icon=f"mynaui:{chevron}",
+                    width=12,
+                    className="mr-2 text-gray-400 transition-transform duration-200",
                     id=chevron_id,
-                    className=f"{chevron} mr-2 text-xs text-gray-400 transition-transform duration-200",
                 ),
                 html.Span(
                     title,

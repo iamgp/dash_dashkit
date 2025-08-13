@@ -8,6 +8,7 @@ dependencies = [
     "dash-bootstrap-components>=1.5.0",
     "plotly>=5.17.0",
     "dashkit-table",
+    "dash-iconify>=0.1.2",
 ]
 
 [project.optional-dependencies]
