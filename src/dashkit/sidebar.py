@@ -61,6 +61,53 @@ def _register_section_callback(section_id: str):
         pass
 
 
+def _register_nav_item_callback(nav_item_id: str):
+    """Register a clientside callback for nav item toggle functionality."""
+    toggle_id = f"{nav_item_id}-toggle"
+    content_id = f"{nav_item_id}-content"
+    chevron_id = f"{nav_item_id}-chevron"
+
+    try:
+        clientside_callback(
+            """
+            function(n_clicks) {
+                if (!n_clicks) return window.dash_clientside.no_update;
+
+                const content = document.getElementById('"""
+            + content_id
+            + """');
+                const chevron = document.getElementById('"""
+            + chevron_id
+            + """');
+
+                if (content && chevron) {
+                    const isHidden = content.classList.contains('hidden');
+
+                    if (isHidden) {
+                        content.classList.remove('hidden');
+                        content.classList.add('block');
+                        // Update iconify icon
+                        chevron.setAttribute('icon', 'mynaui:chevron-down');
+                    } else {
+                        content.classList.remove('block');
+                        content.classList.add('hidden');
+                        // Update iconify icon
+                        chevron.setAttribute('icon', 'mynaui:chevron-right');
+                    }
+                }
+
+                return window.dash_clientside.no_update;
+            }
+            """,
+            Output(toggle_id, "n_clicks", allow_duplicate=True),
+            Input(toggle_id, "n_clicks"),
+            prevent_initial_call=True,
+        )
+    except Exception:
+        # Callback might already be registered, skip silently
+        pass
+
+
 def _register_active_state_callback(url_id: str = "url"):
     """Register callback to handle active states based on current URL."""
     try:
@@ -132,67 +179,128 @@ def create_sidebar(
 
     # If using pages, generate nav_items/sections from page_registry
     if use_pages:
-        generated_sections: dict[str, dict[str, Any]] = {}
-
+        # First pass: collect all pages and organize by section and parent
+        pages_by_section: dict[str, list[dict[str, Any]]] = {}
+        all_pages: dict[str, dict[str, Any]] = {}
+        
         for _page in page_registry.values():
             supplied: dict[str, Any] = _page.get("supplied", {}) or {}
 
             # visibility
-            if supplied.get("sidebar_visible", True) is False:
+            if _page.get("sidebar_visible", True) is False:
                 continue
 
-            section_name: str = supplied.get("sidebar_section", "Main")
-            expanded: bool = supplied.get("sidebar_expanded", True)
+            section_name: str = _page.get("sidebar_section", "Main")
+            parent_name: str | None = _page.get("sidebar_parent")
+            expanded: bool = _page.get("sidebar_expanded", True)
+            order = _page.get("sidebar_order", _page.get("order", 0))
+            is_collapsible = _page.get("sidebar_collapsible", False)
+            
 
-            section_bucket = generated_sections.setdefault(
-                section_name,
-                {"expanded": expanded, "items": []},
-            )
-
-            # Prefer sidebar-specific order; fallback to page order
-            order = supplied.get("sidebar_order", _page.get("order", 0))
-
-            # Compose item
-            item = {
-                "type": "nav_item",
-                "icon": supplied.get("icon", _page.get("icon", "circle")),
+            # Compose page info  
+            icon_value = _page.get("icon", "circle")
+            print(f"Page {_page.get('title')}: icon = '{icon_value}'")
+            page_info = {
+                "type": "nav_item", 
+                "icon": icon_value,
                 "label": _page.get("name") or _page.get("title") or _page.get("path"),
                 "href": _page.get("path"),
                 "order": order,
+                "section": section_name,
+                "parent": parent_name,
+                "expanded": expanded,
+                "collapsible": is_collapsible,
+                "children": []
             }
+            
+            all_pages[page_info["label"]] = page_info
+            
+            # Group by section
+            if section_name not in pages_by_section:
+                pages_by_section[section_name] = []
+            pages_by_section[section_name].append(page_info)
 
-            section_bucket["items"].append(item)
+        # Second pass: build hierarchy by connecting children to parents
+        for section_name, pages in pages_by_section.items():
+            for page in pages:
+                if page["parent"]:
+                    # Find parent in the same section - could be another page or the section itself
+                    parent_found = False
+                    for potential_parent in pages:
+                        if potential_parent["label"] == page["parent"]:
+                            potential_parent["children"].append(page)
+                            potential_parent["collapsible"] = True
+                            parent_found = True
+                            break
+                    
+                    # If parent not found in pages, might be referencing the section itself
+                    if not parent_found and page["parent"] == section_name:
+                        # This page's parent is the section itself, treat as top-level
+                        page["parent"] = None
 
-        # Sort items within sections and build rendered structures
-        nav_items = []  # type: ignore[assignment]
+        def _safe_order(value: Any) -> int:
+            try:
+                return int(value)
+            except Exception:
+                return 0
+
+        # Third pass: render sections with hierarchy
         rendered_sections = []
-        for section_title, meta in sorted(
-            generated_sections.items(), key=lambda kv: kv[0] or ""
-        ):
-
-            def _safe_order(value: Any) -> int:
-                try:
-                    return int(value)
-                except Exception:
-                    return 0
-
-            items_sorted = sorted(
-                meta["items"],
-                key=lambda it: (_safe_order(it.get("order")), str(it.get("label", ""))),
-            )
-
-            section_items = [
-                nav.create_nav_item(
-                    it["icon"], it["label"], href=it.get("href", "#"), active=False
-                )
-                for it in items_sorted
-            ]
+        for section_title, pages in sorted(pages_by_section.items()):
+            # Only include top-level items (those without parents)
+            # But exclude items that are just section containers (same name as section)
+            top_level_items = []
+            for p in pages:
+                if not p["parent"]:
+                    # Skip pages that are just section containers (same name as section)
+                    if p["label"].lower() == section_title.lower():
+                        continue
+                    else:
+                        # Regular top-level page
+                        top_level_items.append(p)
+            
+            # Sort top-level items
+            top_level_items.sort(key=lambda it: (_safe_order(it.get("order")), str(it.get("label", ""))))
+            
+            section_items = []
+            for item in top_level_items:
+                if item["children"]:
+                    # Create collapsible nav item
+                    children_data = []
+                    for child in sorted(item["children"], key=lambda c: (_safe_order(c.get("order")), str(c.get("label", "")))):
+                        children_data.append({
+                            "icon": child["icon"],
+                            "label": child["label"],
+                            "href": child["href"],
+                            "active": False
+                        })
+                    
+                    nav_item_id = f"nav-item-{item['label'].lower().replace(' ', '-')}"
+                    collapsible_item = nav.create_collapsible_nav_item(
+                        item["icon"],
+                        item["label"],
+                        children_data,
+                        expanded=item["expanded"],
+                        nav_item_id=nav_item_id
+                    )
+                    section_items.append(collapsible_item)
+                    _register_nav_item_callback(nav_item_id)
+                else:
+                    # Regular nav item
+                    regular_item = nav.create_nav_item(
+                        item["icon"], item["label"], href=item.get("href", "#"), active=False
+                    )
+                    section_items.append(regular_item)
 
             section_id = f"sidebar-section-{section_title.lower().replace(' ', '-')}"
+            
+            # Check if any top-level item has expanded=True to determine section expansion
+            section_expanded = any(item.get("expanded", True) for item in top_level_items)
+            
             rendered_section = nav.create_section(
                 section_title,
                 section_items,
-                expanded=meta.get("expanded", True),
+                expanded=section_expanded,
                 section_id=section_id,
             )
             rendered_sections.append(rendered_section)
@@ -206,14 +314,28 @@ def create_sidebar(
         # Convert nav_items config to actual nav items
         rendered_nav_items = []
         for item in nav_items:
-            rendered_nav_items.append(
-                nav.create_nav_item(
+            if item.get("type") == "collapsible":
+                # Create collapsible nav item with children
+                nav_item_id = f"nav-item-{item['label'].lower().replace(' ', '-')}"
+                collapsible_item = nav.create_collapsible_nav_item(
                     item["icon"],
                     item["label"],
-                    active=False,
-                    href=item.get("href", "#"),
+                    item.get("children", []),
+                    expanded=item.get("expanded", False),
+                    nav_item_id=nav_item_id,
                 )
-            )
+                rendered_nav_items.append(collapsible_item)
+                _register_nav_item_callback(nav_item_id)
+            else:
+                # Regular nav item
+                rendered_nav_items.append(
+                    nav.create_nav_item(
+                        item["icon"],
+                        item["label"],
+                        active=False,
+                        href=item.get("href", "#"),
+                    )
+                )
 
         # Convert sections config to actual sections
         rendered_sections = []
@@ -258,10 +380,16 @@ def create_sidebar(
             )
             _register_section_callback(section_id)
 
-        # In manual mode, also expose the items list
-        rendered_nav_items = [
-            html.Li(it, className="mb-px") for it in rendered_nav_items
-        ]
+        # In manual mode, wrap items that aren't already Li elements
+        wrapped_nav_items = []
+        for item in rendered_nav_items:
+            if hasattr(item, 'type') and item.type == 'Li':
+                # Already wrapped (collapsible items)
+                wrapped_nav_items.append(item)
+            else:
+                # Regular items need wrapping
+                wrapped_nav_items.append(html.Li(item, className="mb-px"))
+        rendered_nav_items = wrapped_nav_items
 
     sidebar_content = html.Div(
         [

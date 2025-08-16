@@ -76,7 +76,13 @@ companies_data = [
 table_data = format_company_data(companies_data)
 columns = create_company_columns()
 
-dash.register_page(__name__, path="/", title="Companies", icon="mynaui:table")
+dash.register_page(
+    __name__,
+    path="/",
+    title="Companies",
+    icon="mynaui:building",
+    sidebar_section="Main",
+)
 
 layout = Table(
     id="companies-table",

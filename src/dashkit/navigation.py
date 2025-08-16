@@ -39,6 +39,87 @@ class SidebarNavigation(BaseNavigationBar):
         """Create a sidebar navigation item."""
         return IconButton(icon, label, active=active, href=href)
 
+    def create_collapsible_nav_item(self, icon, label, children, expanded=False, nav_item_id=None):
+        """Create a collapsible navigation item with children."""
+        if nav_item_id is None:
+            nav_item_id = f"nav-item-{label.lower().replace(' ', '-')}"
+        
+        chevron_id = f"{nav_item_id}-chevron"
+        content_id = f"{nav_item_id}-content"
+        toggle_id = f"{nav_item_id}-toggle"
+        
+        chevron = "chevron-down" if expanded else "chevron-right"
+        
+        # Main nav item with toggle functionality
+        main_item = html.Div(
+            [
+                html.Div(
+                    [
+                        dash_iconify.DashIconify(
+                            icon=icon if ":" in icon else f"mynaui:{icon}",
+                            width=16,
+                            className="mr-2"
+                        ),
+                        html.Span(label, className="flex-1"),
+                        dash_iconify.DashIconify(
+                            icon=f"mynaui:{chevron}",
+                            width=12,
+                            className="ml-auto text-gray-400 transition-transform duration-200",
+                            id=chevron_id,
+                        ),
+                    ],
+                    className="sidebar-item flex items-center cursor-pointer",
+                    id=toggle_id,
+                )
+            ],
+            className="mb-px"
+        )
+        
+        # Children container with proper indentation and connecting lines
+        children_items = []
+        for i, child in enumerate(children):
+            if isinstance(child, dict):
+                is_last = i == len(children) - 1
+                
+                # Create the connecting line structure
+                line_container = html.Div(
+                    [
+                        # Vertical line from parent
+                        html.Div(
+                            className="absolute left-4 top-0 w-px h-4 bg-gray-300 dark:bg-gray-600"
+                        ),
+                        # Horizontal line to item
+                        html.Div(
+                            className="absolute left-4 top-4 w-4 h-px bg-gray-300 dark:bg-gray-600"
+                        ),
+                        # Vertical continuation line (except for last item)
+                        html.Div(
+                            className=f"absolute left-4 top-4 w-px h-6 bg-gray-300 dark:bg-gray-600 {'hidden' if is_last else ''}"
+                        ),
+                        # The actual nav item
+                        html.Div(
+                            IconButton(
+                                child["icon"],
+                                child["label"],
+                                href=child.get("href", "#"),
+                                active=child.get("active", False)
+                            ),
+                            className="ml-8"
+                        )
+                    ],
+                    className="relative py-1"
+                )
+                
+                children_items.append(line_container)
+        
+        children_container = html.Ul(
+            children_items,
+            id=content_id,
+            className=f"ml-2 {'block' if expanded else 'hidden'}",
+        )
+        
+        return html.Li([main_item, children_container], className="", id=nav_item_id)
+
     def create_section(self, title, items, expanded=True, section_id=None):
         """Create a collapsible navigation section."""
         if section_id is None:

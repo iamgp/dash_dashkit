@@ -40,15 +40,18 @@ sidebar_config = {
         {"icon": "mail", "label": "Emails"},
         {"icon": "phone", "label": "Calls"},
         {"icon": "chart-bar", "label": "Reports"},
-    ],
-    "sections": [
         {
-            "title": "Automations",
-            "items": [
-                {"type": "nav_item", "icon": "list", "label": "Sequences"},
-                {"type": "nav_item", "icon": "settings", "label": "Workflows"},
+            "type": "collapsible",
+            "icon": "play",
+            "label": "Automations",
+            "expanded": True,
+            "children": [
+                {"icon": "list", "label": "Sequences", "href": "/sequences"},
+                {"icon": "settings", "label": "Workflows", "href": "/workflows"},
             ],
         },
+    ],
+    "sections": [
         {"title": "Favorites", "items": ["No favorites"], "expanded": True},
         {
             "title": "Records",
