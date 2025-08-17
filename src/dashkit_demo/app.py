@@ -42,13 +42,12 @@ app.layout = html.Div(
             content=dash.page_container,
             sidebar_config=sidebar_config,
             header_config={
-                "page_title": "",  # Will be set by individual pages
+                "page_title": "",
                 "page_icon": "",
                 "search_placeholder": "Search...",
                 "actions": [],
                 "filter_items": [],
             },
-            use_pages=True,
         ),
     ]
 )

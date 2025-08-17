@@ -1,6 +1,5 @@
 from typing import Any
 
-import dash_iconify
 from dash import (
     Input,
     Output,
@@ -13,9 +12,16 @@ from dash import (
 from .logo import LogoSection
 from .navigation import SidebarNavigation
 
+# Track registered callbacks to prevent duplicates
+_registered_callbacks = set()
+
 
 def _register_section_callback(section_id: str):
     """Register a clientside callback for section toggle functionality."""
+    # Skip if already registered
+    if section_id in _registered_callbacks:
+        return
+
     toggle_id = f"{section_id}-toggle"
     content_id = f"{section_id}-content"
     chevron_id = f"{section_id}-chevron"
@@ -56,6 +62,8 @@ def _register_section_callback(section_id: str):
             Input(toggle_id, "n_clicks"),
             prevent_initial_call=True,
         )
+        # Mark as registered
+        _registered_callbacks.add(section_id)
     except Exception:
         # Callback might already be registered, skip silently
         pass
@@ -63,6 +71,10 @@ def _register_section_callback(section_id: str):
 
 def _register_nav_item_callback(nav_item_id: str):
     """Register a clientside callback for nav item toggle functionality."""
+    # Skip if already registered
+    if nav_item_id in _registered_callbacks:
+        return
+
     toggle_id = f"{nav_item_id}-toggle"
     content_id = f"{nav_item_id}-content"
     chevron_id = f"{nav_item_id}-chevron"
@@ -103,6 +115,8 @@ def _register_nav_item_callback(nav_item_id: str):
             Input(toggle_id, "n_clicks"),
             prevent_initial_call=True,
         )
+        # Mark as registered
+        _registered_callbacks.add(nav_item_id)
     except Exception:
         # Callback might already be registered, skip silently
         pass
@@ -148,159 +162,194 @@ def _register_active_state_callback(url_id: str = "url"):
 def create_sidebar(
     brand_name: str,
     brand_initial: str,
-    nav_items: list[dict[str, Any]] | None = None,
-    sections: list[dict[str, Any]] | None = None,
-    use_pages: bool = True,
     include_location: bool = False,
 ) -> html.Div:
     """Create a reusable sidebar component.
 
-    If ``use_pages`` is True, the sidebar is built dynamically from Dash's
-    page registry. You can control sidebar behaviour per page by passing
-    extra keyword arguments to ``dash.register_page``. Supported keys:
+    The sidebar is built dynamically from Dash's page registry using folder structure.
+    Navigation hierarchy is automatically inferred from the file path:
 
-    - ``sidebar_section``: str section name (default: "Main")
+    - pages/section/page.py → section="SECTION"
+    - pages/section/container/page.py → section="SECTION", parent="Container"
+
+    Supported register_page parameters:
     - ``sidebar_visible``: bool include page in sidebar (default: True)
-    - ``sidebar_expanded``: bool expand the section by default (default: True)
-    - ``sidebar_order``: int order within section (fallback to ``order`` or title)
-    - ``icon``: string icon class (e.g., "fas fa-home") for the nav item
+    - ``sidebar_expanded``: bool expand containers by default (default: True)
+    - ``sidebar_order``: int order within section (fallback to ``order`` or 0)
+    - ``icon``: string icon name for MynaUI icons (e.g., "chart-line")
 
     Args:
         brand_name: The brand/company name for the logo
         brand_initial: Initial letter for the logo
-        nav_items: Explicit navigation items (ignored if ``use_pages`` is True)
-        sections: Explicit sections config (ignored if ``use_pages`` is True)
-        use_pages: When True, generate items from ``dash.page_registry``
         include_location: When True, include dcc.Location component (set to False if you have one already)
     """
 
     # Create navigation instance
     nav = SidebarNavigation()
 
-    # If using pages, generate nav_items/sections from page_registry
-    if use_pages:
-        # First pass: collect all pages and organize by section and parent
-        pages_by_section: dict[str, list[dict[str, Any]]] = {}
-        all_pages: dict[str, dict[str, Any]] = {}
-        
+    # Generate navigation from page registry using folder structure
+    # First pass: collect all pages and organize by section and parent
+    pages_by_section: dict[str, list[dict[str, Any]]] = {}
+    all_pages: dict[str, dict[str, Any]] = {}
+
+    for _page in page_registry.values():
+        _page.get("supplied", {}) or {}
+
+        # visibility
+        if _page.get("sidebar_visible", True) is False:
+            continue
+
+        # Extract hierarchy from module path if not explicitly set
+        module_path = _page.get("module", "")
+        path_parts = module_path.split(".")
+
+        # Auto-infer section and parent from folder structure
+        # Example: "dashkit_demo.pages.pcr.duplex.analysis" -> section="PCR", parent="Duplex"
+        if "pages" in path_parts:
+            pages_index = path_parts.index("pages")
+            folder_parts = path_parts[pages_index + 1 :]  # Get parts after "pages"
+
+            # Default values
+            auto_section = "Main"
+            auto_parent = None
+
+            if len(folder_parts) >= 2:  # e.g., ["pcr", "analysis"]
+                auto_section = folder_parts[0].upper()  # "pcr" -> "PCR"
+
+            if len(folder_parts) >= 3:  # e.g., ["pcr", "duplex", "analysis"]
+                auto_parent = folder_parts[-2].title()  # "duplex" -> "Duplex"
+
+            # Use auto-inferred values if not explicitly set
+            section_name: str = _page.get("sidebar_section", auto_section)
+            parent_name: str | None = _page.get("sidebar_parent", auto_parent)
+        else:
+            # Fallback to explicit or default values
+            section_name: str = _page.get("sidebar_section", "Main")
+            parent_name: str | None = _page.get("sidebar_parent")
+
+        expanded: bool = _page.get("sidebar_expanded", True)
+        order = _page.get("sidebar_order", _page.get("order", 0))
+        is_collapsible = _page.get("sidebar_collapsible", False)
+        is_container_only = _page.get("sidebar_container_only", False)
+
+        # Compose page info
+        icon_value = _page.get("icon", "circle")
+        print(
+            f"Page {_page.get('title')}: icon = '{icon_value}', container_only = {is_container_only}, section = '{section_name}', parent = '{parent_name}'"
+        )
+
+        page_type = "virtual_container" if is_container_only else "nav_item"
+        page_href = None if is_container_only else _page.get("path")
+
+        page_info = {
+            "type": page_type,
+            "icon": icon_value,
+            "label": _page.get("name") or _page.get("title") or _page.get("path"),
+            "href": page_href,
+            "order": order,
+            "section": section_name,
+            "parent": parent_name,
+            "expanded": expanded,
+            "collapsible": is_collapsible
+            or is_container_only,  # Containers are always collapsible
+            "children": [],
+        }
+
+        all_pages[page_info["label"]] = page_info
+
+        # Group by section
+        if section_name not in pages_by_section:
+            pages_by_section[section_name] = []
+        pages_by_section[section_name].append(page_info)
+
+    # Auto-create missing parent containers based on folder structure
+    missing_containers = set()
+    for page_info in all_pages.values():
+        if page_info["parent"] and page_info["parent"] not in all_pages:
+            missing_containers.add((page_info["parent"], page_info["section"]))
+
+    for container_name, section_name in missing_containers:
+        print(f"Auto-creating container: {container_name} in section {section_name}")
+
+        # Try to load container config from __init__.py file
+        container_config = {}
+
+        # Look for container config in registered pages' modules
         for _page in page_registry.values():
-            supplied: dict[str, Any] = _page.get("supplied", {}) or {}
-
-            # visibility
-            if _page.get("sidebar_visible", True) is False:
-                continue
-
-            # Extract hierarchy from module path if not explicitly set
             module_path = _page.get("module", "")
             path_parts = module_path.split(".")
-            
-            # Auto-infer section and parent from folder structure
-            # Example: "dashkit_demo.pages.pcr.duplex.analysis" -> section="PCR", parent="Duplex"
+
+            # Check if this page is in the container folder
             if "pages" in path_parts:
                 pages_index = path_parts.index("pages")
-                folder_parts = path_parts[pages_index + 1:]  # Get parts after "pages"
-                
-                # Default values
-                auto_section = "Main"
-                auto_parent = None
-                
-                if len(folder_parts) >= 2:  # e.g., ["pcr", "analysis"]
-                    auto_section = folder_parts[0].upper()  # "pcr" -> "PCR"
-                    
-                if len(folder_parts) >= 3:  # e.g., ["pcr", "duplex", "analysis"]
-                    auto_parent = folder_parts[-2].title()  # "duplex" -> "Duplex"
-                    
-                # Use auto-inferred values if not explicitly set
-                section_name: str = _page.get("sidebar_section", auto_section)
-                parent_name: str | None = _page.get("sidebar_parent", auto_parent)
-            else:
-                # Fallback to explicit or default values
-                section_name: str = _page.get("sidebar_section", "Main")
-                parent_name: str | None = _page.get("sidebar_parent")
+                folder_parts = path_parts[pages_index + 1 :]
 
-            expanded: bool = _page.get("sidebar_expanded", True)
-            order = _page.get("sidebar_order", _page.get("order", 0))
-            is_collapsible = _page.get("sidebar_collapsible", False)
-            is_container_only = _page.get("sidebar_container_only", False)
-            
-
-            # Compose page info  
-            icon_value = _page.get("icon", "circle")
-            print(f"Page {_page.get('title')}: icon = '{icon_value}', container_only = {is_container_only}, section = '{section_name}', parent = '{parent_name}'")
-            
-            page_type = "virtual_container" if is_container_only else "nav_item"
-            page_href = None if is_container_only else _page.get("path")
-            
-            page_info = {
-                "type": page_type, 
-                "icon": icon_value,
-                "label": _page.get("name") or _page.get("title") or _page.get("path"),
-                "href": page_href,
-                "order": order,
-                "section": section_name,
-                "parent": parent_name,
-                "expanded": expanded,
-                "collapsible": is_collapsible or is_container_only,  # Containers are always collapsible
-                "children": []
-            }
-            
-            all_pages[page_info["label"]] = page_info
-            
-            # Group by section
-            if section_name not in pages_by_section:
-                pages_by_section[section_name] = []
-            pages_by_section[section_name].append(page_info)
-
-        # Auto-create missing parent containers based on folder structure
-        missing_containers = set()
-        for page_info in all_pages.values():
-            if page_info["parent"] and page_info["parent"] not in all_pages:
-                missing_containers.add((page_info["parent"], page_info["section"]))
-        
-        for container_name, section_name in missing_containers:
-            print(f"Auto-creating container: {container_name} in section {section_name}")
-            
-            # Determine icon based on container name
-            container_icon = "folder"  # Default
-            if container_name.lower() == "duplex":
-                container_icon = "two-circles"
-            
-            container_info = {
-                "type": "virtual_container",
-                "icon": container_icon,
-                "label": container_name,
-                "href": None,
-                "order": 0,  # Default order for auto-created containers
-                "section": section_name,
-                "parent": None,  # Auto-created containers are top-level in their section
-                "expanded": True,
-                "collapsible": True,
-                "children": []
-            }
-            
-            all_pages[container_name] = container_info
-            
-            if section_name not in pages_by_section:
-                pages_by_section[section_name] = []
-            pages_by_section[section_name].append(container_info)
-
-        # Second pass: build hierarchy by connecting children to parents
-        for section_name, pages in pages_by_section.items():
-            for page in pages:
-                if page["parent"]:
-                    # Find parent in the same section - could be another page or the section itself
-                    parent_found = False
-                    for potential_parent in pages:
-                        if potential_parent["label"] == page["parent"]:
-                            potential_parent["children"].append(page)
-                            potential_parent["collapsible"] = True
-                            parent_found = True
+                # If this page is in the container we're looking for
+                if (
+                    len(folder_parts) >= 3
+                    and folder_parts[-2].title() == container_name
+                ):
+                    # Try to import the container's __init__.py
+                    try:
+                        container_module_path = ".".join(
+                            path_parts[:-1]
+                        )  # Remove the page file name
+                        container_module = __import__(
+                            container_module_path, fromlist=["CONTAINER_CONFIG"]
+                        )
+                        if hasattr(container_module, "CONTAINER_CONFIG"):
+                            container_config = container_module.CONTAINER_CONFIG
+                            print(
+                                f"Loaded container config for {container_name}: {container_config}"
+                            )
                             break
-                    
-                    # If parent not found in pages, might be referencing the section itself
-                    if not parent_found and page["parent"] == section_name:
-                        # This page's parent is the section itself, treat as top-level
-                        page["parent"] = None
+                    except (ImportError, AttributeError) as e:
+                        print(
+                            f"Could not load container config for {container_name}: {e}"
+                        )
+                        pass
+
+        # Use config values or defaults
+        container_icon = container_config.get("icon", "folder")
+        container_expanded = container_config.get("expanded", True)
+        container_order = container_config.get("order", 0)
+
+        container_info = {
+            "type": "virtual_container",
+            "icon": container_icon,
+            "label": container_name,
+            "href": None,
+            "order": container_order,
+            "section": section_name,
+            "parent": None,  # Auto-created containers are top-level in their section
+            "expanded": container_expanded,
+            "collapsible": True,
+            "children": [],
+        }
+
+        all_pages[container_name] = container_info
+
+        if section_name not in pages_by_section:
+            pages_by_section[section_name] = []
+        pages_by_section[section_name].append(container_info)
+
+    # Second pass: build hierarchy by connecting children to parents
+    for section_name, pages in pages_by_section.items():
+        for page in pages:
+            if page["parent"]:
+                # Find parent in the same section - could be another page or the section itself
+                parent_found = False
+                for potential_parent in pages:
+                    if potential_parent["label"] == page["parent"]:
+                        potential_parent["children"].append(page)
+                        potential_parent["collapsible"] = True
+                        parent_found = True
+                        break
+
+                # If parent not found in pages, might be referencing the section itself
+                if not parent_found and page["parent"] == section_name:
+                    # This page's parent is the section itself, treat as top-level
+                    page["parent"] = None
 
         def _safe_order(value: Any) -> int:
             try:
@@ -322,25 +371,35 @@ def create_sidebar(
                     else:
                         # Regular top-level page
                         top_level_items.append(p)
-            
+
             # Sort top-level items
-            top_level_items.sort(key=lambda it: (_safe_order(it.get("order")), str(it.get("label", ""))))
-            
+            top_level_items.sort(
+                key=lambda it: (_safe_order(it.get("order")), str(it.get("label", "")))
+            )
+
             section_items = []
             for item in top_level_items:
                 if item["children"] or item.get("type") == "virtual_container":
                     # Create collapsible nav item (for both regular items with children and virtual containers)
                     children_data = []
-                    for child in sorted(item["children"], key=lambda c: (_safe_order(c.get("order")), str(c.get("label", "")))):
-                        children_data.append({
-                            "icon": child["icon"],
-                            "label": child["label"],
-                            "href": child["href"],
-                            "active": False
-                        })
-                    
+                    for child in sorted(
+                        item["children"],
+                        key=lambda c: (
+                            _safe_order(c.get("order")),
+                            str(c.get("label", "")),
+                        ),
+                    ):
+                        children_data.append(
+                            {
+                                "icon": child["icon"],
+                                "label": child["label"],
+                                "href": child["href"],
+                                "active": False,
+                            }
+                        )
+
                     nav_item_id = f"nav-item-{item['label'].lower().replace(' ', '-')}"
-                    
+
                     # For virtual containers, we don't provide an href (non-clickable)
                     if item.get("type") == "virtual_container":
                         collapsible_item = nav.create_collapsible_nav_item(
@@ -349,7 +408,7 @@ def create_sidebar(
                             children_data,
                             expanded=item["expanded"],
                             nav_item_id=nav_item_id,
-                            href=None  # Virtual containers are not clickable
+                            href=None,  # Virtual containers are not clickable
                         )
                     else:
                         collapsible_item = nav.create_collapsible_nav_item(
@@ -358,23 +417,28 @@ def create_sidebar(
                             children_data,
                             expanded=item["expanded"],
                             nav_item_id=nav_item_id,
-                            href=item.get("href")
+                            href=item.get("href"),
                         )
-                    
+
                     section_items.append(collapsible_item)
                     _register_nav_item_callback(nav_item_id)
                 else:
                     # Regular nav item
                     regular_item = nav.create_nav_item(
-                        item["icon"], item["label"], href=item.get("href", "#"), active=False
+                        item["icon"],
+                        item["label"],
+                        href=item.get("href", "#"),
+                        active=False,
                     )
                     section_items.append(regular_item)
 
             section_id = f"sidebar-section-{section_title.lower().replace(' ', '-')}"
-            
+
             # Check if any top-level item has expanded=True to determine section expansion
-            section_expanded = any(item.get("expanded", True) for item in top_level_items)
-            
+            section_expanded = any(
+                item.get("expanded", True) for item in top_level_items
+            )
+
             rendered_section = nav.create_section(
                 section_title,
                 section_items,
@@ -384,98 +448,11 @@ def create_sidebar(
             rendered_sections.append(rendered_section)
             _register_section_callback(section_id)
 
-    else:
-        # Manual mode: Convert provided configs
-        nav_items = nav_items or []
-        sections = sections or []
-
-        # Convert nav_items config to actual nav items
-        rendered_nav_items = []
-        for item in nav_items:
-            if item.get("type") == "collapsible":
-                # Create collapsible nav item with children
-                nav_item_id = f"nav-item-{item['label'].lower().replace(' ', '-')}"
-                collapsible_item = nav.create_collapsible_nav_item(
-                    item["icon"],
-                    item["label"],
-                    item.get("children", []),
-                    expanded=item.get("expanded", False),
-                    nav_item_id=nav_item_id,
-                )
-                rendered_nav_items.append(collapsible_item)
-                _register_nav_item_callback(nav_item_id)
-            else:
-                # Regular nav item
-                rendered_nav_items.append(
-                    nav.create_nav_item(
-                        item["icon"],
-                        item["label"],
-                        active=False,
-                        href=item.get("href", "#"),
-                    )
-                )
-
-        # Convert sections config to actual sections
-        rendered_sections = []
-        for section in sections:
-            section_items = []
-            section_id = f"sidebar-section-{section['title'].lower().replace(' ', '-')}"
-
-            for item in section["items"]:
-                if isinstance(item, str):
-                    section_items.append(item)
-                elif item.get("type") == "nav_item":
-                    section_items.append(
-                        nav.create_nav_item(
-                            item["icon"],
-                            item["label"],
-                            active=False,
-                            href=item.get("href", "#"),
-                        )
-                    )
-                elif item.get("type") == "button":
-                    section_items.append(
-                        html.Button(
-                            [
-                                dash_iconify.DashIconify(
-                                    icon=f"mynaui:{item['icon']}",
-                                    width=16,
-                                    className="mr-2",
-                                ),
-                                item["label"],
-                            ],
-                            className="text-sm text-blue-600 hover:text-blue-700 px-3 py-2 w-full text-left",
-                        )
-                    )
-
-            rendered_sections.append(
-                nav.create_section(
-                    section["title"],
-                    section_items,
-                    expanded=section.get("expanded", False),
-                    section_id=section_id,
-                )
-            )
-            _register_section_callback(section_id)
-
-        # In manual mode, wrap items that aren't already Li elements
-        wrapped_nav_items = []
-        for item in rendered_nav_items:
-            if hasattr(item, 'type') and item.type == 'Li':
-                # Already wrapped (collapsible items)
-                wrapped_nav_items.append(item)
-            else:
-                # Regular items need wrapping
-                wrapped_nav_items.append(html.Li(item, className="mb-px"))
-        rendered_nav_items = wrapped_nav_items
-
     sidebar_content = html.Div(
         [
             LogoSection(brand_name, brand_initial),
-            # Navigation (in pages mode, nav items go into sections; we still render any standalone items if present)
-            SidebarNavigation().render(
-                [] if use_pages else rendered_nav_items, rendered_sections
-            ),
+            # Navigation sections from folder structure
+            SidebarNavigation().render([], rendered_sections),
         ],
         className="bg-dashkit-panel-light dark:bg-dashkit-panel-dark w-64 h-screen border-r border-dashkit-border-light dark:border-dashkit-border-dark flex flex-col shrink-0",
     )

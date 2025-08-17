@@ -10,13 +10,12 @@ def create_layout(
     content: html.Div | None = None,
     sidebar_config: dict[str, Any] | None = None,
     header_config: dict[str, Any] | None = None,
-    use_pages: bool = False,
 ) -> html.Div:
     """Create the main layout with configurable sidebar and header.
 
     Args:
         content: Main content to display
-        sidebar_config: Configuration for sidebar with brand, nav_items, and sections
+        sidebar_config: Configuration for sidebar with brand name and initial
         header_config: Configuration for header with page_title, actions, etc.
     """
     if content is None:
@@ -36,8 +35,6 @@ def create_layout(
         sidebar_config = {
             "brand_name": "App",
             "brand_initial": "A",
-            "nav_items": [],
-            "sections": [],
         }
 
     # Default header config
@@ -56,9 +53,6 @@ def create_layout(
             create_sidebar(
                 brand_name=sidebar_config["brand_name"],
                 brand_initial=sidebar_config["brand_initial"],
-                nav_items=sidebar_config.get("nav_items") if not use_pages else None,
-                sections=sidebar_config.get("sections") if not use_pages else None,
-                use_pages=use_pages,
             ),
             # Right side: navbar + content (full width minus sidebar)
             html.Div(
