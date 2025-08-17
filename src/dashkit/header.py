@@ -5,7 +5,7 @@ from dash import Input, Output, clientside_callback, html
 from .buttons import PrimaryButton, SecondaryButton
 from .logo import BrandHeader
 from .navigation import FilterBar, TopNavigationBar
-from .theme_manager import create_dark_mode_toggle
+from .theme_manager import create_theme_toggle
 
 
 def create_header(
@@ -53,7 +53,7 @@ def create_header(
     center_content = None
 
     # Build right content from actions
-    right_content = [create_dark_mode_toggle()]
+    right_content = [create_theme_toggle()]
     if actions:
         for action in actions:
             if action["type"] == "primary":

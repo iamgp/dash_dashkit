@@ -1,17 +1,38 @@
 from dash import Input, Output, State, clientside_callback, dcc, html
 
 
-def create_dark_mode_toggle() -> html.Button:
-    """Create a dark mode toggle button."""
-    return html.Button(
+def create_theme_toggle() -> html.Div:
+    """Create a theme toggle with clear visual indication of the selected theme."""
+    return html.Div(
         [
-            # Sun icon for light mode
-            html.I(className="fas fa-sun text-gray-500 dark:text-gray-400"),
-            # Moon icon for dark mode (hidden by default)
-            html.I(className="fas fa-moon text-gray-500 dark:text-gray-400"),
+            html.Div(
+                [
+                    # System theme option
+                    html.Button(
+                        html.I(className="fas fa-desktop text-xs"),
+                        id="theme-system",
+                        className="inline-flex items-center justify-center w-8 h-8 bg-blue-600 text-white font-semibold rounded-l-lg",
+                        title="System theme",
+                    ),
+                    # Light theme option
+                    html.Button(
+                        html.I(className="fas fa-sun text-xs"),
+                        id="theme-light",
+                        className="inline-flex items-center justify-center w-8 h-8 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-semibold hover:bg-gray-300 dark:hover:bg-gray-600",
+                        title="Light theme",
+                    ),
+                    # Dark theme option
+                    html.Button(
+                        html.I(className="fas fa-moon text-xs"),
+                        id="theme-dark",
+                        className="inline-flex items-center justify-center w-8 h-8 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-semibold rounded-r-lg hover:bg-gray-300 dark:hover:bg-gray-600",
+                        title="Dark theme",
+                    ),
+                ],
+                className="inline-flex",
+            )
         ],
-        id="dark-mode-toggle",
-        className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700",
+        id="theme-toggle-container",
     )
 
 
@@ -21,6 +42,7 @@ class ThemeManager(html.Div):
             id=id,
             children=[
                 dcc.Store(id="theme-store", storage_type="local"),
+                dcc.Store(id="system-theme-trigger", data={"timestamp": 0}),
                 dcc.Location(id="url", refresh=False),
             ],
         )
@@ -30,12 +52,18 @@ class ThemeManager(html.Div):
             function(pathname, data) {
                 console.log('Clientside callback (dcc.Location) triggered.');
                 const storedTheme = localStorage.getItem('theme');
-                if (storedTheme) {
-                    console.log('Clientside callback (dcc.Location) - Stored theme:', storedTheme);
-                    return { theme: storedTheme };
+                const theme = storedTheme || 'system';
+                console.log('Clientside callback (dcc.Location) - Theme:', theme);
+
+                // Apply theme based on preference
+                if (theme === 'system') {
+                    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    document.documentElement.classList.toggle('dark', systemPrefersDark);
+                } else {
+                    document.documentElement.classList.toggle('dark', theme === 'dark');
                 }
-                console.log('Clientside callback (dcc.Location) - No stored theme, returning no_update.');
-                return window.dash_clientside.no_update;
+
+                return { theme: theme };
             }
             """,
             Output("theme-store", "data"),
@@ -43,38 +71,175 @@ class ThemeManager(html.Div):
             State("theme-store", "data"),
         )
 
+        # System theme button callback
         clientside_callback(
             """
-            function(n_clicks, data) {
+            function(n_clicks) {
                 if (n_clicks > 0) {
-                    const currentTheme = data && data.theme ? data.theme : 'light';
-                    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-                    console.log('Toggling theme to:', newTheme);
-                    document.documentElement.classList.toggle('dark', newTheme === 'dark');
-                    localStorage.setItem('theme', newTheme);
-                    return { theme: newTheme };
+                    console.log('Setting theme to: system');
+                    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    document.documentElement.classList.toggle('dark', systemPrefersDark);
+                    localStorage.removeItem('theme'); // Use system default
+                    return { theme: 'system' };
                 }
                 return window.dash_clientside.no_update;
             }
             """,
             Output("theme-store", "data", allow_duplicate=True),
-            Input("dark-mode-toggle", "n_clicks"),
-            State("theme-store", "data"),
+            Input("theme-system", "n_clicks"),
+            prevent_initial_call=True,
+        )
+
+        # Light theme button callback
+        clientside_callback(
+            """
+            function(n_clicks) {
+                if (n_clicks > 0) {
+                    console.log('Setting theme to: light');
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('theme', 'light');
+                    return { theme: 'light' };
+                }
+                return window.dash_clientside.no_update;
+            }
+            """,
+            Output("theme-store", "data", allow_duplicate=True),
+            Input("theme-light", "n_clicks"),
+            prevent_initial_call=True,
+        )
+
+        # Dark theme button callback
+        clientside_callback(
+            """
+            function(n_clicks) {
+                if (n_clicks > 0) {
+                    console.log('Setting theme to: dark');
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('theme', 'dark');
+                    return { theme: 'dark' };
+                }
+                return window.dash_clientside.no_update;
+            }
+            """,
+            Output("theme-store", "data", allow_duplicate=True),
+            Input("theme-dark", "n_clicks"),
             prevent_initial_call=True,
         )
 
         clientside_callback(
             """
-            function(data) {
-                const theme = data && data.theme ? data.theme : 'light';
+            function(data, triggerData) {
+                const theme = data && data.theme ? data.theme : 'system';
                 console.log('Clientside callback - Updating table theme to:', theme);
+
+                let isDark = false;
                 if (theme === 'dark') {
-                    return "ht-theme-main-dark";
+                    isDark = true;
+                } else if (theme === 'system') {
+                    // If we have trigger data, use that, otherwise check current system preference
+                    if (triggerData && typeof triggerData.isDark === 'boolean') {
+                        isDark = triggerData.isDark;
+                    } else {
+                        isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    }
+
+                    // Set up listener for system theme changes when using system theme
+                    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+                    const updateTableTheme = (e) => {
+                        console.log('System preference changed, updating table theme to:', e.matches ? 'dark' : 'light');
+
+                        // Update the trigger store to force table theme callback to re-run
+                        if (window.dash_clientside && window.dash_clientside.set_props) {
+                            window.dash_clientside.set_props('system-theme-trigger', {
+                                data: { timestamp: Date.now(), isDark: e.matches }
+                            });
+                        }
+                    };
+
+                    // Remove any existing listener to prevent duplicates
+                    if (window.tableThemeSystemListener) {
+                        mediaQuery.removeEventListener('change', window.tableThemeSystemListener);
+                    }
+                    window.tableThemeSystemListener = updateTableTheme;
+                    mediaQuery.addEventListener('change', updateTableTheme);
+                } else {
+                    // Remove system theme listener when not using system theme
+                    if (window.tableThemeSystemListener) {
+                        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+                        mediaQuery.removeEventListener('change', window.tableThemeSystemListener);
+                        window.tableThemeSystemListener = null;
+                    }
                 }
-                return "ht-theme-main";
+
+                return isDark ? "ht-theme-main-dark" : "ht-theme-main";
             }
             """,
             Output("companies-table", "themeName"),
+            [Input("theme-store", "data"), Input("system-theme-trigger", "data")],
+            prevent_initial_call=False,
+        )
+
+        # Update button states based on current theme
+        clientside_callback(
+            """
+            function(data) {
+                const theme = data && data.theme ? data.theme : 'system';
+                console.log('Clientside callback - Updating theme buttons for:', theme);
+
+                // Get all theme buttons
+                const systemBtn = document.getElementById('theme-system');
+                const lightBtn = document.getElementById('theme-light');
+                const darkBtn = document.getElementById('theme-dark');
+
+                // Define active and inactive styles
+                const activeClasses = 'bg-blue-600 text-white';
+                const inactiveClasses = 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600';
+
+                // Reset all buttons to inactive state
+                [systemBtn, lightBtn, darkBtn].forEach(btn => {
+                    if (btn) {
+                        btn.className = btn.className.replace(/bg-\S+|text-\S+|hover:bg-\S+/g, '');
+                        btn.className += ' ' + inactiveClasses;
+                    }
+                });
+
+                // Set active button based on theme
+                let activeBtn;
+                if (theme === 'system') activeBtn = systemBtn;
+                else if (theme === 'light') activeBtn = lightBtn;
+                else if (theme === 'dark') activeBtn = darkBtn;
+
+                if (activeBtn) {
+                    activeBtn.className = activeBtn.className.replace(/bg-\S+|text-\S+|hover:bg-\S+/g, '');
+                    activeBtn.className += ' ' + activeClasses;
+                }
+
+                // Set up system preference change listener for system theme
+                if (theme === 'system') {
+                    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+                    const handleSystemChange = (e) => {
+                        document.documentElement.classList.toggle('dark', e.matches);
+                        // Trigger table theme update by updating the theme store
+                        const themeStore = document.querySelector('#theme-store');
+                        if (themeStore && window.dash_clientside) {
+                            // Force table theme callback to re-run
+                            window.dispatchEvent(new CustomEvent('dash:clientside-callback', {
+                                detail: { output: 'companies-table.themeName' }
+                            }));
+                        }
+                    };
+                    // Remove any existing listener to prevent duplicates
+                    if (window.systemThemeListener) {
+                        mediaQuery.removeEventListener('change', window.systemThemeListener);
+                    }
+                    window.systemThemeListener = handleSystemChange;
+                    mediaQuery.addEventListener('change', handleSystemChange);
+                }
+
+                return window.dash_clientside.no_update;
+            }
+            """,
+            Output("theme-toggle-container", "children"),
             Input("theme-store", "data"),
             prevent_initial_call=False,
         )
