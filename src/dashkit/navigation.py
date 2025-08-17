@@ -37,7 +37,7 @@ class SidebarNavigation(BaseNavigationBar):
 
     def create_nav_item(self, icon, label, href="#", active=False):
         """Create a sidebar navigation item."""
-        return IconButton(icon, label, active=active, href=href)
+        return html.Li(IconButton(icon, label, active=active, href=href), className="mb-px")
 
     def create_collapsible_nav_item(
         self, icon, label, children, expanded=False, nav_item_id=None, href=None
@@ -158,9 +158,7 @@ class SidebarNavigation(BaseNavigationBar):
                 content_items = items
 
         content = html.Ul(
-            [html.Li(item, className="mb-px") for item in content_items]
-            if content_items
-            else [],
+            content_items if content_items else [],
             id=content_id,
             className=f"mt-px space-y-px {'block' if expanded else 'hidden'}",
         )
