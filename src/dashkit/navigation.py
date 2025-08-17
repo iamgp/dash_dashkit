@@ -65,7 +65,7 @@ class SidebarNavigation(BaseNavigationBar):
                         html.Span(label, className="flex-1"),
                         dash_iconify.DashIconify(
                             icon=f"mynaui:{chevron}",
-                            width=12,
+                            width=16,
                             className="ml-auto text-dashkit-icon-light dark:text-dashkit-icon-dark transition-transform duration-200",
                             id=chevron_id,
                         ),
@@ -88,7 +88,7 @@ class SidebarNavigation(BaseNavigationBar):
                     [
                         # Vertical line - show for all items with adequate height
                         html.Div(
-                            className=f"absolute left-4 top-0 w-px bg-dashkit-connector-light dark:bg-dashkit-connector-dark {'h-8' if is_last else 'h-full'}"
+                            className=f"absolute left-2 top-0 w-px bg-dashkit-connector-light dark:bg-dashkit-connector-dark {'h-full' if is_last else 'h-full'}"
                         ),
                         # The actual nav item
                         html.Div(
@@ -98,7 +98,7 @@ class SidebarNavigation(BaseNavigationBar):
                                 href=child.get("href", "#"),
                                 active=child.get("active", False),
                             ),
-                            className="ml-8",
+                            className="ml-4",
                         ),
                     ],
                     className="relative",
@@ -130,7 +130,7 @@ class SidebarNavigation(BaseNavigationBar):
             [
                 dash_iconify.DashIconify(
                     icon=f"mynaui:{chevron}",
-                    width=12,
+                    width=16,
                     className="mr-2 text-dashkit-icon-light dark:text-dashkit-icon-dark transition-transform duration-200",
                     id=chevron_id,
                 ),
@@ -140,7 +140,7 @@ class SidebarNavigation(BaseNavigationBar):
                 ),
             ],
             id=toggle_id,
-            className="flex items-center pr-3 pl-2 py-2 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg",
+            className="flex items-center pr-3 pl-2 py-2 cursor-pointer hover:bg-dashkit-hover-light dark:hover:bg-dashkit-hover-dark rounded-lg",
         )
 
         # Content container that will be shown/hidden
@@ -162,7 +162,7 @@ class SidebarNavigation(BaseNavigationBar):
             if content_items
             else [],
             id=content_id,
-            className=f" space-y-px {'block' if expanded else 'hidden'}",
+            className=f"mt-px space-y-px {'block' if expanded else 'hidden'}",
         )
 
         return html.Li([header, content], className="mb-2", id=section_id)

@@ -225,6 +225,9 @@
   .top-0 {
     top: calc(var(--spacing) * 0);
   }
+  .left-2 {
+    left: calc(var(--spacing) * 2);
+  }
   .left-4 {
     left: calc(var(--spacing) * 4);
   }
@@ -881,6 +884,12 @@
       margin-bottom: 0;
     }
   }
+  .mt-1 {
+    margin-top: calc(var(--spacing) * 1);
+  }
+  .mt-px {
+    margin-top: 1px;
+  }
   .mr-2 {
     margin-right: calc(var(--spacing) * 2);
   }
@@ -907,6 +916,9 @@
   }
   .ml-3 {
     margin-left: calc(var(--spacing) * 3);
+  }
+  .ml-4 {
+    margin-left: calc(var(--spacing) * 4);
   }
   .ml-8 {
     margin-left: calc(var(--spacing) * 8);
@@ -1208,6 +1220,13 @@
     --tw-duration: 200ms;
     transition-duration: 200ms;
   }
+  .hover\:bg-dashkit-hover-light {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-dashkit-hover-light);
+      }
+    }
+  }
   .hover\:bg-gray-50 {
     &:hover {
       @media (hover: hover) {
@@ -1289,6 +1308,15 @@
       --tw-prose-td-borders: var(--tw-prose-invert-td-borders);
     }
   }
+  .dark\:hover\:bg-dashkit-hover-dark {
+    &:where(.dark, .dark *) {
+      &:hover {
+        @media (hover: hover) {
+          background-color: var(--color-dashkit-hover-dark);
+        }
+      }
+    }
+  }
   .dark\:hover\:bg-gray-700 {
     &:where(.dark, .dark *) {
       &:hover {
@@ -1367,6 +1395,8 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     margin-bottom: 1px;
+    align-items: center;
+    display: flex;
   }
   .sidebar-item.active {
     background-color: var(--color-dashkit-hover-light);
@@ -1496,6 +1526,19 @@
         }
       }
     }
+  }
+  .sidebar-item svg {
+    vertical-align: middle;
+    display: inline-block;
+    width: 16px !important;
+    height: 16px !important;
+    flex-shrink: 0;
+  }
+  .sidebar-item > svg:first-child, .sidebar-item > :first-child > svg:first-child {
+    margin-right: 8px;
+    width: 16px;
+    min-width: 16px;
+    max-width: 16px;
   }
 }
 .ht-theme-main-dark {

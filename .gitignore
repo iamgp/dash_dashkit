@@ -1,3 +1,4 @@
 downloaded
 node_modules
 *.pyc
+.playwright-mcp

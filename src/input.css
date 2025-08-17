@@ -56,6 +56,8 @@
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         margin-bottom: 1px;
+        align-items: center;
+        display: flex;
     }
 
     .sidebar-item.active {
@@ -76,6 +78,22 @@
 
     .sidebar-hover {
         @apply hover:bg-dashkit-hover-light dark:hover:bg-dashkit-hover-dark;
+    }
+
+    .sidebar-item svg {
+        vertical-align: middle;
+        display: inline-block;
+        width: 16px !important;
+        height: 16px !important;
+        flex-shrink: 0;
+    }
+
+    .sidebar-item > svg:first-child,
+    .sidebar-item > :first-child > svg:first-child {
+        margin-right: 8px;
+        width: 16px;
+        min-width: 16px;
+        max-width: 16px;
     }
 
 }
