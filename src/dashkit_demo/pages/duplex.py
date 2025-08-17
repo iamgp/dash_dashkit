@@ -1,53 +1,34 @@
-import sys
-from pathlib import Path
-
 import dash
-from dash import html
+from dash import html, dcc
 
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
-
+# Register Duplex as a sidebar container only (no actual page content)
 dash.register_page(
     __name__,
-    path="/pcr/duplex",
+    path="/duplex-container",  # Use a non-intuitive path since this shouldn't be accessed directly
     title="Duplex",
-    icon="mynaui:flask",
     sidebar_section="PCR",
-    sidebar_parent="PCR",
-    sidebar_collapsible=True,
+    sidebar_container_only=True,  # This makes it a container without a real page
     sidebar_expanded=True,
+    sidebar_order=1,
+    icon="two-circles",
 )
 
+# Layout redirects to a child page since this is a container-only item
 layout = html.Div(
     [
-        html.H1("Duplex PCR", className="text-3xl font-bold mb-6"),
-        html.P(
-            "Duplex PCR analysis for simultaneous amplification of two different targets.",
-            className="text-gray-600 mb-4",
+        dcc.Location(id="redirect-location", refresh=True),
+        html.Script(
+            """
+        // Redirect to the first child page (Analysis)
+        window.location.href = '/analysis';
+        """
         ),
         html.Div(
             [
-                html.H2("Duplex Configuration", className="text-xl font-semibold mb-3"),
-                html.P(
-                    "Configure and monitor duplex PCR reactions.",
-                    className="text-gray-600 mb-4",
-                ),
-                html.Div(
-                    [
-                        html.A(
-                            "Analysis",
-                            href="/pcr/duplex/analysis",
-                            className="bg-blue-500 text-white px-4 py-2 rounded mr-2 hover:bg-blue-600",
-                        ),
-                        html.A(
-                            "Trending",
-                            href="/pcr/duplex/trending",
-                            className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600",
-                        ),
-                    ]
-                ),
+                html.H1("Redirecting...", className="text-gray-500"),
+                html.P("This is a navigation container. Redirecting to Analysis page."),
             ],
-            className="bg-white p-6 rounded-lg shadow",
+            className="p-6",
         ),
-    ],
-    className="p-6",
+    ]
 )

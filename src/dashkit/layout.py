@@ -56,8 +56,8 @@ def create_layout(
             create_sidebar(
                 brand_name=sidebar_config["brand_name"],
                 brand_initial=sidebar_config["brand_initial"],
-                nav_items=sidebar_config["nav_items"] if not use_pages else None,
-                sections=sidebar_config["sections"] if not use_pages else None,
+                nav_items=sidebar_config.get("nav_items") if not use_pages else None,
+                sections=sidebar_config.get("sections") if not use_pages else None,
                 use_pages=use_pages,
             ),
             # Right side: navbar + content (full width minus sidebar)

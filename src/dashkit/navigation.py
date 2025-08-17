@@ -39,7 +39,7 @@ class SidebarNavigation(BaseNavigationBar):
         """Create a sidebar navigation item."""
         return IconButton(icon, label, active=active, href=href)
 
-    def create_collapsible_nav_item(self, icon, label, children, expanded=False, nav_item_id=None):
+    def create_collapsible_nav_item(self, icon, label, children, expanded=False, nav_item_id=None, href=None):
         """Create a collapsible navigation item with children."""
         if nav_item_id is None:
             nav_item_id = f"nav-item-{label.lower().replace(' ', '-')}"

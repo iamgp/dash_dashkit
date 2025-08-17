@@ -195,21 +195,26 @@ def create_sidebar(
             expanded: bool = _page.get("sidebar_expanded", True)
             order = _page.get("sidebar_order", _page.get("order", 0))
             is_collapsible = _page.get("sidebar_collapsible", False)
+            is_container_only = _page.get("sidebar_container_only", False)
             
 
             # Compose page info  
             icon_value = _page.get("icon", "circle")
-            print(f"Page {_page.get('title')}: icon = '{icon_value}'")
+            print(f"Page {_page.get('title')}: icon = '{icon_value}', container_only = {is_container_only}")
+            
+            page_type = "virtual_container" if is_container_only else "nav_item"
+            page_href = None if is_container_only else _page.get("path")
+            
             page_info = {
-                "type": "nav_item", 
+                "type": page_type, 
                 "icon": icon_value,
                 "label": _page.get("name") or _page.get("title") or _page.get("path"),
-                "href": _page.get("path"),
+                "href": page_href,
                 "order": order,
                 "section": section_name,
                 "parent": parent_name,
                 "expanded": expanded,
-                "collapsible": is_collapsible,
+                "collapsible": is_collapsible or is_container_only,  # Containers are always collapsible
                 "children": []
             }
             
@@ -264,8 +269,8 @@ def create_sidebar(
             
             section_items = []
             for item in top_level_items:
-                if item["children"]:
-                    # Create collapsible nav item
+                if item["children"] or item.get("type") == "virtual_container":
+                    # Create collapsible nav item (for both regular items with children and virtual containers)
                     children_data = []
                     for child in sorted(item["children"], key=lambda c: (_safe_order(c.get("order")), str(c.get("label", "")))):
                         children_data.append({
@@ -276,13 +281,27 @@ def create_sidebar(
                         })
                     
                     nav_item_id = f"nav-item-{item['label'].lower().replace(' ', '-')}"
-                    collapsible_item = nav.create_collapsible_nav_item(
-                        item["icon"],
-                        item["label"],
-                        children_data,
-                        expanded=item["expanded"],
-                        nav_item_id=nav_item_id
-                    )
+                    
+                    # For virtual containers, we don't provide an href (non-clickable)
+                    if item.get("type") == "virtual_container":
+                        collapsible_item = nav.create_collapsible_nav_item(
+                            item["icon"],
+                            item["label"],
+                            children_data,
+                            expanded=item["expanded"],
+                            nav_item_id=nav_item_id,
+                            href=None  # Virtual containers are not clickable
+                        )
+                    else:
+                        collapsible_item = nav.create_collapsible_nav_item(
+                            item["icon"],
+                            item["label"],
+                            children_data,
+                            expanded=item["expanded"],
+                            nav_item_id=nav_item_id,
+                            href=item.get("href")
+                        )
+                    
                     section_items.append(collapsible_item)
                     _register_nav_item_callback(nav_item_id)
                 else:

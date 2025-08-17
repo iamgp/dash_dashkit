@@ -32,44 +32,6 @@ setup_app(app)
 sidebar_config = {
     "brand_name": "Rhinoe",
     "brand_initial": "R",
-    "nav_items": [
-        {"icon": "bolt", "label": "Quick actions"},
-        {"icon": "bell", "label": "Notifications"},
-        {"icon": "list-check", "label": "Tasks"},
-        {"icon": "note", "label": "Notes"},
-        {"icon": "mail", "label": "Emails"},
-        {"icon": "phone", "label": "Calls"},
-        {"icon": "chart-bar", "label": "Reports"},
-        {
-            "type": "collapsible",
-            "icon": "play",
-            "label": "Automations",
-            "expanded": True,
-            "children": [
-                {"icon": "list", "label": "Sequences", "href": "/sequences"},
-                {"icon": "settings", "label": "Workflows", "href": "/workflows"},
-            ],
-        },
-    ],
-    "sections": [
-        {"title": "Favorites", "items": ["No favorites"], "expanded": True},
-        {
-            "title": "Records",
-            "items": [
-                {
-                    "type": "nav_item",
-                    "icon": "building-2",
-                    "label": "Companies",
-                    "href": "/",
-                },
-                {"type": "nav_item", "icon": "users", "label": "People"},
-            ],
-        },
-        {
-            "title": "Lists",
-            "items": [{"type": "button", "icon": "plus", "label": "New list"}],
-        },
-    ],
 }
 
 
