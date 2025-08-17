@@ -78,7 +78,7 @@ def IconButton(icon, children=None, active=False, onClick=None, className="", **
     # Check if icon already has a prefix (contains ':')
     icon_name = icon if ":" in icon else f"mynaui:{icon}"
     button_children = [
-        dash_iconify.DashIconify(icon=icon_name, width=16, className="mr-2")
+        dash_iconify.DashIconify(icon=icon_name, width=16, className="mr-2 text-dashkit-icon-light dark:text-dashkit-icon-dark")
     ]
 
     if children:

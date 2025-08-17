@@ -60,13 +60,13 @@ class SidebarNavigation(BaseNavigationBar):
                         dash_iconify.DashIconify(
                             icon=icon if ":" in icon else f"mynaui:{icon}",
                             width=16,
-                            className="mr-2",
+                            className="mr-2 text-dashkit-icon-light dark:text-dashkit-icon-dark",
                         ),
                         html.Span(label, className="flex-1"),
                         dash_iconify.DashIconify(
                             icon=f"mynaui:{chevron}",
                             width=12,
-                            className="ml-auto text-gray-400 transition-transform duration-200",
+                            className="ml-auto text-dashkit-icon-light dark:text-dashkit-icon-dark transition-transform duration-200",
                             id=chevron_id,
                         ),
                     ],
@@ -86,17 +86,9 @@ class SidebarNavigation(BaseNavigationBar):
                 # Create the connecting line structure
                 line_container = html.Div(
                     [
-                        # Vertical line from parent
+                        # Vertical line - show for all items with adequate height
                         html.Div(
-                            className="absolute left-4 top-0 w-px h-4 bg-gray-300 dark:bg-gray-600"
-                        ),
-                        # Horizontal line to item
-                        html.Div(
-                            className="absolute left-4 top-4 w-4 h-px bg-gray-300 dark:bg-gray-600"
-                        ),
-                        # Vertical continuation line (except for last item)
-                        html.Div(
-                            className=f"absolute left-4 top-4 w-px h-6 bg-gray-300 dark:bg-gray-600 {'hidden' if is_last else ''}"
+                            className=f"absolute left-4 top-0 w-px bg-dashkit-connector-light dark:bg-dashkit-connector-dark {'h-8' if is_last else 'h-full'}"
                         ),
                         # The actual nav item
                         html.Div(
@@ -109,7 +101,7 @@ class SidebarNavigation(BaseNavigationBar):
                             className="ml-8",
                         ),
                     ],
-                    className="relative py-1",
+                    className="relative",
                 )
 
                 children_items.append(line_container)
@@ -117,7 +109,7 @@ class SidebarNavigation(BaseNavigationBar):
         children_container = html.Ul(
             children_items,
             id=content_id,
-            className=f"ml-2 {'block' if expanded else 'hidden'}",
+            className=f"ml-2 space-y-0 {'block' if expanded else 'hidden'}",
         )
 
         return html.Li([main_item, children_container], className="", id=nav_item_id)
@@ -139,7 +131,7 @@ class SidebarNavigation(BaseNavigationBar):
                 dash_iconify.DashIconify(
                     icon=f"mynaui:{chevron}",
                     width=12,
-                    className="mr-2 text-gray-400 transition-transform duration-200",
+                    className="mr-2 text-dashkit-icon-light dark:text-dashkit-icon-dark transition-transform duration-200",
                     id=chevron_id,
                 ),
                 html.Span(
