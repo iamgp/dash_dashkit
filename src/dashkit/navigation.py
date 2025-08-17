@@ -165,7 +165,7 @@ class SidebarNavigation(BaseNavigationBar):
             className=f"mt-px space-y-px {'block' if expanded else 'hidden'}",
         )
 
-        return html.Li([header, content], className="mb-2", id=section_id)
+        return html.Li([header, content], className="mb-6", id=section_id)
 
     def render(self, nav_items, sections=None):
         """Render sidebar navigation with items and sections."""
@@ -177,16 +177,7 @@ class SidebarNavigation(BaseNavigationBar):
 
         # Add sections
         if sections:
-            for idx, section in enumerate(sections):
-                # Add separator only before subsequent sections (not before the first)
-                if idx > 0:
-                    all_items.append(
-                        html.Li(
-                            html.Hr(
-                                className="my-3 border-gray-200 dark:border-dashkit-border-dark"
-                            )
-                        )
-                    )
+            for section in sections:
                 all_items.append(section)
 
         return html.Nav(

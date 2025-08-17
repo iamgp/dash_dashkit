@@ -436,14 +436,23 @@ def create_sidebar(
             item.get("expanded", True) for item in top_level_items
         )
 
-        rendered_section = nav.create_section(
-            section_title,
-            section_items,
-            expanded=section_expanded,
-            section_id=section_id,
-        )
-        rendered_sections.append(rendered_section)
-        _register_section_callback(section_id)
+        # For "Main" section, add items directly without section header
+        if section_title.lower() == "main":
+            rendered_sections.extend(section_items)
+            # Add spacer after main section items
+            if section_items:
+                rendered_sections.append(html.Li(html.Div(className="h-3")))
+        else:
+            rendered_section = nav.create_section(
+                section_title,
+                section_items,
+                expanded=section_expanded,
+                section_id=section_id,
+            )
+            rendered_sections.append(rendered_section)
+            # Add spacer after each section
+            rendered_sections.append(html.Li(html.Div(className="h-3")))
+            _register_section_callback(section_id)
 
     sidebar_content = html.Div(
         [
@@ -451,7 +460,7 @@ def create_sidebar(
             # Navigation sections from folder structure
             SidebarNavigation().render([], rendered_sections),
         ],
-        className="bg-dashkit-panel-light dark:bg-dashkit-panel-dark w-64 h-screen border-r border-dashkit-border-light dark:border-dashkit-border-dark flex flex-col shrink-0",
+        className="bg-dashkit-panel-light dark:bg-dashkit-panel-dark w-[var(--dashkit-sidebar-width)] h-screen border-r border-dashkit-border-light dark:border-dashkit-border-dark flex flex-col shrink-0",
     )
 
     # Register callback to handle active states

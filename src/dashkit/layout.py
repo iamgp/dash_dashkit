@@ -73,7 +73,7 @@ def create_layout(
                             html.Div(
                                 [content],
                                 style={
-                                    "maxWidth": "calc(100vw - 16rem)",
+                                    "maxWidth": "calc(100vw - var(--dashkit-sidebar-width))",
                                     "width": "100%",
                                 },
                                 className="",

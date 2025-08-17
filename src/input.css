@@ -26,6 +26,7 @@
     --color-dashkit-icon-dark: #a2a4a7;
     --color-dashkit-connector-light: #e9e9ea;
     --color-dashkit-connector-dark: #292b2e;
+    --dashkit-sidebar-width: 14rem;
 }
 
 @layer base {
@@ -95,7 +96,6 @@
         min-width: 16px;
         max-width: 16px;
     }
-
 }
 
 /* Handsontable theme overrides */
