@@ -10,9 +10,7 @@ dash.register_page(
     __name__, 
     path="/pcr", 
     title="PCR", 
-    icon="mynaui:dna",
-    sidebar_section="PCR",
-    sidebar_expanded=True
+    icon="dna"
 )
 
 layout = html.Div([

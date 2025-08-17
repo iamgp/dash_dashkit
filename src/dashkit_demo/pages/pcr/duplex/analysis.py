@@ -10,10 +10,7 @@ dash.register_page(
     __name__, 
     path="/pcr/duplex/analysis", 
     title="Analysis", 
-    icon="mynaui:chart-line",
-    sidebar_section="PCR",
-    sidebar_parent="Duplex",
-    sidebar_expanded=True
+    icon="chart-line"
 )
 
 layout = html.Div([

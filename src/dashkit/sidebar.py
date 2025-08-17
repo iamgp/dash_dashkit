@@ -190,8 +190,34 @@ def create_sidebar(
             if _page.get("sidebar_visible", True) is False:
                 continue
 
-            section_name: str = _page.get("sidebar_section", "Main")
-            parent_name: str | None = _page.get("sidebar_parent")
+            # Extract hierarchy from module path if not explicitly set
+            module_path = _page.get("module", "")
+            path_parts = module_path.split(".")
+            
+            # Auto-infer section and parent from folder structure
+            # Example: "dashkit_demo.pages.pcr.duplex.analysis" -> section="PCR", parent="Duplex"
+            if "pages" in path_parts:
+                pages_index = path_parts.index("pages")
+                folder_parts = path_parts[pages_index + 1:]  # Get parts after "pages"
+                
+                # Default values
+                auto_section = "Main"
+                auto_parent = None
+                
+                if len(folder_parts) >= 2:  # e.g., ["pcr", "analysis"]
+                    auto_section = folder_parts[0].upper()  # "pcr" -> "PCR"
+                    
+                if len(folder_parts) >= 3:  # e.g., ["pcr", "duplex", "analysis"]
+                    auto_parent = folder_parts[-2].title()  # "duplex" -> "Duplex"
+                    
+                # Use auto-inferred values if not explicitly set
+                section_name: str = _page.get("sidebar_section", auto_section)
+                parent_name: str | None = _page.get("sidebar_parent", auto_parent)
+            else:
+                # Fallback to explicit or default values
+                section_name: str = _page.get("sidebar_section", "Main")
+                parent_name: str | None = _page.get("sidebar_parent")
+
             expanded: bool = _page.get("sidebar_expanded", True)
             order = _page.get("sidebar_order", _page.get("order", 0))
             is_collapsible = _page.get("sidebar_collapsible", False)
@@ -200,7 +226,7 @@ def create_sidebar(
 
             # Compose page info  
             icon_value = _page.get("icon", "circle")
-            print(f"Page {_page.get('title')}: icon = '{icon_value}', container_only = {is_container_only}")
+            print(f"Page {_page.get('title')}: icon = '{icon_value}', container_only = {is_container_only}, section = '{section_name}', parent = '{parent_name}'")
             
             page_type = "virtual_container" if is_container_only else "nav_item"
             page_href = None if is_container_only else _page.get("path")
@@ -224,6 +250,39 @@ def create_sidebar(
             if section_name not in pages_by_section:
                 pages_by_section[section_name] = []
             pages_by_section[section_name].append(page_info)
+
+        # Auto-create missing parent containers based on folder structure
+        missing_containers = set()
+        for page_info in all_pages.values():
+            if page_info["parent"] and page_info["parent"] not in all_pages:
+                missing_containers.add((page_info["parent"], page_info["section"]))
+        
+        for container_name, section_name in missing_containers:
+            print(f"Auto-creating container: {container_name} in section {section_name}")
+            
+            # Determine icon based on container name
+            container_icon = "folder"  # Default
+            if container_name.lower() == "duplex":
+                container_icon = "two-circles"
+            
+            container_info = {
+                "type": "virtual_container",
+                "icon": container_icon,
+                "label": container_name,
+                "href": None,
+                "order": 0,  # Default order for auto-created containers
+                "section": section_name,
+                "parent": None,  # Auto-created containers are top-level in their section
+                "expanded": True,
+                "collapsible": True,
+                "children": []
+            }
+            
+            all_pages[container_name] = container_info
+            
+            if section_name not in pages_by_section:
+                pages_by_section[section_name] = []
+            pages_by_section[section_name].append(container_info)
 
         # Second pass: build hierarchy by connecting children to parents
         for section_name, pages in pages_by_section.items():

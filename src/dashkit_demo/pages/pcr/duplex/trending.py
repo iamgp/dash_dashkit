@@ -10,10 +10,7 @@ dash.register_page(
     __name__, 
     path="/pcr/duplex/trending", 
     title="Trending", 
-    icon="mynaui:trending-up",
-    sidebar_section="PCR",
-    sidebar_parent="Duplex",
-    sidebar_expanded=True
+    icon="trending-up"
 )
 
 layout = html.Div([
