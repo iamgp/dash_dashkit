@@ -11,21 +11,21 @@ def create_theme_toggle() -> html.Div:
                     html.Button(
                         html.I(className="fas fa-desktop text-xs"),
                         id="theme-system",
-                        className="inline-flex items-center justify-center w-8 h-8 bg-blue-600 text-white font-semibold rounded-l-lg",
+                        className="inline-flex items-center justify-center w-8 h-6 bg-dashkit-hover-light dark:bg-dashkit-hover-dark text-dashkit-text dark:text-dashkit-text-invert font-semibold rounded-l-lg",
                         title="System theme",
                     ),
                     # Light theme option
                     html.Button(
                         html.I(className="fas fa-sun text-xs"),
                         id="theme-light",
-                        className="inline-flex items-center justify-center w-8 h-8 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-semibold hover:bg-gray-300 dark:hover:bg-gray-600",
+                        className="inline-flex items-center justify-center w-8 h-6 bg-dashkit-hover-light dark:bg-dashkit-hover-dark text-dashkit-text dark:text-dashkit-text-invert font-semibold",
                         title="Light theme",
                     ),
                     # Dark theme option
                     html.Button(
                         html.I(className="fas fa-moon text-xs"),
                         id="theme-dark",
-                        className="inline-flex items-center justify-center w-8 h-8 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-semibold rounded-r-lg hover:bg-gray-300 dark:hover:bg-gray-600",
+                        className="inline-flex items-center justify-center w-8 h-6 bg-dashkit-hover-light dark:bg-dashkit-hover-dark text-dashkit-text dark:text-dashkit-text-invert font-semibold rounded-r-lg",
                         title="Dark theme",
                     ),
                 ],
@@ -181,7 +181,7 @@ class ThemeManager(html.Div):
 
         # Update button states based on current theme
         clientside_callback(
-            """
+            r"""
             function(data) {
                 const theme = data && data.theme ? data.theme : 'system';
                 console.log('Clientside callback - Updating theme buttons for:', theme);
@@ -192,8 +192,8 @@ class ThemeManager(html.Div):
                 const darkBtn = document.getElementById('theme-dark');
 
                 // Define active and inactive styles
-                const activeClasses = 'bg-blue-600 text-white';
-                const inactiveClasses = 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600';
+                const activeClasses = 'bg-dashkit-panel-light dark:bg-dashkit-panel-dark text-dashkit-text dark:text-dashkit-text-invert';
+                const inactiveClasses = 'bg-dashkit-hover-light dark:bg-dashkit-hover-dark text-dashkit-text dark:text-dashkit-text-invert';
 
                 // Reset all buttons to inactive state
                 [systemBtn, lightBtn, darkBtn].forEach(btn => {

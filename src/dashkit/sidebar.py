@@ -193,7 +193,6 @@ def create_sidebar(
     all_pages: dict[str, dict[str, Any]] = {}
 
     for _page in page_registry.values():
-        _page.get("supplied", {}) or {}
 
         # visibility
         if _page.get("sidebar_visible", True) is False:
@@ -220,12 +219,12 @@ def create_sidebar(
                 auto_parent = folder_parts[-2].title()  # "duplex" -> "Duplex"
 
             # Use auto-inferred values if not explicitly set
-            section_name: str = _page.get("sidebar_section", auto_section)
-            parent_name: str | None = _page.get("sidebar_parent", auto_parent)
+            section_name = _page.get("sidebar_section", auto_section)
+            parent_name = _page.get("sidebar_parent", auto_parent)
         else:
             # Fallback to explicit or default values
-            section_name: str = _page.get("sidebar_section", "Main")
-            parent_name: str | None = _page.get("sidebar_parent")
+            section_name = _page.get("sidebar_section", "Main")
+            parent_name = _page.get("sidebar_parent")
 
         expanded: bool = _page.get("sidebar_expanded", True)
         order = _page.get("sidebar_order", _page.get("order", 0))
@@ -357,96 +356,94 @@ def create_sidebar(
             except Exception:
                 return 0
 
-        # Third pass: render sections with hierarchy
-        rendered_sections = []
-        for section_title, pages in sorted(pages_by_section.items()):
-            # Only include top-level items (those without parents)
-            # But exclude items that are just section containers (same name as section)
-            top_level_items = []
-            for p in pages:
-                if not p["parent"]:
-                    # Skip pages that are just section containers (same name as section)
-                    if p["label"].lower() == section_title.lower():
-                        continue
-                    else:
-                        # Regular top-level page
-                        top_level_items.append(p)
-
-            # Sort top-level items
-            top_level_items.sort(
-                key=lambda it: (_safe_order(it.get("order")), str(it.get("label", "")))
-            )
-
-            section_items = []
-            for item in top_level_items:
-                if item["children"] or item.get("type") == "virtual_container":
-                    # Create collapsible nav item (for both regular items with children and virtual containers)
-                    children_data = []
-                    for child in sorted(
-                        item["children"],
-                        key=lambda c: (
-                            _safe_order(c.get("order")),
-                            str(c.get("label", "")),
-                        ),
-                    ):
-                        children_data.append(
-                            {
-                                "icon": child["icon"],
-                                "label": child["label"],
-                                "href": child["href"],
-                                "active": False,
-                            }
-                        )
-
-                    nav_item_id = f"nav-item-{item['label'].lower().replace(' ', '-')}"
-
-                    # For virtual containers, we don't provide an href (non-clickable)
-                    if item.get("type") == "virtual_container":
-                        collapsible_item = nav.create_collapsible_nav_item(
-                            item["icon"],
-                            item["label"],
-                            children_data,
-                            expanded=item["expanded"],
-                            nav_item_id=nav_item_id,
-                            href=None,  # Virtual containers are not clickable
-                        )
-                    else:
-                        collapsible_item = nav.create_collapsible_nav_item(
-                            item["icon"],
-                            item["label"],
-                            children_data,
-                            expanded=item["expanded"],
-                            nav_item_id=nav_item_id,
-                            href=item.get("href"),
-                        )
-
-                    section_items.append(collapsible_item)
-                    _register_nav_item_callback(nav_item_id)
+    # Third pass: render sections with hierarchy
+    rendered_sections = []
+    for section_title, pages in sorted(pages_by_section.items()):
+        # Only include top-level items (those without parents)
+        # But exclude items that are just section containers (same name as section)
+        top_level_items = []
+        for p in pages:
+            if not p["parent"]:
+                # Skip pages that are just section containers (same name as section)
+                if p["label"].lower() == section_title.lower():
+                    continue
                 else:
-                    # Regular nav item
-                    regular_item = nav.create_nav_item(
+                    # Regular top-level page
+                    top_level_items.append(p)
+
+        # Sort top-level items
+        def _sort_key(it: dict[str, Any]) -> tuple[int, str]:
+            return (_safe_order(it.get("order")), str(it.get("label", "")))
+        
+        top_level_items.sort(key=_sort_key)
+
+        section_items = []
+        for item in top_level_items:
+            if item["children"] or item.get("type") == "virtual_container":
+                # Create collapsible nav item (for both regular items with children and virtual containers)
+                children_data = []
+                def _child_sort_key(c: dict[str, Any]) -> tuple[int, str]:
+                    return (_safe_order(c.get("order")), str(c.get("label", "")))
+                
+                for child in sorted(item["children"], key=_child_sort_key):
+                    children_data.append(
+                        {
+                            "icon": child["icon"],
+                            "label": child["label"],
+                            "href": child["href"],
+                            "active": False,
+                        }
+                    )
+
+                nav_item_id = f"nav-item-{item['label'].lower().replace(' ', '-')}"
+
+                # For virtual containers, we don't provide an href (non-clickable)
+                if item.get("type") == "virtual_container":
+                    collapsible_item = nav.create_collapsible_nav_item(
                         item["icon"],
                         item["label"],
-                        href=item.get("href", "#"),
-                        active=False,
+                        children_data,
+                        expanded=item["expanded"],
+                        nav_item_id=nav_item_id,
+                        href=None,  # Virtual containers are not clickable
                     )
-                    section_items.append(regular_item)
+                else:
+                    collapsible_item = nav.create_collapsible_nav_item(
+                        item["icon"],
+                        item["label"],
+                        children_data,
+                        expanded=item["expanded"],
+                        nav_item_id=nav_item_id,
+                        href=item.get("href"),
+                    )
 
-            section_id = f"sidebar-section-{section_title.lower().replace(' ', '-')}"
+                section_items.append(collapsible_item)
+                _register_nav_item_callback(nav_item_id)
+            else:
+                # Regular nav item
+                regular_item = nav.create_nav_item(
+                    item["icon"],
+                    item["label"],
+                    href=item.get("href", "#"),
+                    active=False,
+                )
+                section_items.append(regular_item)
 
-            # Check if any top-level item has expanded=True to determine section expansion
-            section_expanded = any(
-                item.get("expanded", True) for item in top_level_items
-            )
+        section_id = f"sidebar-section-{section_title.lower().replace(' ', '-')}"
 
-            rendered_section = nav.create_section(
-                section_title,
-                section_items,
-                expanded=section_expanded,
-                section_id=section_id,
-            )
-            rendered_sections.append(rendered_section)
-            _register_section_callback(section_id)
+        # Check if any top-level item has expanded=True to determine section expansion
+        section_expanded = any(
+            item.get("expanded", True) for item in top_level_items
+        )
+
+        rendered_section = nav.create_section(
+            section_title,
+            section_items,
+            expanded=section_expanded,
+            section_id=section_id,
+        )
+        rendered_sections.append(rendered_section)
+        _register_section_callback(section_id)
 
     sidebar_content = html.Div(
         [

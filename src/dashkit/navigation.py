@@ -37,7 +37,9 @@ class SidebarNavigation(BaseNavigationBar):
 
     def create_nav_item(self, icon, label, href="#", active=False):
         """Create a sidebar navigation item."""
-        return html.Li(IconButton(icon, label, active=active, href=href), className="mb-px")
+        return html.Li(
+            IconButton(icon, label, active=active, href=href), className="mb-px"
+        )
 
     def create_collapsible_nav_item(
         self, icon, label, children, expanded=False, nav_item_id=None, href=None

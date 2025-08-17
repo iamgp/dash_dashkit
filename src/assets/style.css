@@ -26,6 +26,8 @@
     --color-gray-500: oklch(55.1% 0.027 264.364);
     --color-gray-600: oklch(44.6% 0.03 256.802);
     --color-gray-700: oklch(37.3% 0.034 259.733);
+    --color-gray-800: oklch(27.8% 0.033 256.848);
+    --color-gray-900: oklch(21% 0.034 264.665);
     --color-white: #fff;
     --spacing: 0.25rem;
     --text-xs: 0.75rem;
@@ -911,9 +913,6 @@
   .mb-px {
     margin-bottom: 1px;
   }
-  .ml-1 {
-    margin-left: calc(var(--spacing) * 1);
-  }
   .ml-2 {
     margin-left: calc(var(--spacing) * 2);
   }
@@ -949,9 +948,6 @@
   }
   .h-6 {
     height: calc(var(--spacing) * 6);
-  }
-  .h-8 {
-    height: calc(var(--spacing) * 8);
   }
   .h-12 {
     height: calc(var(--spacing) * 12);
@@ -1054,25 +1050,13 @@
     border-top-left-radius: var(--radius-lg);
     border-bottom-left-radius: var(--radius-lg);
   }
-  .rounded-l-md {
-    border-top-left-radius: var(--radius-md);
-    border-bottom-left-radius: var(--radius-md);
-  }
   .rounded-r-lg {
     border-top-right-radius: var(--radius-lg);
     border-bottom-right-radius: var(--radius-lg);
   }
-  .rounded-r-md {
-    border-top-right-radius: var(--radius-md);
-    border-bottom-right-radius: var(--radius-md);
-  }
   .border {
     border-style: var(--tw-border-style);
     border-width: 1px;
-  }
-  .border-t {
-    border-top-style: var(--tw-border-style);
-    border-top-width: 1px;
   }
   .border-r {
     border-right-style: var(--tw-border-style);
@@ -1088,14 +1072,8 @@
   .border-gray-200 {
     border-color: var(--color-gray-200);
   }
-  .border-gray-300 {
-    border-color: var(--color-gray-300);
-  }
   .bg-blue-50 {
     background-color: var(--color-blue-50);
-  }
-  .bg-blue-100 {
-    background-color: var(--color-blue-100);
   }
   .bg-blue-600 {
     background-color: var(--color-blue-600);
@@ -1103,14 +1081,14 @@
   .bg-dashkit-connector-light {
     background-color: var(--color-dashkit-connector-light);
   }
+  .bg-dashkit-hover-light {
+    background-color: var(--color-dashkit-hover-light);
+  }
   .bg-dashkit-panel-light {
     background-color: var(--color-dashkit-panel-light);
   }
   .bg-gray-50 {
     background-color: var(--color-gray-50);
-  }
-  .bg-gray-200 {
-    background-color: var(--color-gray-200);
   }
   .bg-green-50 {
     background-color: var(--color-green-50);
@@ -1123,9 +1101,6 @@
   }
   .p-1 {
     padding: calc(var(--spacing) * 1);
-  }
-  .p-2 {
-    padding: calc(var(--spacing) * 2);
   }
   .p-4 {
     padding: calc(var(--spacing) * 4);
@@ -1141,9 +1116,6 @@
   }
   .px-2 {
     padding-inline: calc(var(--spacing) * 2);
-  }
-  .px-3 {
-    padding-inline: calc(var(--spacing) * 3);
   }
   .px-6 {
     padding-inline: calc(var(--spacing) * 6);
@@ -1211,9 +1183,6 @@
     --tw-font-weight: var(--font-weight-semibold);
     font-weight: var(--font-weight-semibold);
   }
-  .text-blue-800 {
-    color: var(--color-blue-800);
-  }
   .text-dashkit-icon-light {
     color: var(--color-dashkit-icon-light);
   }
@@ -1228,9 +1197,6 @@
   }
   .text-gray-600 {
     color: var(--color-gray-600);
-  }
-  .text-gray-700 {
-    color: var(--color-gray-700);
   }
   .text-green-600 {
     color: var(--color-green-600);
@@ -1269,38 +1235,19 @@
       }
     }
   }
-  .hover\:bg-gray-50 {
-    &:hover {
-      @media (hover: hover) {
-        background-color: var(--color-gray-50);
-      }
-    }
-  }
-  .hover\:bg-gray-300 {
-    &:hover {
-      @media (hover: hover) {
-        background-color: var(--color-gray-300);
-      }
-    }
-  }
   .dark\:border-dashkit-border-dark {
     &:where(.dark, .dark *) {
       border-color: var(--color-dashkit-border-dark);
     }
   }
-  .dark\:border-gray-600 {
-    &:where(.dark, .dark *) {
-      border-color: var(--color-gray-600);
-    }
-  }
-  .dark\:bg-blue-900 {
-    &:where(.dark, .dark *) {
-      background-color: var(--color-blue-900);
-    }
-  }
   .dark\:bg-dashkit-connector-dark {
     &:where(.dark, .dark *) {
       background-color: var(--color-dashkit-connector-dark);
+    }
+  }
+  .dark\:bg-dashkit-hover-dark {
+    &:where(.dark, .dark *) {
+      background-color: var(--color-dashkit-hover-dark);
     }
   }
   .dark\:bg-dashkit-panel-dark {
@@ -1311,16 +1258,6 @@
   .dark\:bg-dashkit-surface {
     &:where(.dark, .dark *) {
       background-color: var(--color-dashkit-surface);
-    }
-  }
-  .dark\:bg-gray-700 {
-    &:where(.dark, .dark *) {
-      background-color: var(--color-gray-700);
-    }
-  }
-  .dark\:text-blue-200 {
-    &:where(.dark, .dark *) {
-      color: var(--color-blue-200);
     }
   }
   .dark\:text-dashkit-icon-dark {
@@ -1370,15 +1307,6 @@
       &:hover {
         @media (hover: hover) {
           background-color: var(--color-dashkit-hover-dark);
-        }
-      }
-    }
-  }
-  .dark\:hover\:bg-gray-600 {
-    &:where(.dark, .dark *) {
-      &:hover {
-        @media (hover: hover) {
-          background-color: var(--color-gray-600);
         }
       }
     }
