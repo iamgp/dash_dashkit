@@ -1,3 +1,4 @@
+import dash_iconify
 from dash import Input, Output, State, clientside_callback, dcc, html
 
 
@@ -9,27 +10,42 @@ def create_theme_toggle() -> html.Div:
                 [
                     # System theme option
                     html.Button(
-                        html.I(className="fas fa-desktop text-xs"),
+                        dash_iconify.DashIconify(
+                            icon="mynaui:desktop",
+                            width=16,
+                            height=16,
+                            className="text-dashkit-icon-light dark:text-dashkit-icon-dark",
+                        ),
                         id="theme-system",
-                        className="inline-flex items-center justify-center w-8 h-6 bg-dashkit-hover-light dark:bg-dashkit-hover-dark text-dashkit-text dark:text-dashkit-text-invert font-semibold rounded-l-lg",
+                        className="p-1.5 rounded-md hover:bg-dashkit-hover-light dark:hover:bg-dashkit-hover-dark transition-colors duration-150 cursor-pointer",
                         title="System theme",
                     ),
                     # Light theme option
                     html.Button(
-                        html.I(className="fas fa-sun text-xs"),
+                        dash_iconify.DashIconify(
+                            icon="mynaui:sun",
+                            width=16,
+                            height=16,
+                            className="text-dashkit-icon-light dark:text-dashkit-icon-dark",
+                        ),
                         id="theme-light",
-                        className="inline-flex items-center justify-center w-8 h-6 bg-dashkit-hover-light dark:bg-dashkit-hover-dark text-dashkit-text dark:text-dashkit-text-invert font-semibold",
+                        className="p-1.5 rounded-md hover:bg-dashkit-hover-light dark:hover:bg-dashkit-hover-dark transition-colors duration-150 cursor-pointer",
                         title="Light theme",
                     ),
                     # Dark theme option
                     html.Button(
-                        html.I(className="fas fa-moon text-xs"),
+                        dash_iconify.DashIconify(
+                            icon="mynaui:moon-star",
+                            width=16,
+                            height=16,
+                            className="text-dashkit-icon-light dark:text-dashkit-icon-dark",
+                        ),
                         id="theme-dark",
-                        className="inline-flex items-center justify-center w-8 h-6 bg-dashkit-hover-light dark:bg-dashkit-hover-dark text-dashkit-text dark:text-dashkit-text-invert font-semibold rounded-r-lg",
+                        className="p-1.5 rounded-md hover:bg-dashkit-hover-light dark:hover:bg-dashkit-hover-dark transition-colors duration-150 cursor-pointer",
                         title="Dark theme",
                     ),
                 ],
-                className="inline-flex",
+                className="inline-flex gap-1",
             )
         ],
         id="theme-toggle-container",
@@ -192,14 +208,13 @@ class ThemeManager(html.Div):
                 const darkBtn = document.getElementById('theme-dark');
 
                 // Define active and inactive styles
-                const activeClasses = 'bg-dashkit-panel-light dark:bg-dashkit-panel-dark text-dashkit-text dark:text-dashkit-text-invert';
-                const inactiveClasses = 'bg-dashkit-hover-light dark:bg-dashkit-hover-dark text-dashkit-text dark:text-dashkit-text-invert';
+                const activeClasses = 'bg-dashkit-hover-light dark:bg-dashkit-hover-dark';
+                const inactiveClasses = '';
 
                 // Reset all buttons to inactive state
                 [systemBtn, lightBtn, darkBtn].forEach(btn => {
                     if (btn) {
-                        btn.className = btn.className.replace(/bg-\S+|text-\S+|hover:bg-\S+/g, '');
-                        btn.className += ' ' + inactiveClasses;
+                        btn.className = btn.className.replace(/\bbg-dashkit-hover-light\b|\bbg-dashkit-hover-dark\b/g, '');
                     }
                 });
 
@@ -210,7 +225,7 @@ class ThemeManager(html.Div):
                 else if (theme === 'dark') activeBtn = darkBtn;
 
                 if (activeBtn) {
-                    activeBtn.className = activeBtn.className.replace(/bg-\S+|text-\S+|hover:bg-\S+/g, '');
+                    activeBtn.className = activeBtn.className.replace(/\bbg-dashkit-hover-light\b|\bbg-dashkit-hover-dark\b/g, '');
                     activeBtn.className += ' ' + activeClasses;
                 }
 
