@@ -637,13 +637,101 @@ def create_sidebar(
             LogoSection(brand_name, brand_initial),
             # Navigation sections from folder structure
             SidebarNavigation().render([], rendered_sections),
+            # Resize handle
+            html.Div(
+                id="sidebar-resize-handle",
+                className="absolute top-0 right-0 h-full cursor-col-resize hover:bg-blue-400 transition-all duration-150 bg-transparent z-50",
+                style={"right": "-1px", "width": "2px"},
+            ),
         ],
-        className="sidebar-container bg-dashkit-panel-light dark:bg-dashkit-panel-dark w-[var(--dashkit-sidebar-width)] h-screen border-r border-dashkit-border-light dark:border-dashkit-border-dark flex flex-col shrink-0 transition-all duration-200",
+        className="sidebar-container relative bg-dashkit-panel-light dark:bg-dashkit-panel-dark w-[var(--dashkit-sidebar-width)] h-screen border-r border-dashkit-border-light dark:border-dashkit-border-dark flex flex-col shrink-0 transition-all duration-200",
+        style={"position": "relative"},
     )
 
     # Register the sidebar collapse callbacks
     _register_sidebar_collapse_callback()
     _register_header_toggle_callback()
+
+    # Register resize callback using URL as trigger
+    try:
+        url_id = "sidebar-url" if include_location else "url"
+        clientside_callback(
+            """
+            function(pathname) {
+                // Only setup resize on first load to avoid duplicate setup
+                if (window.sidebarResizeSetup) {
+                    return window.dash_clientside.no_update;
+                }
+
+                setTimeout(function() {
+                    const resizeHandle = document.getElementById('sidebar-resize-handle');
+                    const sidebar = document.querySelector('.sidebar-container');
+
+                    if (!resizeHandle || !sidebar) {
+                        console.log('Resize elements not found, retrying...');
+                        setTimeout(arguments.callee, 100);
+                        return;
+                    }
+
+                    window.sidebarResizeSetup = true;
+                    console.log('Setting up sidebar resize functionality');
+
+                    let isResizing = false;
+                    let startX = 0;
+                    let startWidth = 0;
+
+                    // Load saved width
+                    const savedWidth = localStorage.getItem('dashkit-sidebar-width');
+                    if (savedWidth) {
+                        document.documentElement.style.setProperty('--dashkit-sidebar-width', savedWidth);
+                    }
+
+                    resizeHandle.onmousedown = function(e) {
+                        console.log('Sidebar resize started');
+                        isResizing = true;
+                        startX = e.clientX;
+                        startWidth = sidebar.offsetWidth;
+                        document.body.style.cursor = 'col-resize';
+                        document.body.style.userSelect = 'none';
+                        e.preventDefault();
+                        return false;
+                    };
+
+                    document.onmousemove = function(e) {
+                        if (!isResizing) return;
+
+                        const deltaX = e.clientX - startX;
+                        const newWidth = Math.max(200, Math.min(600, startWidth + deltaX));
+                        const newWidthRem = newWidth / 16;
+
+                        document.documentElement.style.setProperty('--dashkit-sidebar-width', newWidthRem + 'rem');
+                        return false;
+                    };
+
+                    document.onmouseup = function() {
+                        if (isResizing) {
+                            console.log('Sidebar resize completed');
+                            isResizing = false;
+                            document.body.style.cursor = '';
+                            document.body.style.userSelect = '';
+
+                            const currentWidth = getComputedStyle(document.documentElement).getPropertyValue('--dashkit-sidebar-width');
+                            localStorage.setItem('dashkit-sidebar-width', currentWidth);
+                        }
+                    };
+
+                    console.log('Sidebar resize ready');
+                }, 200);
+
+                return window.dash_clientside.no_update;
+            }
+            """,
+            Output("sidebar-resize-handle", "n_clicks", allow_duplicate=True),
+            Input(url_id, "pathname"),
+            prevent_initial_call=True,
+        )
+    except Exception as e:
+        print(f"Error setting up resize: {e}")
 
     # Register callback to handle active states
     if include_location:
