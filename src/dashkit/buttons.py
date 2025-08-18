@@ -10,7 +10,11 @@ def PrimaryButton(children, icon=None, onClick=None, className="", **kwargs):
         # Check if icon already has a prefix (contains ':')
         icon_name = icon if ":" in icon else f"mynaui:{icon}"
         button_children.append(
-            dash_iconify.DashIconify(icon=icon_name, width=16, className="mr-2 align-middle inline-block w-4 h-4 shrink-0")
+            dash_iconify.DashIconify(
+                icon=icon_name,
+                width=16,
+                className="mr-2 align-middle inline-block w-4 h-4 shrink-0",
+            )
         )
 
     if isinstance(children, str):
@@ -42,7 +46,11 @@ def SecondaryButton(
         # Check if icon already has a prefix (contains ':')
         icon_name = icon if ":" in icon else f"mynaui:{icon}"
         button_children.append(
-            dash_iconify.DashIconify(icon=icon_name, width=16, className="mr-2 align-middle inline-block w-4 h-4 shrink-0")
+            dash_iconify.DashIconify(
+                icon=icon_name,
+                width=16,
+                className="mr-2 align-middle inline-block w-4 h-4 shrink-0",
+            )
         )
 
     if isinstance(children, str):
@@ -53,7 +61,9 @@ def SecondaryButton(
     if dropdown:
         button_children.append(
             dash_iconify.DashIconify(
-                icon="mynaui:chevron-down", width=16, className="ml-2 align-middle inline-block w-4 h-4 shrink-0"
+                icon="mynaui:chevron-down",
+                width=16,
+                className="ml-2 align-middle inline-block w-4 h-4 shrink-0",
             )
         )
 

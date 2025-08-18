@@ -644,7 +644,8 @@ def create_sidebar(
                 style={"right": "-1px", "width": "2px"},
             ),
         ],
-        className="sidebar-container relative bg-dashkit-panel-light dark:bg-dashkit-panel-dark w-[var(--dashkit-sidebar-width)] h-screen border-r border-dashkit-border-light dark:border-dashkit-border-dark flex flex-col shrink-0 transition-all duration-200 select-none",
+        id="sidebar-container",
+        className="sidebar-container relative bg-dashkit-panel-light dark:bg-dashkit-panel-dark w-[var(--dashkit-sidebar-width)] h-screen border-r border-dashkit-border-light dark:border-dashkit-border-dark flex flex-col shrink-0 select-none",
         style={"position": "relative"},
     )
 
@@ -658,6 +659,19 @@ def create_sidebar(
         clientside_callback(
             """
             function(pathname) {
+                // Load saved width immediately and add transition class after
+                const sidebar = document.getElementById('sidebar-container');
+                if (sidebar) {
+                    const savedWidth = localStorage.getItem('dashkit-sidebar-width');
+                    if (savedWidth) {
+                        document.documentElement.style.setProperty('--dashkit-sidebar-width', savedWidth);
+                    }
+                    // Add transition class after width is set
+                    setTimeout(function() {
+                        sidebar.classList.add('transition-all', 'duration-200');
+                    }, 50);
+                }
+
                 // Only setup resize on first load to avoid duplicate setup
                 if (window.sidebarResizeSetup) {
                     return window.dash_clientside.no_update;
@@ -680,12 +694,6 @@ def create_sidebar(
                     let startX = 0;
                     let startWidth = 0;
 
-                    // Load saved width
-                    const savedWidth = localStorage.getItem('dashkit-sidebar-width');
-                    if (savedWidth) {
-                        document.documentElement.style.setProperty('--dashkit-sidebar-width', savedWidth);
-                    }
-
                     resizeHandle.onmousedown = function(e) {
                         console.log('Sidebar resize started');
                         isResizing = true;
@@ -701,7 +709,7 @@ def create_sidebar(
                         if (!isResizing) return;
 
                         const deltaX = e.clientX - startX;
-                        const newWidth = Math.max(200, Math.min(600, startWidth + deltaX));
+                        const newWidth = Math.max(120, Math.min(600, startWidth + deltaX));
                         const newWidthRem = newWidth / 16;
 
                         document.documentElement.style.setProperty('--dashkit-sidebar-width', newWidthRem + 'rem');
