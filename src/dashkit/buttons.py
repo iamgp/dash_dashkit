@@ -87,7 +87,9 @@ def IconButton(icon, children=None, active=False, onClick=None, className="", **
 
     if children:
         if isinstance(children, str):
-            button_children.append(html.Span(children))
+            button_children.append(
+                html.Span(children, className="opacity-100 transition-all duration-200")
+            )
         else:
             button_children.extend(
                 children if isinstance(children, list) else [children]

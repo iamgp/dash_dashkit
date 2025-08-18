@@ -27,6 +27,7 @@
     --color-dashkit-connector-light: #e9e9ea;
     --color-dashkit-connector-dark: #292b2e;
     --dashkit-sidebar-width: 14rem;
+    --dashkit-sidebar-collapsed-width: 3.5rem;
 }
 
 @layer base {
@@ -95,6 +96,15 @@
         width: 16px;
         min-width: 16px;
         max-width: 16px;
+    }
+
+    /* Sidebar collapse styles */
+    .sidebar-collapsed {
+        display: none !important;
+    }
+
+    .main-content-expanded {
+        margin-left: 0 !important;
     }
 }
 

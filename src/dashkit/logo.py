@@ -1,3 +1,4 @@
+import dash_iconify
 from dash import html
 
 
@@ -16,17 +17,34 @@ def LogoSection(logo_text, logo_icon=None, logo_bg="bg-blue-600", height="h-12")
     logo_elements.append(
         html.Span(
             logo_text,
-            className="ml-3 text-md font-semibold text-dashkit-text dark:text-dashkit-text-invert",
+            className="opacity-100 transition-all duration-200 ml-3 text-md font-semibold text-dashkit-text dark:text-dashkit-text-invert",
         )
+    )
+
+    # Add collapse button
+    collapse_button = html.Button(
+        dash_iconify.DashIconify(
+            icon="mynaui:sidebar",
+            width=16,
+            height=16,
+            className="text-dashkit-icon-light dark:text-dashkit-icon-dark",
+        ),
+        id="sidebar-collapse-toggle",
+        className="ml-auto mr-2 p-1.5 rounded-md hover:bg-dashkit-hover-light dark:hover:bg-dashkit-hover-dark transition-colors duration-150 cursor-pointer",
+        title="Toggle sidebar",
     )
 
     return html.Div(
         [
             html.Div(
                 [
-                    html.Div(logo_elements, className="flex items-center px-6 py-2"),
+                    html.Div(
+                        logo_elements,
+                        className="flex items-center px-2.5 py-2",
+                    ),
+                    collapse_button,
                 ],
-                className=f"border-b border-gray-200 dark:border-dashkit-border-dark flex items-center {height}",
+                className=f"border-b border-dashkit-border-light dark:border-dashkit-border-dark flex items-center justify-between {height}",
             ),
         ]
     )
@@ -36,6 +54,20 @@ def BrandHeader(brand_name, icon=None, subtitle=None):
     """Brand header for main content areas."""
     header_content = []
 
+    # Add collapsed sidebar toggle button (hidden by default)
+    collapse_toggle = html.Button(
+        dash_iconify.DashIconify(
+            icon="mynaui:sidebar",
+            width=16,
+            height=16,
+            className="text-dashkit-icon-light dark:text-dashkit-icon-dark",
+        ),
+        id="header-sidebar-toggle",
+        className="hidden mr-3 p-1.5 rounded-md hover:bg-dashkit-hover-light dark:hover:bg-dashkit-hover-dark transition-colors duration-150 cursor-pointer",
+        title="Show sidebar",
+    )
+    header_content.append(collapse_toggle)
+
     if icon:
         header_content.append(html.Span(icon, className="mr-2"))
 
@@ -43,7 +75,7 @@ def BrandHeader(brand_name, icon=None, subtitle=None):
         html.Span(
             brand_name or "",
             id="brand-header-title",
-            className="text-sm font-[500]  text-dashkit-text dark:text-dashkit-text-invert",
+            className="text-md text-dashkit-text dark:text-dashkit-text-invert",
         )
     )
 

@@ -82,7 +82,7 @@ def create_layout(
                         className="flex-1 overflow-auto dark:bg-dashkit-surface",
                     ),
                 ],
-                className="flex-1 flex flex-col",
+                className="main-content-area flex-1 flex flex-col",
             ),
         ],
         className="flex h-screen bg-white dark:bg-dashkit-surface font-sans",

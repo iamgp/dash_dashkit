@@ -16,6 +16,112 @@ from .navigation import SidebarNavigation
 _registered_callbacks = set()
 
 
+def _register_sidebar_collapse_callback():
+    """Register a clientside callback for sidebar collapse functionality."""
+    if "sidebar-collapse" in _registered_callbacks:
+        return
+
+    try:
+        # Register callback for sidebar toggle
+        clientside_callback(
+            """
+            function(n_clicks) {
+                if (!n_clicks) return window.dash_clientside.no_update;
+
+                const sidebar = document.querySelector('.sidebar-container');
+                const mainContent = document.querySelector('.main-content-area');
+                const headerToggle = document.getElementById('header-sidebar-toggle');
+                const sidebarToggle = document.getElementById('sidebar-collapse-toggle');
+
+                if (sidebar) {
+                    const isCollapsed = sidebar.classList.contains('sidebar-collapsed');
+
+                    if (isCollapsed) {
+                        // Show sidebar
+                        sidebar.classList.remove('sidebar-collapsed');
+                        if (mainContent) {
+                            mainContent.classList.remove('main-content-expanded');
+                        }
+                        if (headerToggle) {
+                            headerToggle.classList.add('hidden');
+                        }
+                        if (sidebarToggle) {
+                            sidebarToggle.classList.remove('hidden');
+                        }
+                    } else {
+                        // Hide sidebar
+                        sidebar.classList.add('sidebar-collapsed');
+                        if (mainContent) {
+                            mainContent.classList.add('main-content-expanded');
+                        }
+                        if (headerToggle) {
+                            headerToggle.classList.remove('hidden');
+                        }
+                        if (sidebarToggle) {
+                            sidebarToggle.classList.add('hidden');
+                        }
+                    }
+                }
+
+                return window.dash_clientside.no_update;
+            }
+            """,
+            Output("sidebar-collapse-toggle", "n_clicks", allow_duplicate=True),
+            Input("sidebar-collapse-toggle", "n_clicks"),
+            prevent_initial_call=True,
+        )
+
+        _registered_callbacks.add("sidebar-collapse")
+    except Exception:
+        # Callback might already be registered, skip silently
+        pass
+
+
+def _register_header_toggle_callback():
+    """Register a clientside callback for header sidebar toggle functionality."""
+    if "header-toggle" in _registered_callbacks:
+        return
+
+    try:
+        # Register callback for header toggle
+        clientside_callback(
+            """
+            function(n_clicks) {
+                if (!n_clicks) return window.dash_clientside.no_update;
+
+                const sidebar = document.querySelector('.sidebar-container');
+                const mainContent = document.querySelector('.main-content-area');
+                const headerToggle = document.getElementById('header-sidebar-toggle');
+                const sidebarToggle = document.getElementById('sidebar-collapse-toggle');
+
+                if (sidebar) {
+                    // When header toggle is clicked, always show sidebar (it's only visible when collapsed)
+                    sidebar.classList.remove('sidebar-collapsed');
+                    if (mainContent) {
+                        mainContent.classList.remove('main-content-expanded');
+                    }
+                    if (headerToggle) {
+                        headerToggle.classList.add('hidden');
+                    }
+                    if (sidebarToggle) {
+                        sidebarToggle.classList.remove('hidden');
+                    }
+                }
+
+                return window.dash_clientside.no_update;
+            }
+            """,
+            Output("header-sidebar-toggle", "n_clicks", allow_duplicate=True),
+            Input("header-sidebar-toggle", "n_clicks"),
+            prevent_initial_call=True,
+        )
+
+        _registered_callbacks.add("header-toggle")
+    except Exception:
+        # Callback might already be registered, skip silently
+        pass
+
+
 def _register_section_callback(section_id: str):
     """Register a clientside callback for section toggle functionality."""
     # Skip if already registered
@@ -532,8 +638,12 @@ def create_sidebar(
             # Navigation sections from folder structure
             SidebarNavigation().render([], rendered_sections),
         ],
-        className="bg-dashkit-panel-light dark:bg-dashkit-panel-dark w-[var(--dashkit-sidebar-width)] h-screen border-r border-dashkit-border-light dark:border-dashkit-border-dark flex flex-col shrink-0",
+        className="sidebar-container bg-dashkit-panel-light dark:bg-dashkit-panel-dark w-[var(--dashkit-sidebar-width)] h-screen border-r border-dashkit-border-light dark:border-dashkit-border-dark flex flex-col shrink-0 transition-all duration-200",
     )
+
+    # Register the sidebar collapse callbacks
+    _register_sidebar_collapse_callback()
+    _register_header_toggle_callback()
 
     # Register callback to handle active states
     if include_location:

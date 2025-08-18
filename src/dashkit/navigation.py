@@ -64,7 +64,10 @@ class SidebarNavigation(BaseNavigationBar):
                             width=16,
                             className="mr-2 text-dashkit-icon-light dark:text-dashkit-icon-dark",
                         ),
-                        html.Span(label, className="flex-1"),
+                        html.Span(
+                            label,
+                            className="opacity-100 transition-all duration-200 flex-1",
+                        ),
                         dash_iconify.DashIconify(
                             icon=f"mynaui:{chevron}",
                             width=16,
@@ -138,7 +141,7 @@ class SidebarNavigation(BaseNavigationBar):
                 ),
                 html.Span(
                     title,
-                    className="text-sm font-medium text-gray-600 dark:text-gray-300",
+                    className="opacity-100 transition-all duration-200 text-sm font-medium text-gray-600 dark:text-gray-300",
                 ),
             ],
             id=toggle_id,
