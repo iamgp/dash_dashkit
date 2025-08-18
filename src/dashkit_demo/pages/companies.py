@@ -1,10 +1,4 @@
-# Import parent directory for components
-import sys
-from pathlib import Path
-
 import dash
-
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
 from dashkit import Table
 from dashkit_demo.demo_utils import create_company_columns, format_company_data

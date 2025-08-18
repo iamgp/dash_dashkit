@@ -1,10 +1,5 @@
-import sys
-from pathlib import Path
-
 import dash
 from dash import html
-
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
 dash.register_page(
     __name__, path="/pcr/duplex/trending", title="Trending", icon="trending-up"
