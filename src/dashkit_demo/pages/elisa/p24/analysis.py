@@ -2,7 +2,7 @@ import dash
 from dash import html
 
 dash.register_page(
-    __name__, path="/pcr/duplex/analysis", title="Analysis", icon="chart-line"
+    __name__, path="/elisa/p24/analysis", title="Analysis", icon="chart-line"
 )
 
 layout = html.Div(

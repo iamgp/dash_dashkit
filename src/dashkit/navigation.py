@@ -165,7 +165,7 @@ class SidebarNavigation(BaseNavigationBar):
             className=f"mt-px space-y-px {'block' if expanded else 'hidden'}",
         )
 
-        return html.Li([header, content], className="mb-6", id=section_id)
+        return html.Li([header, content], className="", id=section_id)
 
     def render(self, nav_items, sections=None):
         """Render sidebar navigation with items and sections."""

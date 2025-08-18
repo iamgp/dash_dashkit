@@ -2,12 +2,15 @@ import dash
 from dash import html
 
 dash.register_page(
-    __name__, path="/pcr/duplex/analysis", title="Analysis", icon="chart-line"
+    __name__,
+    path="/pcr/residuals/analysis",
+    title="Residuals Analysis",
+    icon="chart-line",
 )
 
 layout = html.Div(
     [
-        html.H1("Duplex PCR Analysis", className="text-3xl font-bold mb-6"),
+        html.H1("Residuals PCR Analysis", className="text-3xl font-bold mb-6"),
         html.P(
             "Detailed analysis of duplex PCR results and data interpretation.",
             className="text-gray-600 mb-4",

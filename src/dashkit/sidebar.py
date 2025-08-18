@@ -193,7 +193,6 @@ def create_sidebar(
     all_pages: dict[str, dict[str, Any]] = {}
 
     for _page in page_registry.values():
-
         # visibility
         if _page.get("sidebar_visible", True) is False:
             continue
@@ -233,17 +232,18 @@ def create_sidebar(
 
         # Compose page info
         icon_value = _page.get("icon", "circle")
-        print(
-            f"Page {_page.get('title')}: icon = '{icon_value}', container_only = {is_container_only}, section = '{section_name}', parent = '{parent_name}'"
-        )
 
         page_type = "virtual_container" if is_container_only else "nav_item"
         page_href = None if is_container_only else _page.get("path")
 
+        # Create unique label for dictionary key to avoid conflicts
+        base_label = _page.get("name") or _page.get("title") or _page.get("path")
+        unique_key = f"{section_name}::{parent_name or 'root'}::{base_label}"
+
         page_info = {
             "type": page_type,
             "icon": icon_value,
-            "label": _page.get("name") or _page.get("title") or _page.get("path"),
+            "label": base_label,  # Keep original label for display
             "href": page_href,
             "order": order,
             "section": section_name,
@@ -254,7 +254,7 @@ def create_sidebar(
             "children": [],
         }
 
-        all_pages[page_info["label"]] = page_info
+        all_pages[unique_key] = page_info
 
         # Group by section
         if section_name not in pages_by_section:
@@ -264,12 +264,21 @@ def create_sidebar(
     # Auto-create missing parent containers based on folder structure
     missing_containers = set()
     for page_info in all_pages.values():
-        if page_info["parent"] and page_info["parent"] not in all_pages:
-            missing_containers.add((page_info["parent"], page_info["section"]))
+        if page_info["parent"]:
+            # Check if parent container exists as a virtual container in same section
+            parent_exists = False
+            for _existing_key, existing_page in all_pages.items():
+                if (
+                    existing_page["label"] == page_info["parent"]
+                    and existing_page["section"] == page_info["section"]
+                ):
+                    parent_exists = True
+                    break
+
+            if not parent_exists:
+                missing_containers.add((page_info["parent"], page_info["section"]))
 
     for container_name, section_name in missing_containers:
-        print(f"Auto-creating container: {container_name} in section {section_name}")
-
         # Try to load container config from __init__.py file
         container_config = {}
 
@@ -298,14 +307,8 @@ def create_sidebar(
                         )
                         if hasattr(container_module, "CONTAINER_CONFIG"):
                             container_config = container_module.CONTAINER_CONFIG
-                            print(
-                                f"Loaded container config for {container_name}: {container_config}"
-                            )
                             break
-                    except (ImportError, AttributeError) as e:
-                        print(
-                            f"Could not load container config for {container_name}: {e}"
-                        )
+                    except (ImportError, AttributeError):
                         pass
 
         # Use config values or defaults
@@ -358,7 +361,77 @@ def create_sidebar(
 
     # Third pass: render sections with hierarchy
     rendered_sections = []
-    for section_title, pages in sorted(pages_by_section.items()):
+
+    # Get section order by looking for CONTAINER_CONFIG in section folders
+    section_orders = {}
+    for section_title in pages_by_section.keys():
+        section_order = 999  # Default high order
+
+        # Handle Main section specially (pages directly in pages/ folder)
+        if section_title == "Main":
+            try:
+                # Try to load config from pages/__init__.py
+                for _page in page_registry.values():
+                    module_path = _page.get("module", "")
+                    path_parts = module_path.split(".")
+
+                    if "pages" in path_parts:
+                        pages_index = path_parts.index("pages")
+                        folder_parts = path_parts[pages_index + 1 :]
+
+                        # If this is a page directly in pages/ (main section)
+                        if (
+                            len(folder_parts) == 1
+                        ):  # e.g. ["companies"] not ["pcr", "analysis"]
+                            main_module_path = ".".join(
+                                path_parts[: pages_index + 1]
+                            )  # Just "pages"
+                            main_module = __import__(
+                                main_module_path, fromlist=["CONTAINER_CONFIG"]
+                            )
+                            if hasattr(main_module, "CONTAINER_CONFIG"):
+                                main_config = main_module.CONTAINER_CONFIG
+                                section_order = main_config.get("order", 999)
+                                break
+            except (ImportError, AttributeError):
+                pass
+        else:
+            # Try to find a page in this section to get the section folder path
+            for _page in page_registry.values():
+                module_path = _page.get("module", "")
+                path_parts = module_path.split(".")
+
+                if "pages" in path_parts:
+                    pages_index = path_parts.index("pages")
+                    folder_parts = path_parts[pages_index + 1 :]
+
+                    # If this page is in the current section
+                    if len(folder_parts) >= 1:
+                        auto_section = folder_parts[0].upper()
+                        if auto_section == section_title:
+                            # Try to load section config from folder's __init__.py
+                            try:
+                                section_module_path = ".".join(
+                                    path_parts[: pages_index + 2]
+                                )  # Include pages.section
+                                section_module = __import__(
+                                    section_module_path, fromlist=["CONTAINER_CONFIG"]
+                                )
+                                if hasattr(section_module, "CONTAINER_CONFIG"):
+                                    section_config = section_module.CONTAINER_CONFIG
+                                    section_order = section_config.get("order", 999)
+                                    break
+                            except (ImportError, AttributeError):
+                                pass
+
+        section_orders[section_title] = section_order
+
+    # Sort sections by order, then alphabetically
+    def _section_sort_key(item):
+        section_title, pages = item
+        return (section_orders.get(section_title, 999), section_title)
+
+    for section_title, pages in sorted(pages_by_section.items(), key=_section_sort_key):
         # Only include top-level items (those without parents)
         # But exclude items that are just section containers (same name as section)
         top_level_items = []
@@ -374,7 +447,7 @@ def create_sidebar(
         # Sort top-level items
         def _sort_key(it: dict[str, Any]) -> tuple[int, str]:
             return (_safe_order(it.get("order")), str(it.get("label", "")))
-        
+
         top_level_items.sort(key=_sort_key)
 
         section_items = []
@@ -382,9 +455,10 @@ def create_sidebar(
             if item["children"] or item.get("type") == "virtual_container":
                 # Create collapsible nav item (for both regular items with children and virtual containers)
                 children_data = []
+
                 def _child_sort_key(c: dict[str, Any]) -> tuple[int, str]:
                     return (_safe_order(c.get("order")), str(c.get("label", "")))
-                
+
                 for child in sorted(item["children"], key=_child_sort_key):
                     children_data.append(
                         {
@@ -432,9 +506,7 @@ def create_sidebar(
         section_id = f"sidebar-section-{section_title.lower().replace(' ', '-')}"
 
         # Check if any top-level item has expanded=True to determine section expansion
-        section_expanded = any(
-            item.get("expanded", True) for item in top_level_items
-        )
+        section_expanded = any(item.get("expanded", True) for item in top_level_items)
 
         # For "Main" section, add items directly without section header
         if section_title.lower() == "main":
