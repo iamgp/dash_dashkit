@@ -28,6 +28,7 @@
     --color-dashkit-connector-dark: #292b2e;
     --dashkit-sidebar-width: 14rem;
     --dashkit-sidebar-collapsed-width: 3.5rem;
+    --tracking-sidebar: -0.28px;
 }
 
 @layer base {
@@ -43,69 +44,6 @@
 }
 
 @layer components {
-    .sidebar-item {
-        @apply flex items-center px-2 py-1 text-sm font-medium rounded-lg hover:bg-dashkit-hover-light transition-colors duration-150 dark:hover:bg-dashkit-hover-dark text-dashkit-text dark:text-dashkit-text-invert;
-        font-family: Inter;
-        font-size: 14px;
-        font-weight: 500;
-        letter-spacing: -0.28px;
-        line-height: 20px;
-        word-break: break-word;
-        text-rendering: optimizelegibility;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        margin-bottom: 1px;
-        align-items: center;
-        display: flex;
-    }
-
-    .sidebar-item.active {
-        @apply bg-dashkit-hover-light dark:bg-dashkit-hover-dark;
-    }
-
-    .active {
-        @apply bg-dashkit-hover-light dark:bg-dashkit-hover-dark;
-    }
-
-    .nav-button {
-        @apply inline-flex items-center px-3 py-1 border border-gray-200 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-150 dark:bg-dashkit-surface dark:border-dashkit-border-alt dark:text-dashkit-text-invert dark:hover:bg-dashkit-surface;
-    }
-
-    .primary-button {
-        @apply inline-flex items-center px-4 py-1.5 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-colors duration-150 dark:bg-blue-500 dark:hover:bg-blue-600;
-    }
-
-    .sidebar-hover {
-        @apply hover:bg-dashkit-hover-light dark:hover:bg-dashkit-hover-dark;
-    }
-
-    .sidebar-item svg {
-        vertical-align: middle;
-        display: inline-block;
-        width: 16px !important;
-        height: 16px !important;
-        flex-shrink: 0;
-    }
-
-    .sidebar-item > svg:first-child,
-    .sidebar-item > :first-child > svg:first-child {
-        margin-right: 8px;
-        width: 16px;
-        min-width: 16px;
-        max-width: 16px;
-    }
-
-    /* Sidebar collapse styles */
-    .sidebar-collapsed {
-        display: none !important;
-    }
-
-    .main-content-expanded {
-        margin-left: 0 !important;
-    }
 }
 
 /* Handsontable theme overrides */

@@ -62,7 +62,7 @@ class SidebarNavigation(BaseNavigationBar):
                         dash_iconify.DashIconify(
                             icon=icon if ":" in icon else f"mynaui:{icon}",
                             width=16,
-                            className="mr-2 text-dashkit-icon-light dark:text-dashkit-icon-dark",
+                            className="mr-2 text-dashkit-icon-light dark:text-dashkit-icon-dark align-middle inline-block w-4 h-4 shrink-0",
                         ),
                         html.Span(
                             label,
@@ -71,11 +71,11 @@ class SidebarNavigation(BaseNavigationBar):
                         dash_iconify.DashIconify(
                             icon=f"mynaui:{chevron}",
                             width=16,
-                            className="ml-auto text-dashkit-icon-light dark:text-dashkit-icon-dark transition-transform duration-200",
+                            className="ml-auto text-dashkit-icon-light dark:text-dashkit-icon-dark transition-transform duration-200 align-middle inline-block w-4 h-4 shrink-0",
                             id=chevron_id,
                         ),
                     ],
-                    className="sidebar-item flex items-center cursor-pointer",
+                    className="sidebar-item flex items-center px-2 py-1 text-sm font-medium rounded-lg hover:bg-dashkit-hover-light transition-colors duration-150 dark:hover:bg-dashkit-hover-dark text-dashkit-text dark:text-dashkit-text-invert cursor-pointer break-words truncate mb-px tracking-sidebar",
                     id=toggle_id,
                 )
             ],
@@ -136,7 +136,7 @@ class SidebarNavigation(BaseNavigationBar):
                 dash_iconify.DashIconify(
                     icon=f"mynaui:{chevron}",
                     width=16,
-                    className="mr-2 text-dashkit-icon-light dark:text-dashkit-icon-dark transition-transform duration-200",
+                    className="mr-2 text-dashkit-icon-light dark:text-dashkit-icon-dark transition-transform duration-200 align-middle inline-block w-4 h-4 shrink-0",
                     id=chevron_id,
                 ),
                 html.Span(

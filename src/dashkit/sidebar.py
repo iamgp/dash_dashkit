@@ -34,13 +34,13 @@ def _register_sidebar_collapse_callback():
                 const sidebarToggle = document.getElementById('sidebar-collapse-toggle');
 
                 if (sidebar) {
-                    const isCollapsed = sidebar.classList.contains('sidebar-collapsed');
+                    const isCollapsed = sidebar.classList.contains('!hidden');
 
                     if (isCollapsed) {
                         // Show sidebar
-                        sidebar.classList.remove('sidebar-collapsed');
+                        sidebar.classList.remove('!hidden');
                         if (mainContent) {
-                            mainContent.classList.remove('main-content-expanded');
+                            mainContent.classList.remove('!ml-0');
                         }
                         if (headerToggle) {
                             headerToggle.classList.add('hidden');
@@ -50,9 +50,9 @@ def _register_sidebar_collapse_callback():
                         }
                     } else {
                         // Hide sidebar
-                        sidebar.classList.add('sidebar-collapsed');
+                        sidebar.classList.add('!hidden');
                         if (mainContent) {
-                            mainContent.classList.add('main-content-expanded');
+                            mainContent.classList.add('!ml-0');
                         }
                         if (headerToggle) {
                             headerToggle.classList.remove('hidden');
@@ -96,9 +96,9 @@ def _register_header_toggle_callback():
 
                 if (sidebar) {
                     // When header toggle is clicked, always show sidebar (it's only visible when collapsed)
-                    sidebar.classList.remove('sidebar-collapsed');
+                    sidebar.classList.remove('!hidden');
                     if (mainContent) {
-                        mainContent.classList.remove('main-content-expanded');
+                        mainContent.classList.remove('!ml-0');
                     }
                     if (headerToggle) {
                         headerToggle.classList.add('hidden');
@@ -644,7 +644,7 @@ def create_sidebar(
                 style={"right": "-1px", "width": "2px"},
             ),
         ],
-        className="sidebar-container relative bg-dashkit-panel-light dark:bg-dashkit-panel-dark w-[var(--dashkit-sidebar-width)] h-screen border-r border-dashkit-border-light dark:border-dashkit-border-dark flex flex-col shrink-0 transition-all duration-200",
+        className="sidebar-container relative bg-dashkit-panel-light dark:bg-dashkit-panel-dark w-[var(--dashkit-sidebar-width)] h-screen border-r border-dashkit-border-light dark:border-dashkit-border-dark flex flex-col shrink-0 transition-all duration-200 select-none",
         style={"position": "relative"},
     )
 
