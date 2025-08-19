@@ -74,6 +74,7 @@ def layout():
                                                         showMonthLabels=True,
                                                         showWeekdayLabels=True,
                                                         showTooltips=True,
+                                                        tooltipFormat="💻 {count} commits on {dayName}, {monthName} {date}",
                                                     )
                                                 ],
                                             ),

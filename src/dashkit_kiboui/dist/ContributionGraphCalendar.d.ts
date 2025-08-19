@@ -19,6 +19,8 @@ export interface ContributionGraphCalendarProps {
     showWeekdayLabels?: boolean;
     /** Enable tooltips */
     showTooltips?: boolean;
+    /** Custom tooltip format string. Use {count}, {date}, {dayName}, {monthName}, {year} as placeholders */
+    tooltipFormat?: string;
     /** Custom CSS class */
     className?: string;
     /** Children render function or components */
@@ -35,4 +37,4 @@ export interface ContributionGraphCalendarProps {
 /**
  * ContributionGraphCalendar renders the calendar grid for contributions.
  */
-export default function ContributionGraphCalendar({ id, data, monthsToShow, blockSize, blockMargin, blockRadius, showMonthLabels, showWeekdayLabels, showTooltips, className, children, setProps }: ContributionGraphCalendarProps): import("react/jsx-runtime").JSX.Element;
+export default function ContributionGraphCalendar({ id, data, monthsToShow, blockSize, blockMargin, blockRadius, showMonthLabels, showWeekdayLabels, showTooltips, tooltipFormat, className, children, setProps }: ContributionGraphCalendarProps): import("react/jsx-runtime").JSX.Element;

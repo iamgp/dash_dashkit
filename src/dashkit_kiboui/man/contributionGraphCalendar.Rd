@@ -13,7 +13,7 @@ ContributionGraphCalendar renders the calendar grid for contributions.
 contributionGraphCalendar(children=NULL, id=NULL, blockMargin=NULL, blockRadius=NULL,
 blockSize=NULL, className=NULL, data=NULL,
 monthsToShow=NULL, showMonthLabels=NULL, showTooltips=NULL,
-showWeekdayLabels=NULL)
+showWeekdayLabels=NULL, tooltipFormat=NULL)
 }
 
 \arguments{
@@ -38,6 +38,8 @@ showWeekdayLabels=NULL)
 \item{showTooltips}{Logical | numeric | character | named list | unnamed list. Enable tooltips}
 
 \item{showWeekdayLabels}{Logical | numeric | character | named list | unnamed list. Show weekday labels}
+
+\item{tooltipFormat}{Character. Custom tooltip format string. Use {count}, {date}, {dayName}, {monthName}, {year} as placeholders}
 }
 
 \value{named list of JSON elements corresponding to React.js properties and their values}

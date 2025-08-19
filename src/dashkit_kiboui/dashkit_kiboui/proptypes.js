@@ -31,6 +31,7 @@ pk.ContributionGraphCalendar.propTypes = {id:pt.oneOfType([pt.string]),
  showMonthLabels:pt.any,
  showWeekdayLabels:pt.any,
  showTooltips:pt.any,
+ tooltipFormat:pt.oneOfType([pt.string]),
  className:pt.oneOfType([pt.string]),
  children:pt.oneOfType([pt.string,pt.number,pt.any]),
  setProps:pt.oneOfType([pt.any])};

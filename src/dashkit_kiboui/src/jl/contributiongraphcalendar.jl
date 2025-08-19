@@ -23,9 +23,10 @@ Keyword arguments:
 - `showMonthLabels` (Bool | Real | String | Dict | Array; optional): Show month labels
 - `showTooltips` (Bool | Real | String | Dict | Array; optional): Enable tooltips
 - `showWeekdayLabels` (Bool | Real | String | Dict | Array; optional): Show weekday labels
+- `tooltipFormat` (String; optional): Custom tooltip format string. Use {count}, {date}, {dayName}, {monthName}, {year} as placeholders
 """
 function contributiongraphcalendar(; kwargs...)
-        available_props = Symbol[:children, :id, :blockMargin, :blockRadius, :blockSize, :className, :data, :monthsToShow, :showMonthLabels, :showTooltips, :showWeekdayLabels]
+        available_props = Symbol[:children, :id, :blockMargin, :blockRadius, :blockSize, :className, :data, :monthsToShow, :showMonthLabels, :showTooltips, :showWeekdayLabels, :tooltipFormat]
         wild_props = Symbol[]
         return Component("contributiongraphcalendar", "ContributionGraphCalendar", "dashkit_kiboui", available_props, wild_props; kwargs...)
 end

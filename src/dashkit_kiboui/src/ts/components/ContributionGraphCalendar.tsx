@@ -20,6 +20,8 @@ export interface ContributionGraphCalendarProps {
   showWeekdayLabels?: boolean;
   /** Enable tooltips */
   showTooltips?: boolean;
+  /** Custom tooltip format string. Use {count}, {date}, {dayName}, {monthName}, {year} as placeholders */
+  tooltipFormat?: string;
   /** Custom CSS class */
   className?: string;
   /** Children render function or components */
@@ -47,6 +49,7 @@ export default function ContributionGraphCalendar({
   showMonthLabels = true,
   showWeekdayLabels = true,
   showTooltips = false,
+  tooltipFormat,
   className,
   children,
   setProps
@@ -107,6 +110,20 @@ export default function ContributionGraphCalendar({
   const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   
   const getTooltipText = (day: Date, count: number): string => {
+    if (tooltipFormat) {
+      const date = day.toISOString().split('T')[0];
+      const dayName = day.toLocaleDateString('en-US', { weekday: 'long' });
+      const monthName = day.toLocaleDateString('en-US', { month: 'long' });
+      const year = day.getFullYear();
+      
+      return tooltipFormat
+        .replace('{count}', count.toString())
+        .replace('{date}', date)
+        .replace('{dayName}', dayName)
+        .replace('{monthName}', monthName)
+        .replace('{year}', year.toString());
+    }
+    
     const dateStr = day.toLocaleDateString('en-US', { 
       weekday: 'short', 
       month: 'short', 

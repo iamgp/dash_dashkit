@@ -1,8 +1,7 @@
 # AUTO GENERATED FILE - DO NOT EDIT
 
 import typing  # noqa: F401
-from typing import Literal, NotRequired  # noqa: F401
-
+from typing_extensions import TypedDict, NotRequired, Literal # noqa: F401
 from dash.development.base_component import Component, _explicitize_args
 
 ComponentType = typing.Union[
@@ -11,7 +10,7 @@ ComponentType = typing.Union[
     float,
     Component,
     None,
-    typing.Sequence[str | int | float | Component | None],
+    typing.Sequence[typing.Union[str, int, float, Component, None]],
 ]
 
 NumberType = typing.Union[
@@ -21,105 +20,76 @@ NumberType = typing.Union[
 
 class ContributionGraphBlock(Component):
     """A ContributionGraphBlock component.
-    ContributionGraphBlock represents a single day in the contribution calendar.
+ContributionGraphBlock represents a single day in the contribution calendar.
 
-    Keyword arguments:
+Keyword arguments:
 
-    - id (string; optional):
-        The ID used to identify this component in Dash callbacks.
+- id (string; optional):
+    The ID used to identify this component in Dash callbacks.
 
-    - activity (number; default 0):
-        Activity level (0-4).
+- activity (number; default 0):
+    Activity level (0-4).
 
-    - className (string; optional):
-        Custom CSS class.
+- className (string; optional):
+    Custom CSS class.
 
-    - count (number; default 0):
-        Count of contributions.
+- count (number; default 0):
+    Count of contributions.
 
-    - date (string; optional):
-        Date string in ISO format.
+- date (string; optional):
+    Date string in ISO format.
 
-    - dayIndex (number; default 0):
-        Day index in the week (0-6).
+- dayIndex (number; default 0):
+    Day index in the week (0-6).
 
-    - margin (number; default 2):
-        Block margin in pixels.
+- margin (number; default 2):
+    Block margin in pixels.
 
-    - onClick (optional):
-        Click handler.
+- onClick (optional):
+    Click handler.
 
-    - radius (number; default 2):
-        Block border radius in pixels.
+- radius (number; default 2):
+    Block border radius in pixels.
 
-    - setProps (optional):
-        Callback used by Dash to push prop changes from the client.
+- setProps (optional):
+    Callback used by Dash to push prop changes from the client.
 
-    - size (number; default 12):
-        Block size in pixels.
+- size (number; default 12):
+    Block size in pixels.
 
-    - weekIndex (number; default 0):
-        Week index in the calendar."""
-
+- weekIndex (number; default 0):
+    Week index in the calendar."""
     _children_props = []
-    _base_nodes = ["children"]
-    _namespace = "dashkit_kiboui"
-    _type = "ContributionGraphBlock"
+    _base_nodes = ['children']
+    _namespace = 'dashkit_kiboui'
+    _type = 'ContributionGraphBlock'
+
 
     def __init__(
         self,
-        id: str | dict | None = None,
-        activity: NumberType | None = None,
-        dayIndex: NumberType | None = None,
-        weekIndex: NumberType | None = None,
-        date: str | None = None,
-        count: NumberType | None = None,
-        size: NumberType | None = None,
-        margin: NumberType | None = None,
-        radius: NumberType | None = None,
-        className: str | None = None,
-        style: typing.Any | None = None,
-        onClick: typing.Any | None = None,
-        **kwargs,
+        id: typing.Optional[typing.Union[str, dict]] = None,
+        activity: typing.Optional[typing.Union[NumberType]] = None,
+        dayIndex: typing.Optional[typing.Union[NumberType]] = None,
+        weekIndex: typing.Optional[typing.Union[NumberType]] = None,
+        date: typing.Optional[typing.Union[str]] = None,
+        count: typing.Optional[typing.Union[NumberType]] = None,
+        size: typing.Optional[typing.Union[NumberType]] = None,
+        margin: typing.Optional[typing.Union[NumberType]] = None,
+        radius: typing.Optional[typing.Union[NumberType]] = None,
+        className: typing.Optional[typing.Union[str]] = None,
+        style: typing.Optional[typing.Any] = None,
+        onClick: typing.Optional[typing.Union[typing.Any]] = None,
+        **kwargs
     ):
-        self._prop_names = [
-            "id",
-            "activity",
-            "className",
-            "count",
-            "date",
-            "dayIndex",
-            "margin",
-            "onClick",
-            "radius",
-            "setProps",
-            "size",
-            "style",
-            "weekIndex",
-        ]
-        self._valid_wildcard_attributes = []
-        self.available_properties = [
-            "id",
-            "activity",
-            "className",
-            "count",
-            "date",
-            "dayIndex",
-            "margin",
-            "onClick",
-            "radius",
-            "setProps",
-            "size",
-            "style",
-            "weekIndex",
-        ]
-        self.available_wildcard_properties = []
-        _explicit_args = kwargs.pop("_explicit_args")
+        self._prop_names = ['id', 'activity', 'className', 'count', 'date', 'dayIndex', 'margin', 'onClick', 'radius', 'setProps', 'size', 'style', 'weekIndex']
+        self._valid_wildcard_attributes =            []
+        self.available_properties = ['id', 'activity', 'className', 'count', 'date', 'dayIndex', 'margin', 'onClick', 'radius', 'setProps', 'size', 'style', 'weekIndex']
+        self.available_wildcard_properties =            []
+        _explicit_args = kwargs.pop('_explicit_args')
         _locals = locals()
         _locals.update(kwargs)  # For wildcard attrs and excess named props
         args = {k: _locals[k] for k in _explicit_args}
 
-        super().__init__(**args)
+        super(ContributionGraphBlock, self).__init__(**args)
 
-
-ContributionGraphBlock.__init__ = _explicitize_args(ContributionGraphBlock.__init__)
+setattr(ContributionGraphBlock, "__init__", _explicitize_args(ContributionGraphBlock.__init__))
