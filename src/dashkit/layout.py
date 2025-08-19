@@ -1,5 +1,6 @@
 from typing import Any
 
+import dash_mantine_components as dmc
 from dash import html
 
 from .header import create_header
@@ -47,43 +48,45 @@ def create_layout(
             "filter_items": None,
         }
 
-    return html.Div(
-        [
-            # Sidebar
-            create_sidebar(
-                brand_name=sidebar_config["brand_name"],
-                brand_initial=sidebar_config["brand_initial"],
-            ),
-            # Right side: navbar + content (full width minus sidebar)
-            html.Div(
-                [
-                    # Header/navbar - spans full width of content area
-                    create_header(
-                        page_title=header_config["page_title"],
-                        page_icon=header_config["page_icon"],
-                        search_placeholder=header_config.get(
-                            "search_placeholder", "Search..."
+    return dmc.MantineProvider(
+        html.Div(
+            [
+                # Sidebar
+                create_sidebar(
+                    brand_name=sidebar_config["brand_name"],
+                    brand_initial=sidebar_config["brand_initial"],
+                ),
+                # Right side: navbar + content (full width minus sidebar)
+                html.Div(
+                    [
+                        # Header/navbar - spans full width of content area
+                        create_header(
+                            page_title=header_config["page_title"],
+                            page_icon=header_config["page_icon"],
+                            search_placeholder=header_config.get(
+                                "search_placeholder", "Search..."
+                            ),
+                            actions=header_config.get("actions"),
+                            filter_items=header_config.get("filter_items"),
                         ),
-                        actions=header_config.get("actions"),
-                        filter_items=header_config.get("filter_items"),
-                    ),
-                    # Content with max-width constraint
-                    html.Main(
-                        [
-                            html.Div(
-                                [content],
-                                style={
-                                    "maxWidth": "calc(100vw - var(--dashkit-sidebar-width))",
-                                    "width": "100%",
-                                },
-                                className="dark:text-white p-8 prose prose-sm dark:prose-invert",
-                            )
-                        ],
-                        className="flex-1 overflow-auto dark:bg-dashkit-surface ",
-                    ),
-                ],
-                className="main-content-area flex-1 flex flex-col",
-            ),
-        ],
-        className="flex h-screen bg-white dark:bg-dashkit-surface font-sans",
+                        # Content with max-width constraint
+                        html.Main(
+                            [
+                                html.Div(
+                                    [content],
+                                    style={
+                                        "maxWidth": "calc(100vw - var(--dashkit-sidebar-width))",
+                                        "width": "100%",
+                                    },
+                                    className="dark:text-white p-8 prose prose-sm dark:prose-invert",
+                                )
+                            ],
+                            className="flex-1 overflow-auto dark:bg-dashkit-surface ",
+                        ),
+                    ],
+                    className="main-content-area flex-1 flex flex-col",
+                ),
+            ],
+            className="flex h-screen bg-white dark:bg-dashkit-surface font-sans",
+        )
     )
