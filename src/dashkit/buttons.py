@@ -108,7 +108,7 @@ def IconButton(icon, children=None, active=False, onClick=None, className="", **
     combined_className = f"{base_className} {className}".strip()
 
     href = kwargs.get("href", "#")
-    
+
     # Use dcc.Link for internal navigation, html.A for external links
     if href.startswith(("http://", "https://", "mailto:", "tel:")):
         props = {
@@ -117,10 +117,10 @@ def IconButton(icon, children=None, active=False, onClick=None, className="", **
             "href": href,
             **{k: v for k, v in kwargs.items() if k not in ["href", "className"]},
         }
-        
+
         if onClick:
             props["id"] = kwargs.get("id", "icon-button")
-            
+
         return html.A(**props)
     else:
         props = {
@@ -129,8 +129,8 @@ def IconButton(icon, children=None, active=False, onClick=None, className="", **
             "href": href,
             **{k: v for k, v in kwargs.items() if k not in ["href", "className"]},
         }
-        
+
         if onClick:
             props["id"] = kwargs.get("id", "icon-button")
-            
+
         return dcc.Link(**props)

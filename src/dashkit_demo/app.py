@@ -1,7 +1,7 @@
 from pathlib import Path
 
 import dash
-from dash import Dash, html, dcc, callback, Input, Output
+from dash import Dash, Input, Output, callback, dcc, html
 
 from dashkit import create_layout, setup_app
 from dashkit.theme_manager import ThemeManager
@@ -50,18 +50,12 @@ app.layout = html.Div(
 )
 
 
-@callback(
-    Output("page_header_config", "data"),
-    Input("url", "pathname")
-)
+@callback(Output("page_header_config", "data"), Input("url", "pathname"))
 def update_header(pathname):
     """Update header based on current page."""
     for page in dash.page_registry.values():
         if page["path"] == pathname:
-            return {
-                "title": page.get("title", ""),
-                "icon": page.get("icon", "")
-            }
+            return {"title": page.get("title", ""), "icon": page.get("icon", "")}
     return {"title": "Dashboard", "icon": ""}
 
 
