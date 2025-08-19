@@ -11,6 +11,7 @@ def create_layout(
     content: html.Div | None = None,
     sidebar_config: dict[str, Any] | None = None,
     header_config: dict[str, Any] | None = None,
+    content_padding: str = "p-8",
 ) -> html.Div:
     """Create the main layout with configurable sidebar and header.
 
@@ -18,6 +19,7 @@ def create_layout(
         content: Main content to display
         sidebar_config: Configuration for sidebar with brand name and initial
         header_config: Configuration for header with page_title, actions, etc.
+        content_padding: CSS class for content padding (default: "p-8")
     """
     if content is None:
         content = html.Div(
@@ -74,11 +76,12 @@ def create_layout(
                             [
                                 html.Div(
                                     [content],
+                                    id="main-content-container",
                                     style={
                                         "maxWidth": "calc(100vw - var(--dashkit-sidebar-width))",
                                         "width": "100%",
                                     },
-                                    className="dark:text-white p-8 prose prose-sm dark:prose-invert",
+                                    className=f"dark:text-white {content_padding} prose prose-sm dark:prose-invert",
                                 )
                             ],
                             className="flex-1 overflow-auto dark:bg-dashkit-surface ",

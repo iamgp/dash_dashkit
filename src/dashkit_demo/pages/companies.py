@@ -2,6 +2,7 @@ import dash
 
 from dashkit import Table
 from dashkit_demo.demo_utils import create_company_columns, format_company_data
+from dash import html
 
 # Sample company data (moved from app.py)
 companies_data = [
@@ -76,12 +77,16 @@ dash.register_page(
     title="Companies",
     icon="mynaui:building",
     sidebar_section="Main",
+    content_padding="p-0",
 )
 
-layout = Table(
-    id="companies-table",
-    data=table_data,
-    columns=columns,
-    height=600,
-    theme_name="ht-theme-horizon",
+layout = html.Div(
+    Table(
+        id="companies-table",
+        data=table_data,
+        columns=columns,
+        height=600,
+        theme_name="ht-theme-horizon",
+    ),
+    className="-mt-px -ml-px relative w-[calc(100% + 2px)]",
 )

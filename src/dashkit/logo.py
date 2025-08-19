@@ -69,7 +69,18 @@ def BrandHeader(brand_name, icon=None, subtitle=None):
     header_content.append(collapse_toggle)
 
     if icon:
-        header_content.append(html.Span(icon, className="mr-2"))
+        # Check if icon is a dash_iconify icon name (contains ':') or emoji/text
+        if ':' in icon:
+            header_content.append(
+                dash_iconify.DashIconify(
+                    icon=icon,
+                    width=16,
+                    height=16,
+                    className="mr-2 text-dashkit-icon-light dark:text-dashkit-icon-dark",
+                )
+            )
+        else:
+            header_content.append(html.Span(icon, className="mr-2"))
 
     header_content.append(
         html.Span(
