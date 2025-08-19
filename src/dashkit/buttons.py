@@ -1,5 +1,5 @@
 import dash_iconify
-from dash import html
+from dash import dcc, html
 
 
 def PrimaryButton(children, icon=None, onClick=None, className="", **kwargs):
@@ -107,14 +107,30 @@ def IconButton(icon, children=None, active=False, onClick=None, className="", **
     base_className = f"sidebar-item flex items-center px-2 py-1 text-sm font-medium rounded-lg hover:bg-dashkit-hover-light transition-colors duration-150 dark:hover:bg-dashkit-hover-dark text-dashkit-text dark:text-dashkit-text-invert break-words truncate mb-px tracking-sidebar {active_class}"
     combined_className = f"{base_className} {className}".strip()
 
-    props = {
-        "className": combined_className,
-        "children": button_children,
-        "href": kwargs.get("href", "#"),
-        **{k: v for k, v in kwargs.items() if k not in ["href", "className"]},
-    }
-
-    if onClick:
-        props["id"] = kwargs.get("id", "icon-button")
-
-    return html.A(**props)
+    href = kwargs.get("href", "#")
+    
+    # Use dcc.Link for internal navigation, html.A for external links
+    if href.startswith(("http://", "https://", "mailto:", "tel:")):
+        props = {
+            "className": combined_className,
+            "children": button_children,
+            "href": href,
+            **{k: v for k, v in kwargs.items() if k not in ["href", "className"]},
+        }
+        
+        if onClick:
+            props["id"] = kwargs.get("id", "icon-button")
+            
+        return html.A(**props)
+    else:
+        props = {
+            "className": combined_className,
+            "children": button_children,
+            "href": href,
+            **{k: v for k, v in kwargs.items() if k not in ["href", "className"]},
+        }
+        
+        if onClick:
+            props["id"] = kwargs.get("id", "icon-button")
+            
+        return dcc.Link(**props)
