@@ -1,0 +1,17 @@
+{
+  "name": "dashkit_kiboui",
+  "version": "1.0.0",
+  "description": "Kibo UI Contribution Graph component for Dash with native theming support",
+  "main": "dashkit_kiboui.js",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "bugs": {
+    "url": ""
+  },
+  "homepage": "",
+  "scripts": {},
+  "author": "Dashkit Team",
+  "license": "MIT"
+}

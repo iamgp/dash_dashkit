@@ -1,0 +1,15 @@
+MANIFEST.in
+setup.py
+dashkit_table/DashkitTable.py
+dashkit_table/__init__.py
+dashkit_table/_imports_.py
+dashkit_table/dashkit_table.js
+dashkit_table/dashkit_table.js.LICENSE.txt
+dashkit_table/metadata.json
+dashkit_table/package-info.json
+dashkit_table/proptypes.js
+dashkit_table.egg-info/PKG-INFO
+dashkit_table.egg-info/SOURCES.txt
+dashkit_table.egg-info/dependency_links.txt
+dashkit_table.egg-info/requires.txt
+dashkit_table.egg-info/top_level.txt

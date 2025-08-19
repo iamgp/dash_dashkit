@@ -169,6 +169,7 @@ dependencies = [
     { name = "dash", extra = ["dev"] },
     { name = "dash-bootstrap-components" },
     { name = "dash-iconify" },
+    { name = "dashkit-kiboui" },
     { name = "dashkit-table" },
     { name = "plotly" },
 ]
@@ -193,6 +194,7 @@ requires-dist = [
     { name = "dash", extras = ["dev"], specifier = ">=2.17.0" },
     { name = "dash-bootstrap-components", specifier = ">=1.5.0" },
     { name = "dash-iconify", specifier = ">=0.1.2" },
+    { name = "dashkit-kiboui", directory = "src/dashkit_kiboui" },
     { name = "dashkit-table", directory = "src/dashkit_table" },
     { name = "plotly", specifier = ">=5.17.0" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.1.0" },
@@ -206,6 +208,17 @@ dev = [
     { name = "ruff", specifier = ">=0.12.7" },
     { name = "taskipy", specifier = ">=1.12.0" },
 ]
+
+[[package]]
+name = "dashkit-kiboui"
+version = "1.0.0"
+source = { directory = "src/dashkit_kiboui" }
+dependencies = [
+    { name = "dash" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "dash", specifier = ">=2.0.0" }]
 
 [[package]]
 name = "dashkit-table"

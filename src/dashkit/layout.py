@@ -76,7 +76,7 @@ def create_layout(
                                     "maxWidth": "calc(100vw - var(--dashkit-sidebar-width))",
                                     "width": "100%",
                                 },
-                                className="",
+                                className="dark:text-white",
                             )
                         ],
                         className="flex-1 overflow-auto dark:bg-dashkit-surface",
