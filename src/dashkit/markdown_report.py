@@ -29,7 +29,7 @@ def MarkdownReport(
     )
 
     return html.Div(
-        [html.Div(children, className="p-8")],
+        children,
         className=(
             f"min-h-full overflow-auto [&_h1:first-child]:mt-0 {className}"
         ).strip(),

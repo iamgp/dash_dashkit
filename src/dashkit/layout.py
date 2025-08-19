@@ -76,10 +76,10 @@ def create_layout(
                                     "maxWidth": "calc(100vw - var(--dashkit-sidebar-width))",
                                     "width": "100%",
                                 },
-                                className="dark:text-white",
+                                className="dark:text-white p-8 prose prose-sm dark:prose-invert",
                             )
                         ],
-                        className="flex-1 overflow-auto dark:bg-dashkit-surface",
+                        className="flex-1 overflow-auto dark:bg-dashkit-surface ",
                     ),
                 ],
                 className="main-content-area flex-1 flex flex-col",
