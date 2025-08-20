@@ -1,0 +1,58 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  publish-subpackages:
+    name: Publish subpackages (dashkit_table, dashkit_shadcn, dashkit_kiboui)
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        package:
+          - dashkit_table
+          - dashkit_shadcn
+          - dashkit_kiboui
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: astral-sh/uv-action@v3
+      - name: Build ${{ matrix.package }}
+        working-directory: src/${{ matrix.package }}
+        run: |
+          uv run python -m build
+      - name: Publish ${{ matrix.package }} to PyPI
+        working-directory: src/${{ matrix.package }}
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+        run: |
+          uv run python -m twine upload dist/*
+
+  publish-main:
+    name: Publish dash-dashkit
+    runs-on: ubuntu-latest
+    needs: publish-subpackages
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: astral-sh/uv-action@v3
+      - name: Build main
+        run: |
+          uv run python -m build
+      - name: Publish dash-dashkit to PyPI
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+        run: |
+          uv run python -m twine upload dist/dash_dashkit-*.whl dist/dash_dashkit-*.tar.gz
