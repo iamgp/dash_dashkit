@@ -1,8 +1,28 @@
 downloaded
+# Node
 node_modules
+**/node_modules/
+
+# Python caches/venv
 *.pyc
+__pycache__/
+**/__pycache__/
+.venv/
+
+# Local tools/cache
 .playwright-mcp
-.pypirc
-dist
+.ruff_cache/
+.DS_Store
+
+# Publish artifacts
+# Root dist folder
+/dist/
+# Any dist/build folder recursively
+**/dist/
+**/build/
+
+# Packaging metadata
 *.egg-info
+**/*.egg-info/
 *.egg
+
