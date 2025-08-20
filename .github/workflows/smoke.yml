@@ -24,7 +24,10 @@ jobs:
       - uses: astral-sh/setup-uv@v3
       - name: Compute version
         id: v
-        run: echo "version=${GITHUB_REF_NAME#dash-dashkit-v}" >> $GITHUB_OUTPUT
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then RAW="${{ inputs.tag_name }}"; else RAW="$GITHUB_REF_NAME"; fi
+          echo "version=${RAW#dash-dashkit-v}" >> $GITHUB_OUTPUT
       - name: Install package
         run: |
           uv venv
@@ -55,7 +58,10 @@ jobs:
       - uses: astral-sh/setup-uv@v3
       - name: Compute version
         id: v
-        run: echo "version=${GITHUB_REF_NAME#dashkit_table-v}" >> $GITHUB_OUTPUT
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then RAW="${{ inputs.tag_name }}"; else RAW="$GITHUB_REF_NAME"; fi
+          echo "version=${RAW#dashkit_table-v}" >> $GITHUB_OUTPUT
       - name: Install package
         run: |
           uv venv
@@ -79,7 +85,10 @@ jobs:
       - uses: astral-sh/setup-uv@v3
       - name: Compute version
         id: v
-        run: echo "version=${GITHUB_REF_NAME#dashkit_kiboui-v}" >> $GITHUB_OUTPUT
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then RAW="${{ inputs.tag_name }}"; else RAW="$GITHUB_REF_NAME"; fi
+          echo "version=${RAW#dashkit_kiboui-v}" >> $GITHUB_OUTPUT
       - name: Install package
         run: |
           uv venv
