@@ -1,0 +1,30 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "include-v-in-tag": true,
+  "packages": {
+    ".": {
+      "release-type": "python",
+      "changelog-path": "CHANGELOG.md",
+      "component": "dash-dashkit",
+      "include-component-in-tag": true
+    },
+    "src/dashkit_table": {
+      "release-type": "python",
+      "changelog-path": "src/dashkit_table/CHANGELOG.md",
+      "component": "dashkit_table",
+      "include-component-in-tag": true
+    },
+    "src/dashkit_shadcn": {
+      "release-type": "python",
+      "changelog-path": "src/dashkit_shadcn/CHANGELOG.md",
+      "component": "dashkit_shadcn",
+      "include-component-in-tag": true
+    },
+    "src/dashkit_kiboui": {
+      "release-type": "python",
+      "changelog-path": "src/dashkit_kiboui/CHANGELOG.md",
+      "component": "dashkit_kiboui",
+      "include-component-in-tag": true
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  ".": "1.0.4",
+  "src/dashkit_table": "1.0.1",
+  "src/dashkit_shadcn": "1.0.1",
+  "src/dashkit_kiboui": "1.0.1"
+}
