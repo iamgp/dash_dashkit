@@ -27,3 +27,4 @@ __pycache__/
 *.egg
 
 .pypirc
+src/dashkit_table
