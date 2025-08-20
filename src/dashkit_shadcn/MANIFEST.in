@@ -1,0 +1,8 @@
+include dashkit_shadcn/*.js
+include dashkit_shadcn/*.js.map
+include dashkit_shadcn/*.json
+include dashkit_shadcn/*.txt
+include dashkit_shadcn/*.py
+recursive-include dashkit_shadcn *
+include README.md
+include LICENSE

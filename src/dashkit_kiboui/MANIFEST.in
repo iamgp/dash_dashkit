@@ -3,3 +3,5 @@ include dashkit_kiboui/*.js.map
 include dashkit_kiboui/*.json
 include dashkit_kiboui/*.txt
 recursive-include dashkit_kiboui *
+include README.md
+include LICENSE

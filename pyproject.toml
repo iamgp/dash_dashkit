@@ -1,27 +1,54 @@
 [project]
 name = "dash-dashkit"
-version = "1.0.0"
 description = "Modern dashboard components for Dash applications"
 readme = "README.md"
 requires-python = ">=3.10"
+dynamic = ["version"]
 dependencies = [
     "dash>=2.17.0",
     "dash-bootstrap-components>=1.5.0",
     "plotly>=5.17.0",
-    "dashkit_table>=1.0.0",
-    "dashkit_kiboui>=1.0.0",
-    "dashkit_shadcn>=1.0.0",
+    "dashkit_table>=1.0.1",
+    "dashkit_kiboui>=1.0.1",
+    "dashkit_shadcn>=1.0.1",
     "dash-iconify>=0.1.2",
     "dash-mantine-components>=2.1.0",
     "pyyaml>=6.0.2",
 ]
+keywords = ["dash", "plotly", "dashboard", "components", "ui", "tailwind", "handsontable", "charts"]
+license = {text = "MIT"}
+authors = [{ name = "Dashkit Team" }]
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Framework :: Dash",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: User Interfaces",
+]
+
+[project.urls]
+Homepage = "https://pypi.org/project/dash-dashkit/"
+Source = "https://github.com/iamgp/dash_dashkit"
+Issues = "https://github.com/iamgp/dash_dashkit/issues"
 
 [project.optional-dependencies]
 dev = ["ruff>=0.1.0", "basedpyright>=1.10.0"]
 
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling", "uv-dynamic-versioning"]
 build-backend = "hatchling.build"
+
+[tool.hatch.version]
+source = "uv-dynamic-versioning"
+
+[tool.uv-dynamic-versioning]
+vcs = "git"
+style = "pep440"
+bump = true
 
 [tool.hatch.build]
 include = [

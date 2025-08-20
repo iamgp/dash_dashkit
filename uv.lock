@@ -251,7 +251,6 @@ wheels = [
 
 [[package]]
 name = "dash-dashkit"
-version = "1.0.0"
 source = { editable = "." }
 dependencies = [
     { name = "dash" },
@@ -330,7 +329,7 @@ wheels = [
 
 [[package]]
 name = "dashkit-kiboui"
-version = "1.0.0"
+version = "1.0.1"
 source = { directory = "src/dashkit_kiboui" }
 dependencies = [
     { name = "dash" },
@@ -341,7 +340,7 @@ requires-dist = [{ name = "dash", specifier = ">=2.0.0" }]
 
 [[package]]
 name = "dashkit-shadcn"
-version = "1.0.0"
+version = "1.0.1"
 source = { directory = "src/dashkit_shadcn" }
 dependencies = [
     { name = "dash" },
@@ -352,7 +351,7 @@ requires-dist = [{ name = "dash", specifier = ">=2.0.0" }]
 
 [[package]]
 name = "dashkit-table"
-version = "1.0.0"
+version = "1.0.1"
 source = { directory = "src/dashkit_table" }
 dependencies = [
     { name = "dash" },

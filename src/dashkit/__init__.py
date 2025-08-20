@@ -71,7 +71,13 @@ def setup_app(app, assets_folder=None):
 """
 
 
-__version__ = "1.0.0"
+# Resolve version dynamically from installed package metadata
+try:
+    from importlib.metadata import PackageNotFoundError, version as _pkg_version
+    __version__ = _pkg_version("dash-dashkit")
+except Exception:
+    __version__ = "0.0.0"
+
 __all__ = [
     "create_layout",
     "create_sidebar",
