@@ -6,6 +6,7 @@ All components are configurable and can be used across different projects.
 """
 
 from pathlib import Path
+from flask import send_from_directory
 
 from .buttons import PrimaryButton, SecondaryButton
 from .card import Card, ChartCard, MetricCard
@@ -24,22 +25,30 @@ except Exception:  # pragma: no cover - optional dependency may be missing
     ChartContainer = None  # type: ignore[assignment]
 
 
-def setup_app(app, assets_folder=None):
+def setup_app(app, assets_folder=None, include_dashkit_css: bool = True):
     """
     Configure a Dash app with dashkit styling and theme management.
 
     Args:
         app: Dash app instance
-        assets_folder: Optional path to assets folder. If not provided, uses the
-            package's built-in assets directory.
+        assets_folder: Optional path to assets folder for your app (defaults to
+            Dash's own ./assets). We do NOT override your assets by default.
+        include_dashkit_css: When True, serve dashkit's packaged CSS via a
+            dedicated route and include a <link> in the index.
     """
-    # If no assets folder was provided, default to the package's bundled assets
+    # Preserve the app's own assets folder unless explicitly overridden
     if assets_folder:
         app.assets_folder = assets_folder
-    else:
-        pkg_assets = Path(__file__).parent / "assets"
-        if pkg_assets.exists():
-            app.assets_folder = str(pkg_assets)
+
+    # Serve dashkit's packaged assets from a namespaced route so app assets still work
+    pkg_assets = Path(__file__).parent / "assets"
+    if include_dashkit_css and pkg_assets.exists():
+        route_attr = "_dashkit_assets_route_registered"
+        if not getattr(app.server, route_attr, False):
+            @app.server.route("/dashkit-assets/<path:filename>")
+            def _dashkit_assets(filename: str):  # type: ignore
+                return send_from_directory(str(pkg_assets), filename)
+            setattr(app.server, route_attr, True)
 
     app.index_string = """
 <!DOCTYPE html>
@@ -51,6 +60,7 @@ def setup_app(app, assets_folder=None):
         {%css%}
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        {dashkit_css}
         <script>
             (function() {
                 const storedTheme = localStorage.getItem('theme');
@@ -71,7 +81,7 @@ def setup_app(app, assets_folder=None):
         </footer>
     </body>
 </html>
-"""
+""".replace("{dashkit_css}", "<link href=\"/dashkit-assets/style.css\" rel=\"stylesheet\">" if include_dashkit_css and pkg_assets.exists() else "")
 
 
 # Resolve version dynamically from installed package metadata
