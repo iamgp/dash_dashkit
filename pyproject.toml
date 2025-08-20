@@ -1,6 +1,6 @@
 [project]
 name = "dash-dashkit"
-version = "1.1.2"
+version = "1.2.0"
 description = "Modern dashboard components for Dash applications"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -8,9 +8,6 @@ dependencies = [
     "dash>=2.17.0",
     "dash-bootstrap-components>=1.5.0",
     "plotly>=5.17.0",
-    "dashkit_table>=1.0.1",
-    "dashkit_kiboui>=1.0.1",
-    "dashkit_shadcn>=1.0.1",
     "dash-iconify>=0.1.2",
     "dash-mantine-components>=2.1.0",
     "pyyaml>=6.0.2",
@@ -36,6 +33,19 @@ Source = "https://github.com/iamgp/dash_dashkit"
 Issues = "https://github.com/iamgp/dash_dashkit/issues"
 
 [project.optional-dependencies]
+# Install table support: pip install dash-dashkit[table]
+table = ["dashkit_table>=1.1.2"]
+# Install kiboui graphs: pip install dash-dashkit[kiboui]
+kiboui = ["dashkit_kiboui>=1.0.1"]
+# Install charts: pip install dash-dashkit[charts]
+charts = ["dashkit_shadcn>=1.0.1"]
+# Everything: pip install dash-dashkit[all]
+all = [
+    "dashkit_table>=1.1.2",
+    "dashkit_kiboui>=1.0.1",
+    "dashkit_shadcn>=1.0.1",
+]
+
 dev = ["ruff>=0.1.0", "basedpyright>=1.10.0"]
 
 [build-system]

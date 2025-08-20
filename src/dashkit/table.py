@@ -2,7 +2,11 @@ from typing import Any
 
 from dash import html
 
-from dashkit_table import DashkitTable as CustomDashkitTable
+try:
+    from dashkit_table import DashkitTable as CustomDashkitTable  # type: ignore
+except Exception as _e:
+    CustomDashkitTable = None  # type: ignore[assignment]
+    _import_error = _e
 
 
 def Table(
@@ -53,6 +57,11 @@ def Table(
         processed_columns = [{**col, "data": idx} for idx, col in enumerate(columns)]
 
     # Using our custom table component with latest Handsontable v16.0.1
+    if CustomDashkitTable is None:
+        raise ImportError(
+            "dashkit_table is not installed. Install it with `pip install dashkit_table` "
+            "or install extras: `pip install dash-dashkit[table]`."
+        ) from _import_error
     return CustomDashkitTable(
         id=id,
         data=processed_data,
