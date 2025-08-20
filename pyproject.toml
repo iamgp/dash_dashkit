@@ -9,8 +9,10 @@ dependencies = [
     "plotly>=5.17.0",
     "dashkit-table",
     "dashkit-kiboui",
+    "dashkit-shadcn",
     "dash-iconify>=0.1.2",
     "dash-mantine-components>=2.1.0",
+    "pyyaml>=6.0.2",
 ]
 
 [project.optional-dependencies]
@@ -26,7 +28,11 @@ packages = ["src/dashkit"]
 [tool.ruff]
 target-version = "py311"
 line-length = 88
-exclude = ["src/dashkit_table/**", "src/dashkit_kiboui/**"]
+exclude = [
+    "src/dashkit_table/**",
+    "src/dashkit_kiboui/**",
+    "src/dashkit_shadcn/**",
+]
 
 [tool.ruff.lint]
 select = [
@@ -53,7 +59,15 @@ line-ending = "auto"
 
 [tool.basedpyright]
 include = ["src"]
-exclude = ["**/__pycache__", "src/dashkit_table/**", "src/dashkit_kiboui/**"]
+exclude = [
+    "**/__pycache__",
+    "src/dashkit_table/**",
+    "src/dashkit_kiboui/**",
+    "src/dashkit_shadcn/**",
+]
+extraPaths = ["src/dashkit_table", "src/dashkit_kiboui", "src/dashkit_shadcn"]
+venvPath = "."
+venv = ".venv"
 reportMissingTypeStubs = false
 reportUnknownParameterType = false
 reportUnknownArgumentType = false
@@ -74,6 +88,7 @@ reportUnnecessaryIsInstance = false
 [tool.uv.sources]
 dashkit-table = { path = "src/dashkit_table" }
 dashkit-kiboui = { path = "src/dashkit_kiboui" }
+dashkit-shadcn = { path = "src/dashkit_shadcn" }
 
 [dependency-groups]
 dev = [

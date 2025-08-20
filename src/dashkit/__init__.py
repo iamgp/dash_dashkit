@@ -13,6 +13,11 @@ from .markdown_report import MarkdownReport
 from .sidebar import create_sidebar
 from .table import Table, TableWithStats
 
+# Import charts module to register dashkit_shadcn components with Dash
+# This must happen even for selective imports to ensure component registration
+from . import charts  # noqa: F401
+from .charts import AreaChart, BarChart, ChartContainer
+
 
 def setup_app(app, assets_folder=None):
     """
@@ -72,5 +77,8 @@ __all__ = [
     "Card",
     "MetricCard",
     "ChartCard",
+    "AreaChart",
+    "BarChart", 
+    "ChartContainer",
     "setup_app",
 ]

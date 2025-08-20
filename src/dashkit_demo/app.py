@@ -6,6 +6,15 @@ from dash import Dash, Input, Output, callback, clientside_callback, dcc, html
 from dashkit import create_layout, setup_app
 from dashkit.theme_manager import ThemeManager
 
+# Import dashkit_shadcn components to register them with Dash
+from dashkit_shadcn import AreaChart, BarChart, ChartContainer, ChartLegend, ChartTooltip  # Force registration
+
+# Create dummy components to force Dash to register the library
+_dummy_components = [
+    AreaChart(id="dummy-area", data=[]),
+    BarChart(id="dummy-bar", data=[]),
+]
+
 # External stylesheets including Font Awesome for icons
 external_stylesheets = [
     "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css",

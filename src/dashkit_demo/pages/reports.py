@@ -1,7 +1,7 @@
 import dash
 
 from dashkit import MarkdownReport
-from dashkit_demo.sample_report import SAMPLE_REPORT_CONTENT
+from dashkit_demo.pages.elisa.sample_report import SAMPLE_REPORT_CONTENT
 
 dash.register_page(
     __name__,

@@ -1,0 +1,16 @@
+{
+  "name": "dashkit_shadcn",
+  "version": "1.0.0",
+  "description": "shadcn/ui Chart components for Dash with native theming support",
+  "main": "dashkit_shadcn.js",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "bugs": {
+    "url": ""
+  },
+  "homepage": "",
+  "author": "Dashkit Team <team@dashkit.dev>",
+  "license": "MIT"
+}

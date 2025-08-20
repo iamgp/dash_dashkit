@@ -1,0 +1,40 @@
+{
+  "author": "Dashkit Team <team@dashkit.dev>",
+  "dependencies": {
+    "clsx": "^2.0.0",
+    "tailwind-merge": "^1.14.0",
+    "recharts": "^2.8.0",
+    "lucide-react": "^0.263.1"
+  },
+  "description": "shadcn/ui Chart components for Dash with native theming support",
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "css-loader": "^6.11.0",
+    "npm-run-all": "^4.1.5",
+    "ramda": "^0.28.0",
+    "react": "^18.2.0",
+    "react-docgen": "^6.0.0",
+    "react-dom": "^18.2.0",
+    "style-loader": "^3.3.4",
+    "ts-loader": "^9.5.0",
+    "typescript": "^5.3.0",
+    "webpack": "^5.92.0",
+    "webpack-cli": "^5.1.0"
+  },
+  "license": "MIT",
+  "main": "index.ts",
+  "name": "dashkit_shadcn",
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "private": true,
+  "scripts": {
+    "build": "npm run build:js && npm run build:backends",
+    "build:backends": "dash-generate-components ./src/ts/components dashkit_shadcn -p package-info.json --r-prefix '' --jl-prefix '' --ignore \\.test\\.",
+    "build:js": "webpack",
+    "build:js::dev": "webpack --mode development",
+    "watch": "npm run build:js::dev -- --watch"
+  },
+  "version": "1.0.0"
+}
