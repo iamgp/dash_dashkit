@@ -8,10 +8,17 @@ on:
       - 'dashkit_table-v*'
       - 'dashkit_shadcn-v*'
       - 'dashkit_kiboui-v*'
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Tag to publish (e.g., dashkit_table-v1.2.3)'
+        required: true
 
 jobs:
   publish-table:
-    if: startsWith(github.ref_name, 'dashkit_table-v')
+    if: startsWith(github.ref_name, 'dashkit_table-v') || (github.event_name == 'release' && startsWith(github.event.release.tag_name, 'dashkit_table-v')) || (github.event_name == 'workflow_dispatch' && startsWith(inputs.tag_name, 'dashkit_table-v'))
     name: Publish dashkit_table
     runs-on: ubuntu-latest
     steps:
@@ -35,7 +42,7 @@ jobs:
           uv run --with twine python -m twine upload dist/*
 
   publish-shadcn:
-    if: startsWith(github.ref_name, 'dashkit_shadcn-v')
+    if: startsWith(github.ref_name, 'dashkit_shadcn-v') || (github.event_name == 'release' && startsWith(github.event.release.tag_name, 'dashkit_shadcn-v')) || (github.event_name == 'workflow_dispatch' && startsWith(inputs.tag_name, 'dashkit_shadcn-v'))
     name: Publish dashkit_shadcn
     runs-on: ubuntu-latest
     steps:
@@ -59,7 +66,7 @@ jobs:
           uv run --with twine python -m twine upload dist/*
 
   publish-kiboui:
-    if: startsWith(github.ref_name, 'dashkit_kiboui-v')
+    if: startsWith(github.ref_name, 'dashkit_kiboui-v') || (github.event_name == 'release' && startsWith(github.event.release.tag_name, 'dashkit_kiboui-v')) || (github.event_name == 'workflow_dispatch' && startsWith(inputs.tag_name, 'dashkit_kiboui-v'))
     name: Publish dashkit_kiboui
     runs-on: ubuntu-latest
     steps:
@@ -83,7 +90,7 @@ jobs:
           uv run --with twine python -m twine upload dist/*
 
   publish-main:
-    if: startsWith(github.ref_name, 'dash-dashkit-v') || startsWith(github.ref_name, 'v')
+    if: startsWith(github.ref_name, 'dash-dashkit-v') || startsWith(github.ref_name, 'v') || (github.event_name == 'release' && (startsWith(github.event.release.tag_name, 'dash-dashkit-v') || startsWith(github.event.release.tag_name, 'v'))) || (github.event_name == 'workflow_dispatch' && (startsWith(inputs.tag_name, 'dash-dashkit-v') || startsWith(inputs.tag_name, 'v')))
     name: Publish dash-dashkit
     runs-on: ubuntu-latest
     steps:
