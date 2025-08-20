@@ -1,15 +1,16 @@
 [project]
-name = "dashkit"
-version = "0.1.0"
+name = "dash-dashkit"
+version = "1.0.0"
 description = "Modern dashboard components for Dash applications"
-requires-python = ">=3.11"
+readme = "README.md"
+requires-python = ">=3.10"
 dependencies = [
-    "dash[dev]>=2.17.0",
+    "dash>=2.17.0",
     "dash-bootstrap-components>=1.5.0",
     "plotly>=5.17.0",
-    "dashkit-table",
-    "dashkit-kiboui",
-    "dashkit-shadcn",
+    "dashkit_table>=1.0.0",
+    "dashkit_kiboui>=1.0.0",
+    "dashkit_shadcn>=1.0.0",
     "dash-iconify>=0.1.2",
     "dash-mantine-components>=2.1.0",
     "pyyaml>=6.0.2",
@@ -21,6 +22,11 @@ dev = ["ruff>=0.1.0", "basedpyright>=1.10.0"]
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[tool.hatch.build]
+include = [
+  "src/dashkit/assets/style.css",
+]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/dashkit"]
@@ -96,6 +102,8 @@ dev = [
     "honcho>=2.0.0",
     "ruff>=0.12.7",
     "taskipy>=1.12.0",
+    "build>=1.2.2",
+    "twine>=5.0.0",
 ]
 
 [tool.taskipy.tasks]

@@ -27,6 +27,14 @@ dashkit/
 └── pyproject.toml                 # Dependencies
 ```
 
+## Installation
+
+```bash
+pip install dash-dashkit
+# Also ensure these dependencies are available (they install automatically):
+# dashkit_table, dashkit_shadcn, dashkit_kiboui
+```
+
 ## Quick Start
 
 ### Running the Demo

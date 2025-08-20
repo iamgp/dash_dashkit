@@ -5,6 +5,8 @@ This package provides production-ready components with modern dashboard styling.
 All components are configurable and can be used across different projects.
 """
 
+from pathlib import Path
+
 from .buttons import PrimaryButton, SecondaryButton
 from .card import Card, ChartCard, MetricCard
 from .header import create_header
@@ -25,10 +27,16 @@ def setup_app(app, assets_folder=None):
 
     Args:
         app: Dash app instance
-        assets_folder: Optional path to assets folder (defaults to app's assets_folder)
+        assets_folder: Optional path to assets folder. If not provided, uses the
+            package's built-in assets directory.
     """
+    # If no assets folder was provided, default to the package's bundled assets
     if assets_folder:
         app.assets_folder = assets_folder
+    else:
+        pkg_assets = Path(__file__).parent / "assets"
+        if pkg_assets.exists():
+            app.assets_folder = str(pkg_assets)
 
     app.index_string = """
 <!DOCTYPE html>
@@ -40,7 +48,6 @@ def setup_app(app, assets_folder=None):
         {%css%}
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-        <link href="/assets/style.css" rel="stylesheet">
         <script>
             (function() {
                 const storedTheme = localStorage.getItem('theme');
