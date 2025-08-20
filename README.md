@@ -181,6 +181,38 @@ npm run build
 uv pip install -e .
 ```
 
+## Releasing (manual tags)
+
+Releases are driven by tags. Publishing runs in CI and a smoke test validates PyPI install.
+
+Prerequisites:
+- GitHub Actions secret: `PYPI_API_TOKEN` (PyPI API token with upload permission)
+
+Subpackages
+- dashkit_table
+  1) Bump version in `src/dashkit_table/pyproject.toml`
+  2) Commit and push (if ignored, force add): `git add -f src/dashkit_table/pyproject.toml && git commit -m "release(table): X.Y.Z" && git push`
+  3) Tag and push: `git tag dashkit_table-vX.Y.Z && git push origin dashkit_table-vX.Y.Z`
+- dashkit_kiboui
+  1) Bump version in `src/dashkit_kiboui/pyproject.toml`
+  2) Commit and push
+  3) Tag and push: `git tag dashkit_kiboui-vX.Y.Z && git push origin dashkit_kiboui-vX.Y.Z`
+
+Main package (dash-dashkit)
+- Bump version in `pyproject.toml` (update subpackage minimums as needed)
+- Commit and push
+- Tag and push: `git tag dash-dashkit-vX.Y.Z && git push origin dash-dashkit-vX.Y.Z`
+  - Legacy form `vX.Y.Z` is also supported
+
+CI workflows
+- Publish: builds the package for the matching tag and uploads to PyPI
+- Smoke: installs the just-published version in a clean venv and imports/instantiates components
+- Manual fallback: both workflows support `workflow_dispatch` with `tag_name` if you need to re-run
+
+Notes
+- If `src/dashkit_table` is ignored in `.gitignore`, use `git add -f` or remove the ignore entry
+- Tag patterns must match exactly as above (component-vX.Y.Z)
+
 ## Configuration Examples
 
 See `src/dashkit_demo/app.py` for complete configuration examples including:
