@@ -112,6 +112,16 @@ build-table = "cd src/dashkit_table && npm run build"
 install-table = "cd src/dashkit_table && uv pip install -e ."
 build-css = "npm run tw"
 build-css-watch = "npm run build-css"
+# Builds for PyPI
+build-subpackages = "bash -lc 'cd src/dashkit_table && uv run python -m build && cd ../dashkit_shadcn && uv run python -m build && cd ../dashkit_kiboui && uv run python -m build'"
+build-main = "uv run python -m build"
+# Upload to TestPyPI (set TWINE_USERNAME=__token__ and TWINE_PASSWORD to your TestPyPI token)
+publish-subpackages-test = "bash -lc 'ROOT=$PWD; cd src/dashkit_table && HOME=\"$ROOT\" uv run twine upload --repository-url https://test.pypi.org/legacy/ dist/*.whl dist/*.tar.gz && cd ../dashkit_shadcn && HOME=\"$ROOT\" uv run twine upload --repository-url https://test.pypi.org/legacy/ dist/*.whl dist/*.tar.gz && cd ../dashkit_kiboui && HOME=\"$ROOT\" uv run twine upload --repository-url https://test.pypi.org/legacy/ dist/*.whl dist/*.tar.gz'"
+publish-main-test = "bash -lc 'HOME=\"$PWD\" uv run twine upload --repository-url https://test.pypi.org/legacy/ dist/dash_dashkit-*.whl dist/dash_dashkit-*.tar.gz'"
+# Upload to PyPI (set TWINE_USERNAME=__token__ and TWINE_PASSWORD to your PyPI token)
+publish-subpackages = "bash -lc 'ROOT=$PWD; cd src/dashkit_table && HOME=\"$ROOT\" uv run twine upload dist/*.whl dist/*.tar.gz && cd ../dashkit_shadcn && HOME=\"$ROOT\" uv run twine upload dist/*.whl dist/*.tar.gz && cd ../dashkit_kiboui && HOME=\"$ROOT\" uv run twine upload dist/*.whl dist/*.tar.gz'"
+publish-main = "bash -lc 'HOME=\"$PWD\" uv run twine upload dist/dash_dashkit-*.whl dist/dash_dashkit-*.tar.gz'"
+# QA
 lint = "ruff check src/ && ruff format src/"
 typecheck = "basedpyright src/"
 check = "task lint && task typecheck"

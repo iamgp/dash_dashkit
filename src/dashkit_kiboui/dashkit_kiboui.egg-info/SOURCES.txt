@@ -15,8 +15,3 @@ dashkit_kiboui.egg-info/SOURCES.txt
 dashkit_kiboui.egg-info/dependency_links.txt
 dashkit_kiboui.egg-info/requires.txt
 dashkit_kiboui.egg-info/top_level.txt
-dashkit_kiboui/__pycache__/ContributionGraph.cpython-311.pyc
-dashkit_kiboui/__pycache__/ContributionGraphBlock.cpython-311.pyc
-dashkit_kiboui/__pycache__/ContributionGraphCalendar.cpython-311.pyc
-dashkit_kiboui/__pycache__/__init__.cpython-311.pyc
-dashkit_kiboui/__pycache__/_imports_.cpython-311.pyc

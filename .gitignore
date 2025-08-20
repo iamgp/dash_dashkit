@@ -2,3 +2,7 @@ downloaded
 node_modules
 *.pyc
 .playwright-mcp
+.pypirc
+dist
+*.egg-info
+*.egg
