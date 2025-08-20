@@ -6,8 +6,6 @@ on:
       - 'dash-dashkit-v*'
       - 'dashkit_table-v*'
       - 'dashkit_kiboui-v*'
-  release:
-    types: [published]
   workflow_dispatch:
     inputs:
       tag_name:
