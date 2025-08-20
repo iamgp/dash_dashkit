@@ -6,10 +6,17 @@ on:
       - 'dash-dashkit-v*'
       - 'dashkit_table-v*'
       - 'dashkit_kiboui-v*'
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Tag to smoke test'
+        required: true
 
 jobs:
   smoke-main:
-    if: startsWith(github.ref_name, 'dash-dashkit-v')
+    if: startsWith(github.ref_name, 'dash-dashkit-v') || (github.event_name == 'release' && startsWith(github.event.release.tag_name, 'dash-dashkit-v')) || (github.event_name == 'workflow_dispatch' && startsWith(inputs.tag_name, 'dash-dashkit-v'))
     name: Smoke dash-dashkit
     runs-on: ubuntu-latest
     steps:
@@ -40,7 +47,7 @@ jobs:
           PY
   
   smoke-table:
-    if: startsWith(github.ref_name, 'dashkit_table-v')
+    if: startsWith(github.ref_name, 'dashkit_table-v') || (github.event_name == 'release' && startsWith(github.event.release.tag_name, 'dashkit_table-v')) || (github.event_name == 'workflow_dispatch' && startsWith(inputs.tag_name, 'dashkit_table-v'))
     name: Smoke dashkit_table
     runs-on: ubuntu-latest
     steps:
@@ -64,7 +71,7 @@ jobs:
           PY
 
   smoke-kiboui:
-    if: startsWith(github.ref_name, 'dashkit_kiboui-v')
+    if: startsWith(github.ref_name, 'dashkit_kiboui-v') || (github.event_name == 'release' && startsWith(github.event.release.tag_name, 'dashkit_kiboui-v')) || (github.event_name == 'workflow_dispatch' && startsWith(inputs.tag_name, 'dashkit_kiboui-v'))
     name: Smoke dashkit_kiboui
     runs-on: ubuntu-latest
     steps:
