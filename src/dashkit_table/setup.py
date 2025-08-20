@@ -10,7 +10,7 @@ package_json = json.loads(
 
 setup(
     name="dashkit_table",
-    version="1.0.1",
+    version="1.1.0",
     description="Modern Handsontable component for Dash with native theming support",
     long_description=(Path(__file__).parent / "README.md").read_text(encoding="utf-8"),
     long_description_content_type="text/markdown",

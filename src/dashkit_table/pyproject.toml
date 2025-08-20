@@ -3,7 +3,7 @@ name = "dashkit_table"
 description = "Modern Handsontable component for Dash with native theming support"
 readme = "README.md"
 requires-python = ">=3.8"
-version = "1.0.1"
+version = "1.1.0"
 dependencies = [
   "dash>=2.0.0",
 ]
