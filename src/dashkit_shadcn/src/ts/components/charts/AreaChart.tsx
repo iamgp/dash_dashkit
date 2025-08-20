@@ -6,6 +6,8 @@ import {
   XAxis,
   YAxis,
   ResponsiveContainer,
+  Tooltip,
+  Legend,
 } from "recharts"
 import { ChartContainer } from "./ChartContainer"
 import { ChartTooltip, ChartTooltipContent } from "./ChartTooltip"
@@ -110,10 +112,15 @@ export default function AreaChart({
             />
           )}
           {showTooltip && (
-            <ChartTooltip content={<ChartTooltipContent />} />
+            <ChartTooltip
+              cursor={false}
+              content={<ChartTooltipContent />}
+            />
           )}
           {showLegend && (
-            <ChartLegend content={<ChartLegendContent />} />
+            <ChartLegend
+              content={<ChartLegendContent />}
+            />
           )}
           <Area
             dataKey={dataKey}

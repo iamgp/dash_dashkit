@@ -1,6 +1,6 @@
 import React from "react";
 interface ChartTooltipProps {
-    content?: React.ReactNode;
+    content?: React.ReactElement | ((props: any) => React.ReactNode);
     cursor?: boolean | object;
     [key: string]: any;
 }
@@ -16,9 +16,6 @@ interface ChartTooltipContentProps {
     className?: string;
     [key: string]: any;
 }
-declare const ChartTooltip: ({ content, ...props }: ChartTooltipProps) => React.ReactElement<{
-    [key: string]: any;
-    cursor?: boolean | object;
-}, string | React.JSXElementConstructor<any>> | null;
+declare const ChartTooltip: ({ content, cursor, ...props }: ChartTooltipProps) => import("react/jsx-runtime").JSX.Element;
 declare const ChartTooltipContent: React.ForwardRefExoticComponent<Omit<ChartTooltipContentProps, "ref"> & React.RefAttributes<HTMLDivElement>>;
 export { ChartTooltip, ChartTooltipContent };

@@ -176,11 +176,13 @@ layout = html.Div(
                                             config={
                                                 "value": {
                                                     "label": "Efficiency %",
-                                                    "color": "var(--chart-1)",
+                                                    "color": "#f97316",
                                                 }
                                             },
                                             dataKey="value",
                                             xAxisKey="name",
+                                            showLegend=True,  # Test ChartLegend
+                                            showTooltip=True,  # Test ChartTooltip
                                             className="min-h-[200px]",
                                         ),
                                     ]
@@ -208,11 +210,13 @@ layout = html.Div(
                                             config={
                                                 "value": {
                                                     "label": "Total Assays",
-                                                    "color": "var(--chart-2)",
+                                                    "color": "#0891b2",
                                                 }
                                             },
                                             dataKey="value",
                                             xAxisKey="name",
+                                            showLegend=True,  # Test ChartLegend
+                                            showTooltip=True,  # Test ChartTooltip
                                             className="min-h-[200px]",
                                         ),
                                     ]

@@ -1,8 +1,9 @@
 import React from "react"
 import { cn } from "../lib/utils"
+import { Tooltip } from "recharts"
 
 interface ChartTooltipProps {
-  content?: React.ReactNode
+  content?: React.ReactElement | ((props: any) => React.ReactNode)
   cursor?: boolean | object
   [key: string]: any
 }
@@ -20,8 +21,16 @@ interface ChartTooltipContentProps {
   [key: string]: any
 }
 
-const ChartTooltip = ({ content, ...props }: ChartTooltipProps) => {
-  return content ? React.createElement("div", props, content) : null
+const ChartTooltip = ({ content, cursor, ...props }: ChartTooltipProps) => {
+  // This is essentially a wrapper for Recharts Tooltip
+  // We need to pass through to Recharts' Tooltip component
+  return (
+    <Tooltip
+      cursor={cursor}
+      content={content}
+      {...props}
+    />
+  )
 }
 
 const ChartTooltipContent = React.forwardRef<

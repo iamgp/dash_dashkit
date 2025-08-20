@@ -1,8 +1,9 @@
 import React from "react"
 import { cn } from "../lib/utils"
+import { Legend } from "recharts"
 
 interface ChartLegendProps {
-  content?: React.ReactNode
+  content?: React.ReactElement | ((props: any) => React.ReactNode)
   [key: string]: any
 }
 
@@ -19,7 +20,14 @@ interface ChartLegendContentProps {
 }
 
 const ChartLegend = ({ content, ...props }: ChartLegendProps) => {
-  return content ? React.createElement("div", props, content) : null
+  // This is essentially a wrapper for Recharts Legend
+  // We need to pass through to Recharts' Legend component
+  return (
+    <Legend
+      content={content}
+      {...props}
+    />
+  )
 }
 
 const ChartLegendContent = React.forwardRef<
