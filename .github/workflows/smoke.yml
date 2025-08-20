@@ -1,0 +1,88 @@
+name: Smoke Test
+
+on:
+  push:
+    tags:
+      - 'dash-dashkit-v*'
+      - 'dashkit_table-v*'
+      - 'dashkit_kiboui-v*'
+
+jobs:
+  smoke-main:
+    if: startsWith(github.ref_name, 'dash-dashkit-v')
+    name: Smoke dash-dashkit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: astral-sh/setup-uv@v3
+      - name: Compute version
+        id: v
+        run: echo "version=${GITHUB_REF_NAME#dash-dashkit-v}" >> $GITHUB_OUTPUT
+      - name: Install package
+        run: |
+          uv venv
+          uv pip install --quiet "dash-dashkit==${{ steps.v.outputs.version }}"
+      - name: Run smoke script
+        run: |
+          uv run python - <<'PY'
+          from dash import Dash, html
+          import dashkit
+          from dashkit import Table, create_layout
+          app = Dash(__name__)
+          dashkit.setup_app(app)
+          data = [{"name": "Alice", "score": 10}, {"name": "Bob", "score": 20}]
+          cols = [{"data": "name", "title": "Name"}, {"data": "score", "title": "Score"}]
+          table = Table(id="t", data=data, columns=cols, height=200)
+          app.layout = create_layout(content=html.Div([html.H3("Smoke"), table]))
+          print("OK dash-dashkit:", getattr(dashkit, "__version__", "n/a"))
+          PY
+  
+  smoke-table:
+    if: startsWith(github.ref_name, 'dashkit_table-v')
+    name: Smoke dashkit_table
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: astral-sh/setup-uv@v3
+      - name: Compute version
+        id: v
+        run: echo "version=${GITHUB_REF_NAME#dashkit_table-v}" >> $GITHUB_OUTPUT
+      - name: Install package
+        run: |
+          uv venv
+          uv pip install --quiet "dashkit_table==${{ steps.v.outputs.version }}"
+      - name: Run smoke script
+        run: |
+          uv run python - <<'PY'
+          from dashkit_table import DashkitTable
+          t = DashkitTable(id="t", data=[["Alice", 10]], columns=[{"data":0},{"data":1}], height=200)
+          print("OK dashkit_table")
+          PY
+
+  smoke-kiboui:
+    if: startsWith(github.ref_name, 'dashkit_kiboui-v')
+    name: Smoke dashkit_kiboui
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: astral-sh/setup-uv@v3
+      - name: Compute version
+        id: v
+        run: echo "version=${GITHUB_REF_NAME#dashkit_kiboui-v}" >> $GITHUB_OUTPUT
+      - name: Install package
+        run: |
+          uv venv
+          uv pip install --quiet "dashkit_kiboui==${{ steps.v.outputs.version }}"
+      - name: Run smoke script
+        run: |
+          uv run python - <<'PY'
+          from dashkit_kiboui import ContributionGraph
+          cg = ContributionGraph(id="cg", data=[{"date":"2025-01-01","count":1}])
+          print("OK dashkit_kiboui")
+          PY
