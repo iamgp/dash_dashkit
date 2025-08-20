@@ -1,0 +1,51 @@
+[project]
+name = "dashkit_kiboui"
+description = "Contribution graph components for Dash with native theming support"
+readme = "README.md"
+requires-python = ">=3.8"
+dynamic = ["version"]
+dependencies = [
+  "dash>=2.0.0",
+]
+classifiers = [
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Framework :: Dash",
+  "Intended Audience :: Developers",
+  "Topic :: Software Development :: User Interfaces",
+]
+
+[project.urls]
+Homepage = "https://pypi.org/project/dashkit_kiboui/"
+Source = "https://github.com/iamgp/dash_dashkit"
+Issues = "https://github.com/iamgp/dash_dashkit/issues"
+
+[build-system]
+requires = ["hatchling", "uv-dynamic-versioning"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+source = "uv-dynamic-versioning"
+
+[tool.uv-dynamic-versioning]
+vcs = "git"
+style = "pep440"
+bump = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["dashkit_kiboui"]
+
+[tool.hatch.build]
+include = [
+  "dashkit_kiboui/dashkit_kiboui.js",
+  "dashkit_kiboui/dashkit_kiboui.js.LICENSE.txt",
+  "dashkit_kiboui/metadata.json",
+  "dashkit_kiboui/package-info.json",
+  "dashkit_kiboui/proptypes.js",
+  "README.md",
+  "LICENSE",
+]
