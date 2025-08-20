@@ -6,7 +6,6 @@ import dash_mantine_components as dmc
 from dash import html
 
 from dashkit import Card, ChartCard, MetricCard
-from dashkit_shadcn import AreaChart, BarChart
 
 
 # Generate mock assay data
@@ -140,95 +139,6 @@ layout = html.Div(
                     className="text-dashkit-text dark:text-dashkit-text-invert mb-6",
                 ),
             ]
-        ),
-        # Demo of our new shadcn charts
-        html.Div(
-            [
-                Card(
-                    [
-                        html.H3(
-                            "shadcn/ui Charts (New!)",
-                            className="text-lg font-medium mb-4",
-                        ),
-                        html.P(
-                            "These are our new shadcn/ui styled charts with beautiful theming and modern design.",
-                            className="text-sm text-gray-600 mb-4",
-                        ),
-                        # Actual shadcn charts
-                        html.Div(
-                            [
-                                # AreaChart
-                                html.Div(
-                                    [
-                                        html.H4(
-                                            "Monthly Efficiency Trend (shadcn/ui)",
-                                            className="text-sm font-medium mb-2",
-                                        ),
-                                        AreaChart(
-                                            id="efficiency-area-chart",
-                                            data=[
-                                                {
-                                                    "name": m["month"],
-                                                    "value": m["efficiency"],
-                                                }
-                                                for m in monthly_efficiency
-                                            ],
-                                            config={
-                                                "value": {
-                                                    "label": "Efficiency %",
-                                                    "color": "#f97316",
-                                                }
-                                            },
-                                            dataKey="value",
-                                            xAxisKey="name",
-                                            showLegend=True,  # Test ChartLegend
-                                            showTooltip=True,  # Test ChartTooltip
-                                            className="min-h-[200px]",
-                                        ),
-                                    ]
-                                ),
-                                # BarChart
-                                html.Div(
-                                    [
-                                        html.H4(
-                                            "Weekly Assays (shadcn/ui)",
-                                            className="text-sm font-medium mb-2",
-                                        ),
-                                        BarChart(
-                                            id="weekly-bar-chart",
-                                            data=[
-                                                {
-                                                    "name": w["week"].replace(
-                                                        "Week ", "W"
-                                                    ),
-                                                    "value": w["total"],
-                                                }
-                                                for w in weekly_data[
-                                                    -12:
-                                                ]  # Last 12 weeks
-                                            ],
-                                            config={
-                                                "value": {
-                                                    "label": "Total Assays",
-                                                    "color": "#0891b2",
-                                                }
-                                            },
-                                            dataKey="value",
-                                            xAxisKey="name",
-                                            showLegend=True,  # Test ChartLegend
-                                            showTooltip=True,  # Test ChartTooltip
-                                            className="min-h-[200px]",
-                                        ),
-                                    ]
-                                ),
-                            ],
-                            className="grid grid-cols-1 lg:grid-cols-2 gap-4",
-                        ),
-                    ],
-                    grid_cols="full",
-                ),
-            ],
-            className="mb-6",
         ),
         # First row - Time series charts (existing DMC charts)
         html.Div(
