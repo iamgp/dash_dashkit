@@ -1,7 +1,11 @@
 from pathlib import Path
 import sys
 
-__version__ = "1.0.0"
+try:
+    from importlib.metadata import version as _pkg_version
+    __version__ = _pkg_version("dashkit_shadcn")
+except Exception:
+    __version__ = "0.0.0"
 
 # Get the directory of this package
 _current_dir = Path(__file__).parent
