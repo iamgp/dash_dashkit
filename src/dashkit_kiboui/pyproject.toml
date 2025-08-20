@@ -3,7 +3,7 @@ name = "dashkit_kiboui"
 description = "Contribution graph components for Dash with native theming support"
 readme = "README.md"
 requires-python = ">=3.8"
-version = "1.1.0"
+version = "1.1.1"
 dependencies = [
   "dash>=2.0.0",
 ]
@@ -30,14 +30,18 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["dashkit_kiboui"]
-
-[tool.hatch.build]
 include = [
   "dashkit_kiboui/dashkit_kiboui.js",
   "dashkit_kiboui/dashkit_kiboui.js.LICENSE.txt",
-  "dashkit_kiboui/metadata.json",
-  "dashkit_kiboui/package-info.json",
-  "dashkit_kiboui/proptypes.js",
+"dashkit_kiboui/metadata.json",
+"dashkit_kiboui/package-info.json",
+"dashkit_kiboui/proptypes.js",
+]
+
+[tool.hatch.build.targets.sdist]
+include = [
+  "dashkit_kiboui/**",
   "README.md",
   "LICENSE",
 ]
+
