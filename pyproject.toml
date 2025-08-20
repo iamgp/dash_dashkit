@@ -1,6 +1,6 @@
 [project]
 name = "dash-dashkit"
-version = "1.2.0"
+version = "1.2.1"
 description = "Modern dashboard components for Dash applications"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -54,6 +54,16 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/dashkit"]
+include = [
+  "src/dashkit/assets/style.css",
+]
+
+[tool.hatch.build.targets.sdist]
+include = [
+  "src/dashkit/**",
+  "README.md",
+  "LICENSE",
+]
 
 [tool.ruff]
 target-version = "py311"
