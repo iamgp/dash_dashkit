@@ -7,7 +7,7 @@ try:
     from importlib.metadata import version as _pkg_version
     __version__ = _pkg_version("dashkit_table")
 except Exception:
-    __version__ = "1.1.1"
+    __version__ = "1.1.2"
 
 # Get the directory of this package
 _current_dir = Path(__file__).parent

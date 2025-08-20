@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.2](https://github.com/iamgp/dash_dashkit/compare/dash-dashkit-v1.1.1...dash-dashkit-v1.1.2) (2025-08-20)
+
+
+### Bug Fixes
+
+* **table:** add keywords and re-trigger release for publish pipeline ([5f8ff4f](https://github.com/iamgp/dash_dashkit/commit/5f8ff4f74b53e339d7ed6d3d66db156e1723377d))
+
 ## [1.1.1](https://github.com/iamgp/dash_dashkit/compare/dash-dashkit-v1.1.0...dash-dashkit-v1.1.1) (2025-08-20)
 
 
