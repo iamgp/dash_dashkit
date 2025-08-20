@@ -3,7 +3,11 @@ from pathlib import Path
 from ._imports_ import *  # noqa: F401,F403
 from .DashkitTable import DashkitTable  # noqa: F401
 
-__version__ = "1.0.0"
+try:
+    from importlib.metadata import version as _pkg_version
+    __version__ = _pkg_version("dashkit_table")
+except Exception:
+    __version__ = "0.0.0"
 
 # Get the directory of this package
 _current_dir = Path(__file__).parent
