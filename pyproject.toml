@@ -12,8 +12,17 @@ dependencies = [
     "dash-mantine-components>=2.1.0",
     "pyyaml>=6.0.2",
 ]
-keywords = ["dash", "plotly", "dashboard", "components", "ui", "tailwind", "handsontable", "charts"]
-license = {text = "MIT"}
+keywords = [
+    "dash",
+    "plotly",
+    "dashboard",
+    "components",
+    "ui",
+    "tailwind",
+    "handsontable",
+    "charts",
+]
+license = { text = "MIT" }
 authors = [{ name = "Dashkit Team" }]
 classifiers = [
     "License :: OSI Approved :: MIT License",
@@ -40,11 +49,7 @@ kiboui = ["dashkit_kiboui>=1.0.1"]
 # Install charts: pip install dash-dashkit[charts]
 charts = ["dashkit_shadcn>=1.0.1"]
 # Everything: pip install dash-dashkit[all]
-all = [
-    "dashkit_table>=1.1.2",
-    "dashkit_kiboui>=1.0.1",
-    "dashkit_shadcn>=1.0.1",
-]
+all = ["dashkit_table>=1.1.2", "dashkit_kiboui>=1.0.1", "dashkit_shadcn>=1.0.1"]
 
 dev = ["ruff>=0.1.0", "basedpyright>=1.10.0"]
 
@@ -54,16 +59,10 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/dashkit"]
-include = [
-  "src/dashkit/assets/style.css",
-]
+include = ["src/dashkit/assets/style.css"]
 
 [tool.hatch.build.targets.sdist]
-include = [
-  "src/dashkit/**",
-  "README.md",
-  "LICENSE",
-]
+include = ["src/dashkit/**", "README.md", "LICENSE"]
 
 [tool.ruff]
 target-version = "py311"
@@ -159,3 +158,7 @@ publish-main = "bash -lc 'HOME=\"$PWD\" uv run twine upload dist/dash_dashkit-*.
 lint = "ruff check src/ && ruff format src/"
 typecheck = "basedpyright src/"
 check = "task lint && task typecheck"
+# Bump versions for selected repos
+bump = "uv run python scripts/bump_version.py"
+# Release helper: bumps, commits, tags, and pushes by default
+release = "uv run python scripts/bump_version.py --commit --tag --push"
