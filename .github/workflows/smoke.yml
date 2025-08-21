@@ -3,7 +3,7 @@ name: Smoke Test
 on:
   push:
     tags:
-      - 'dash-dashkit-v*'
+      - 'dashkit-v*'
       - 'dashkit_table-v*'
       - 'dashkit_kiboui-v*'
   workflow_dispatch:
@@ -14,7 +14,7 @@ on:
 
 jobs:
   smoke-main:
-    if: startsWith(github.ref_name, 'dash-dashkit-v') || (github.event_name == 'release' && startsWith(github.event.release.tag_name, 'dash-dashkit-v')) || (github.event_name == 'workflow_dispatch' && startsWith(inputs.tag_name, 'dash-dashkit-v'))
+    if: startsWith(github.ref_name, 'dashkit-v') || (github.event_name == 'release' && startsWith(github.event.release.tag_name, 'dashkit-v')) || (github.event_name == 'workflow_dispatch' && startsWith(inputs.tag_name, 'dashkit-v'))
     name: Smoke dash-dashkit
     runs-on: ubuntu-latest
     steps:
@@ -27,11 +27,36 @@ jobs:
         shell: bash
         run: |
           if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then RAW="${{ inputs.tag_name }}"; else RAW="$GITHUB_REF_NAME"; fi
-          echo "version=${RAW#dash-dashkit-v}" >> $GITHUB_OUTPUT
+          echo "version=${RAW#dashkit-v}" >> $GITHUB_OUTPUT
       - name: Install package
         run: |
+          NAME="dash-dashkit"
+          VER="${{ steps.v.outputs.version }}"
+          for i in {1..60}; do
+            python - <<PY
+import json, sys, urllib.request
+url=f"https://pypi.org/pypi/${NAME}/json"
+try:
+    with urllib.request.urlopen(url, timeout=5) as r:
+        data=json.load(r)
+    sys.exit(0 if "${VER}" in data.get("releases", {}) else 1)
+except Exception:
+    sys.exit(1)
+PY
+            status=$?
+            if [ $status -eq 0 ]; then
+              echo "Found ${NAME} ${VER} on PyPI"
+              break
+            fi
+            echo "Waiting for ${NAME} ${VER} to appear on PyPI... ($i/60)"
+            sleep 10
+          done
+          if [ $status -ne 0 ]; then
+            echo "Timed out waiting for ${NAME} ${VER} on PyPI"
+            exit 1
+          fi
           uv venv
-          uv pip install --quiet "dash-dashkit==${{ steps.v.outputs.version }}"
+          uv pip install --quiet "${NAME}==${VER}"
       - name: Run smoke script
         run: |
           uv run python - <<'PY'
@@ -64,8 +89,33 @@ jobs:
           echo "version=${RAW#dashkit_table-v}" >> $GITHUB_OUTPUT
       - name: Install package
         run: |
+          NAME="dashkit_table"
+          VER="${{ steps.v.outputs.version }}"
+          for i in {1..60}; do
+            python - <<PY
+import json, sys, urllib.request
+url=f"https://pypi.org/pypi/${NAME}/json"
+try:
+    with urllib.request.urlopen(url, timeout=5) as r:
+        data=json.load(r)
+    sys.exit(0 if "${VER}" in data.get("releases", {}) else 1)
+except Exception:
+    sys.exit(1)
+PY
+            status=$?
+            if [ $status -eq 0 ]; then
+              echo "Found ${NAME} ${VER} on PyPI"
+              break
+            fi
+            echo "Waiting for ${NAME} ${VER} to appear on PyPI... ($i/60)"
+            sleep 10
+          done
+          if [ $status -ne 0 ]; then
+            echo "Timed out waiting for ${NAME} ${VER} on PyPI"
+            exit 1
+          fi
           uv venv
-          uv pip install --quiet "dashkit_table==${{ steps.v.outputs.version }}"
+          uv pip install --quiet "${NAME}==${VER}"
       - name: Run smoke script
         run: |
           uv run python - <<'PY'
@@ -91,8 +141,33 @@ jobs:
           echo "version=${RAW#dashkit_kiboui-v}" >> $GITHUB_OUTPUT
       - name: Install package
         run: |
+          NAME="dashkit_kiboui"
+          VER="${{ steps.v.outputs.version }}"
+          for i in {1..60}; do
+            python - <<PY
+import json, sys, urllib.request
+url=f"https://pypi.org/pypi/${NAME}/json"
+try:
+    with urllib.request.urlopen(url, timeout=5) as r:
+        data=json.load(r)
+    sys.exit(0 if "${VER}" in data.get("releases", {}) else 1)
+except Exception:
+    sys.exit(1)
+PY
+            status=$?
+            if [ $status -eq 0 ]; then
+              echo "Found ${NAME} ${VER} on PyPI"
+              break
+            fi
+            echo "Waiting for ${NAME} ${VER} to appear on PyPI... ($i/60)"
+            sleep 10
+          done
+          if [ $status -ne 0 ]; then
+            echo "Timed out waiting for ${NAME} ${VER} on PyPI"
+            exit 1
+          fi
           uv venv
-          uv pip install --quiet "dashkit_kiboui==${{ steps.v.outputs.version }}"
+          uv pip install --quiet "${NAME}==${VER}"
       - name: Run smoke script
         run: |
           uv run python - <<'PY'
