@@ -34,15 +34,15 @@ jobs:
           VER="${{ steps.v.outputs.version }}"
           for i in {1..60}; do
             python - <<PY
-import json, sys, urllib.request
-url=f"https://pypi.org/pypi/${NAME}/json"
-try:
-    with urllib.request.urlopen(url, timeout=5) as r:
-        data=json.load(r)
-    sys.exit(0 if "${VER}" in data.get("releases", {}) else 1)
-except Exception:
-    sys.exit(1)
-PY
+            import json, sys, urllib.request
+            url=f"https://pypi.org/pypi/${NAME}/json"
+            try:
+                with urllib.request.urlopen(url, timeout=5) as r:
+                    data=json.load(r)
+                sys.exit(0 if "${VER}" in data.get("releases", {}) else 1)
+            except Exception:
+                sys.exit(1)
+            PY
             status=$?
             if [ $status -eq 0 ]; then
               echo "Found ${NAME} ${VER} on PyPI"
@@ -93,15 +93,15 @@ PY
           VER="${{ steps.v.outputs.version }}"
           for i in {1..60}; do
             python - <<PY
-import json, sys, urllib.request
-url=f"https://pypi.org/pypi/${NAME}/json"
-try:
-    with urllib.request.urlopen(url, timeout=5) as r:
-        data=json.load(r)
-    sys.exit(0 if "${VER}" in data.get("releases", {}) else 1)
-except Exception:
-    sys.exit(1)
-PY
+            import json, sys, urllib.request
+            url=f"https://pypi.org/pypi/${NAME}/json"
+            try:
+                with urllib.request.urlopen(url, timeout=5) as r:
+                    data=json.load(r)
+                sys.exit(0 if "${VER}" in data.get("releases", {}) else 1)
+            except Exception:
+                sys.exit(1)
+            PY
             status=$?
             if [ $status -eq 0 ]; then
               echo "Found ${NAME} ${VER} on PyPI"
@@ -145,15 +145,15 @@ PY
           VER="${{ steps.v.outputs.version }}"
           for i in {1..60}; do
             python - <<PY
-import json, sys, urllib.request
-url=f"https://pypi.org/pypi/${NAME}/json"
-try:
-    with urllib.request.urlopen(url, timeout=5) as r:
-        data=json.load(r)
-    sys.exit(0 if "${VER}" in data.get("releases", {}) else 1)
-except Exception:
-    sys.exit(1)
-PY
+            import json, sys, urllib.request
+            url=f"https://pypi.org/pypi/${NAME}/json"
+            try:
+                with urllib.request.urlopen(url, timeout=5) as r:
+                    data=json.load(r)
+                sys.exit(0 if "${VER}" in data.get("releases", {}) else 1)
+            except Exception:
+                sys.exit(1)
+            PY
             status=$?
             if [ $status -eq 0 ]; then
               echo "Found ${NAME} ${VER} on PyPI"
