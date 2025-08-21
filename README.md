@@ -17,9 +17,6 @@ dashkit/
 │   │   ├── logo.py                # Logo components
 │   │   ├── navigation.py          # Navigation components
 │   │   └── dashkit_table/         # Advanced table components
-│   ├── dashkit_demo/              # Demo application
-│   │   ├── __init__.py
-│   │   └── app.py                 # Example usage
 │   └── assets/
 │       ├── style.css              # Compiled styles
 │       └── input.css              # Tailwind source
@@ -37,24 +34,32 @@ pip install dash-dashkit
 
 ## Quick Start
 
-### Running the Demo
+### Minimal app
 
-```bash
-# Install dependencies
-uv sync --group dev
+```python
+from dash import Dash, html
+import dashkit
 
-# Setup the table component (builds TypeScript and installs)
-uv run task setup
+app = Dash(__name__)
+dashkit.setup_app(app)
 
-# Run the demo application
-uv run task dev
-# or manually:
-python run.py
-# or
-python src/dashkit_demo/app.py
+rows = [{"name":"Alice","score":10},{"name":"Bob","score":20}]
+cols = [{"data":"name","title":"Name"},{"data":"score","title":"Score"}]
+
+app.layout = dashkit.create_layout(
+    content=html.Div([
+        html.H3("Example"),
+        dashkit.Table(id="t", data=rows, columns=cols, height=240),
+    ])
+)
+
+if __name__ == "__main__":
+    app.run(debug=True)
 ```
 
-Visit http://localhost:8050 to see the demo.
+- Install core: `pip install dash-dashkit`
+- With table: `pip install dash-dashkit[table]`
+- With everything: `pip install dash-dashkit[all]`
 
 ### Using Components in Your Project
 

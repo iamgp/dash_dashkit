@@ -159,5 +159,3 @@ publish-main = "bash -lc 'HOME=\"$PWD\" uv run twine upload dist/dash_dashkit-*.
 lint = "ruff check src/ && ruff format src/"
 typecheck = "basedpyright src/"
 check = "task lint && task typecheck"
-dev = "python src/dashkit_demo/app.py"
-dev-all = "honcho start"
