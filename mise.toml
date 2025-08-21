@@ -1,5 +1,7 @@
 [tools]
-bun = "latest"
+node = "latest"
+pnpm = "latest"
+uv = "latest"
 
 [settings]
 python.uv_venv_auto = true
