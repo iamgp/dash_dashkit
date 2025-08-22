@@ -6,6 +6,7 @@ All components are configurable and can be used across different projects.
 """
 
 from pathlib import Path
+
 from flask import send_from_directory
 
 from .buttons import PrimaryButton, SecondaryButton
@@ -45,9 +46,11 @@ def setup_app(app, assets_folder=None, include_dashkit_css: bool = True):
     if include_dashkit_css and pkg_assets.exists():
         route_attr = "_dashkit_assets_route_registered"
         if not getattr(app.server, route_attr, False):
+
             @app.server.route("/dashkit-assets/<path:filename>")
             def _dashkit_assets(filename: str):  # type: ignore
                 return send_from_directory(str(pkg_assets), filename)
+
             setattr(app.server, route_attr, True)
 
     app.index_string = """
@@ -81,12 +84,18 @@ def setup_app(app, assets_folder=None, include_dashkit_css: bool = True):
         </footer>
     </body>
 </html>
-""".replace("{dashkit_css}", "<link href=\"/dashkit-assets/style.css\" rel=\"stylesheet\">" if include_dashkit_css and pkg_assets.exists() else "")
+""".replace(
+        "{dashkit_css}",
+        '<link href="/dashkit-assets/style.css" rel="stylesheet">'
+        if include_dashkit_css and pkg_assets.exists()
+        else "",
+    )
 
 
 # Resolve version dynamically from installed package metadata
 try:
-    from importlib.metadata import PackageNotFoundError, version as _pkg_version
+    from importlib.metadata import version as _pkg_version
+
     __version__ = _pkg_version("dash-dashkit")
 except Exception:
     __version__ = "0.0.0"

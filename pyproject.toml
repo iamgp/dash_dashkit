@@ -1,6 +1,6 @@
 [project]
 name = "dash-dashkit"
-version = "1.2.4"
+version = "1.2.5"
 description = "Modern dashboard components for Dash applications"
 readme = "README.md"
 requires-python = ">=3.10"

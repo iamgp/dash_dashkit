@@ -14,7 +14,9 @@ REPOS = {
     "shadcn": ROOT / "src" / "dashkit_shadcn" / "pyproject.toml",
 }
 
-VERSION_RE = re.compile(r'^(\s*version\s*=\s*")(?P<ver>\d+\.\d+\.\d+)("\s*)$', re.MULTILINE)
+VERSION_RE = re.compile(
+    r'^(\s*version\s*=\s*")(?P<ver>\d+\.\d+\.\d+)("\s*)$', re.MULTILINE
+)
 PKG_CONSTRAINTS = {
     "table": "dashkit_table",
     "kiboui": "dashkit_kiboui",
@@ -41,12 +43,24 @@ def parse_args():
         help="Prompt to select repos and bump type (default when no args)",
     )
     # Release/VC options
-    p.add_argument("--commit", action="store_true", help="Create a Git commit with the changes")
+    p.add_argument(
+        "--commit", action="store_true", help="Create a Git commit with the changes"
+    )
     p.add_argument("--tag", action="store_true", help="Create a Git tag after commit")
-    p.add_argument("--tag-name", default=None, help="Explicit tag name to create (overrides prefix+version)")
-    p.add_argument("--tag-prefix", default="v", help="Prefix for tag when --tag-name not provided (default: v)")
+    p.add_argument(
+        "--tag-name",
+        default=None,
+        help="Explicit tag name to create (overrides prefix+version)",
+    )
+    p.add_argument(
+        "--tag-prefix",
+        default="v",
+        help="Prefix for tag when --tag-name not provided (default: v)",
+    )
     p.add_argument("--push", action="store_true", help="Push commit and tag to remote")
-    p.add_argument("--remote", default="origin", help="Remote name for push (default: origin)")
+    p.add_argument(
+        "--remote", default="origin", help="Remote name for push (default: origin)"
+    )
     return p.parse_args()
 
 
@@ -100,7 +114,7 @@ def update_root_constraints(root_path: Path, new_versions: dict[str, str]) -> bo
         pattern = re.compile(rf'("{re.escape(pkg)}>=)(\d+\.\d+\.\d+)(")')
 
         def repl(mm: re.Match) -> str:
-            return f"{mm.group(1)}{new_ver}{mm.group(3)}"
+            return f"{mm.group(1)}{new_ver}{mm.group(3)}"  # noqa: B023
 
         new_content, n = pattern.subn(repl, content)
         if n:
@@ -113,8 +127,14 @@ def update_root_constraints(root_path: Path, new_versions: dict[str, str]) -> bo
 
 # ---------------- Git helpers -----------------
 
+
 def _run_git(*args: str) -> subprocess.CompletedProcess:
-    return subprocess.run(["git", *args], cwd=str(ROOT), stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    return subprocess.run(
+        ["git", *args],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+    )
 
 
 def _ensure_git_repo() -> bool:
@@ -145,9 +165,12 @@ def _git_push(remote: str, push_tags: bool) -> None:
 
 # ---------------- Interactive helpers -----------------
 
+
 def _prompt_select_repos() -> list[str]:
     keys = list(REPOS.keys())
-    print("Select repos to bump (comma-separated numbers or names; 'all' for all; blank to cancel):")
+    print(
+        "Select repos to bump (comma-separated numbers or names; 'all' for all; blank to cancel):"
+    )
     for i, k in enumerate(keys, 1):
         print(f"  {i}) {k}")
     sel = input("> ").strip()
@@ -175,7 +198,14 @@ def _prompt_select_repos() -> list[str]:
 def _prompt_bump_type() -> str:
     print("Select bump type [1] patch  [2] minor  [3] major (default: 1):")
     sel = input("> ").strip()
-    mapping = {"1": "patch", "2": "minor", "3": "major", "patch": "patch", "minor": "minor", "major": "major"}
+    mapping = {
+        "1": "patch",
+        "2": "minor",
+        "3": "major",
+        "patch": "patch",
+        "minor": "minor",
+        "major": "major",
+    }
     if not sel:
         return "patch"
     kind = mapping.get(sel.lower())
@@ -232,7 +262,9 @@ def main():
         bump_type = args.type
         unknown = [r for r in targets if r not in REPOS]
         if unknown:
-            raise SystemExit(f"Unknown repos: {', '.join(unknown)}. Valid: {', '.join(REPOS)}")
+            raise SystemExit(
+                f"Unknown repos: {', '.join(unknown)}. Valid: {', '.join(REPOS)}"
+            )
 
     bumped: dict[str, str] = {}
     changed_paths: list[Path] = []
@@ -257,7 +289,9 @@ def main():
     # Optionally commit, tag, and push
     if commit_flag or tag_flag or push_flag:
         if not _ensure_git_repo():
-            raise SystemExit("Not a Git repo (or Git not available); cannot commit/tag/push.")
+            raise SystemExit(
+                "Not a Git repo (or Git not available); cannot commit/tag/push."
+            )
         if changed_paths:
             _git_add(changed_paths)
         commit_msg_parts = [f"{name} {ver}" for name, ver in bumped.items()]
@@ -279,13 +313,15 @@ def main():
             tags_to_create: list[tuple[str, str]] = []  # (tag_name, message)
             if tag_name and len(bumped) == 1:
                 # Single repo: respect explicit tag name
-                only_repo = next(iter(bumped.keys()))
+                next(iter(bumped.keys()))
                 tn = tag_name
                 msg = f"Release {tn} ({'; '.join(commit_msg_parts)})"
                 tags_to_create.append((tn, msg))
             else:
                 if tag_name and len(bumped) > 1:
-                    print("Note: --tag-name ignored when tagging multiple repos; using per-repo conventions.")
+                    print(
+                        "Note: --tag-name ignored when tagging multiple repos; using per-repo conventions."
+                    )
                 for repo_key, ver in bumped.items():
                     prefix = TAG_PREFIXES.get(repo_key, tag_prefix)
                     tn = f"{prefix}{ver}"

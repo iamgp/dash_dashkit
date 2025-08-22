@@ -70,7 +70,7 @@ def BrandHeader(brand_name, icon=None, subtitle=None):
 
     if icon:
         # Check if icon is a dash_iconify icon name (contains ':') or emoji/text
-        if ':' in icon:
+        if ":" in icon:
             header_content.append(
                 dash_iconify.DashIconify(
                     icon=icon,

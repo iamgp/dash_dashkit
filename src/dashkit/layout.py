@@ -1,10 +1,12 @@
 from typing import Any
 
+import dash
 import dash_mantine_components as dmc
-from dash import html
+from dash import Input, Output, callback, clientside_callback, dcc, html
 
 from .header import create_header
 from .sidebar import create_sidebar
+from .theme_manager import ThemeManager
 
 
 def create_layout(
@@ -12,6 +14,7 @@ def create_layout(
     sidebar_config: dict[str, Any] | None = None,
     header_config: dict[str, Any] | None = None,
     content_padding: str = "p-8",
+    include_theme_manager: bool = True,
 ) -> html.Div:
     """Create the main layout with configurable sidebar and header.
 
@@ -20,6 +23,7 @@ def create_layout(
         sidebar_config: Configuration for sidebar with brand name and initial
         header_config: Configuration for header with page_title, actions, etc.
         content_padding: CSS class for content padding (default: "p-8")
+        include_theme_manager: When True, injects ThemeManager (Location + theme stores/callbacks)
     """
     if content is None:
         content = html.Div(
@@ -53,6 +57,11 @@ def create_layout(
     return dmc.MantineProvider(
         html.Div(
             [
+                # Theme and location management
+                ThemeManager() if include_theme_manager else None,
+                # Global page stores for header + page config
+                dcc.Store(id="page_header_config", data={}),
+                dcc.Store(id="page_config", data={}),
                 # Sidebar
                 create_sidebar(
                     brand_name=sidebar_config["brand_name"],
@@ -93,3 +102,53 @@ def create_layout(
             className="flex h-screen bg-white dark:bg-dashkit-surface font-sans",
         )
     )
+
+
+# Register page state callbacks at import time so apps don't need to define them
+@callback(
+    [
+        Output("page_header_config", "data"),
+        Output("page_config", "data"),
+    ],
+    Input("url", "pathname", allow_optional=True),
+)
+def _update_page_config(pathname: str | None):
+    """Update header + page config stores from Dash page registry.
+
+    This runs whenever the URL changes. If `url` isn't present, it will be
+    skipped due to allow_optional.
+    """
+    header_config = {"title": "Dashboard", "icon": ""}
+    page_config = {"content_padding": "p-8"}
+
+    if pathname:
+        for page in dash.page_registry.values():
+            if page.get("path") == pathname:
+                header_config = {
+                    "title": page.get("title", ""),
+                    "icon": page.get("icon", ""),
+                }
+                page_config = {"content_padding": page.get("content_padding", "p-8")}
+                break
+
+    return header_config, page_config
+
+
+# Clientside callback to apply content padding class to main content container
+clientside_callback(
+    r"""
+    function(page_config) {
+        if (page_config && page_config.content_padding) {
+            const element = document.getElementById('main-content-container');
+            if (element) {
+                element.className = element.className.replace(/p-\d+|p-0/g, '');
+                element.className = element.className + ' ' + page_config.content_padding;
+            }
+        }
+        return window.dash_clientside.no_update;
+    }
+    """,
+    Output("main-content-container", "className"),
+    Input("page_config", "data"),
+    prevent_initial_call=False,
+)

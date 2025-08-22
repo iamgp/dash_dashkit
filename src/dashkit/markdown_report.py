@@ -12,7 +12,7 @@ def MarkdownReport(
 
     Args:
         content: Markdown content to render
-        title: Optional title rendered within the report body and used in header
+        title: Optional title rendered within the report body
         className: Additional CSS classes
 
     Returns:
@@ -20,9 +20,9 @@ def MarkdownReport(
     """
     children: list[Any] = []
 
-    # If title provided, use it to update header via Store consumed by header
+    # Render title inside the markdown when provided (header is managed globally)
     if title:
-        children.append(dcc.Store(id="page_header_config", data={"title": title}))
+        children.append(html.H1(title))
 
     children.append(
         dcc.Markdown(content, className="prose prose-sm dark:prose-invert max-w-none")
