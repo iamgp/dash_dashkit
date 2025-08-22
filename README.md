@@ -209,7 +209,7 @@ Main package (dash-dashkit)
 
 - Bump version in `pyproject.toml` (update subpackage minimums as needed)
 - Commit and push
-- Tag and push: `git tag dash-dashkit-vX.Y.Z && git push origin dashkit-vX.Y.Z`
+- Tag and push: `git tag dashkit-vX.Y.Z && git push origin dashkit-vX.Y.Z`
   - Legacy form `vX.Y.Z` is also supported
 
 CI workflows
