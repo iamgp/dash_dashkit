@@ -137,6 +137,15 @@ dev = [
     "taskipy>=1.12.0",
     "build>=1.2.2",
     "twine>=5.0.0",
+    "mkdocstrings[python]>=0.30.0",
+    "mkdocs-shadcn>=0.9.1",
+]
+docs = [
+    "mkdocs>=1.5.0",
+    "mkdocs-material>=9.4.0",
+    "mkdocs-git-revision-date-localized-plugin>=1.2.0",
+    "mkdocs-minify-plugin>=0.7.0",
+    "pymdown-extensions>=10.0",
 ]
 
 [tool.taskipy.tasks]
@@ -158,6 +167,11 @@ publish-main = "bash -lc 'HOME=\"$PWD\" uv run twine upload dist/dash_dashkit-*.
 lint = "ruff check src/ && ruff format src/"
 typecheck = "basedpyright src/"
 check = "task lint && task typecheck"
+# Documentation
+docs-install = "uv sync --group docs"
+docs-serve = "uv run --group docs mkdocs serve"
+docs-build = "uv run --group docs mkdocs build"
+docs-deploy = "uv run --group docs mkdocs gh-deploy"
 # Bump versions for selected repos
 bump = "uv run python scripts/bump_version.py"
 # Release helper: bumps, commits, tags, and pushes by default

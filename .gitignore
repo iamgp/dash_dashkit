@@ -27,3 +27,6 @@ __pycache__/
 *.egg
 
 .pypirc
+
+# MkDocs generated site
+site/

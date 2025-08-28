@@ -1,0 +1,3 @@
+# Table
+
+::: dashkit.table

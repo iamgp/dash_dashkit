@@ -1,0 +1,3 @@
+# Sidebar
+
+::: dashkit.sidebar

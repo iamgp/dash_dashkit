@@ -1,0 +1,136 @@
+site_name: Dashkit Documentation
+site_description: Modern dashboard components for Dash applications
+site_url: https://your-domain.com/
+repo_url: https://github.com/iamgp/dash_dashkit
+repo_name: iamgp/dash_dashkit
+
+# Build directories
+docs_dir: docs
+site_dir: site
+
+# Theme configuration
+theme:
+  name: material
+  palette:
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Palette toggle for dark mode  
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.path
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - search.share
+    - header.autohide
+    - content.tabs.link
+    - content.code.copy
+    - content.code.select
+    - content.tooltips
+  
+  icon:
+    repo: fontawesome/brands/github
+    edit: material/pencil
+    view: material/eye
+  
+  font:
+    text: Inter
+    code: JetBrains Mono
+
+# Plugins
+plugins:
+  - search:
+      lang: en
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            docstring_style: google
+            show_root_heading: true
+            show_source: false
+            heading_level: 2
+  - minify:
+      minify_html: true
+  - git-revision-date-localized:
+      enable_creation_date: true
+
+# Extensions
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.details
+  - admonition
+  - attr_list
+  - md_in_html
+  - footnotes
+  - tables
+  - toc:
+      permalink: true
+      title: On this page
+
+# Navigation structure
+nav:
+  - Home: index.md
+  - Getting Started:
+    - Quick Start: guides/quickstart.md
+  - API Reference:
+    - Overview: api/README.md
+    - Setup: api/setup.md
+    - Components:
+      - Layout: api/components/layout.md
+      - Sidebar: api/components/sidebar.md
+      - Header: api/components/header.md
+      - Table: api/components/table.md
+      - Buttons: api/components/buttons.md
+      - Cards: api/components/cards.md
+      - Markdown Report: api/components/markdown.md
+      - Charts: api/components/charts.md
+  - Internals:
+    - Architecture: internals/architecture.md
+    - Development: internals/development.md
+
+# Extra CSS and JavaScript
+extra_css:
+  - stylesheets/extra.css
+
+extra_javascript:
+  - javascripts/extra.js
+
+# Footer and social links
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/iamgp/dash_dashkit
+    - icon: fontawesome/brands/python
+      link: https://pypi.org/project/dash-dashkit/
+  generator: false
+
+# Copyright
+copyright: Copyright &copy; 2024 Dashkit Team
