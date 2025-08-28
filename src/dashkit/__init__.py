@@ -10,6 +10,14 @@ from pathlib import Path
 from flask import send_from_directory
 
 from .buttons import PrimaryButton, SecondaryButton
+from .callout import (
+    Callout,
+    CautionCallout,
+    ImportantCallout,
+    NoteCallout,
+    TipCallout,
+    WarningCallout,
+)
 from .card import Card, ChartCard, MetricCard
 from .header import create_header
 from .layout import create_layout
@@ -112,6 +120,12 @@ __all__ = [
     "Card",
     "MetricCard",
     "ChartCard",
+    "Callout",
+    "NoteCallout",
+    "TipCallout",
+    "ImportantCallout",
+    "WarningCallout",
+    "CautionCallout",
     "setup_app",
 ]
 
