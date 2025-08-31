@@ -4,6 +4,7 @@ import dash
 import dash_mantine_components as dmc
 from dash import Input, Output, callback, clientside_callback, dcc, html
 
+from .breadcrumbs import Breadcrumbs
 from .header import create_header
 from .sidebar import create_sidebar
 from .theme_manager import ThemeManager
@@ -80,6 +81,7 @@ def create_layout(
                             actions=header_config.get("actions"),
                             filter_items=header_config.get("filter_items"),
                         ),
+                        Breadcrumbs(),
                         # Content with max-width constraint
                         html.Main(
                             [

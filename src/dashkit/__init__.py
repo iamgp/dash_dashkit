@@ -9,6 +9,7 @@ from pathlib import Path
 
 from flask import send_from_directory
 
+from .breadcrumbs import Breadcrumbs
 from .buttons import PrimaryButton, SecondaryButton
 from .callout import (
     Callout,
@@ -112,6 +113,7 @@ __all__ = [
     "create_layout",
     "create_sidebar",
     "create_header",
+    "Breadcrumbs",
     "Table",
     "TableWithStats",
     "PrimaryButton",

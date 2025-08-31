@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Features
+
+* **navigation:** add route-aware `Breadcrumbs` component
+
 ## [1.1.2](https://github.com/iamgp/dash_dashkit/compare/dash-dashkit-v1.1.1...dash-dashkit-v1.1.2) (2025-08-20)
 
 
