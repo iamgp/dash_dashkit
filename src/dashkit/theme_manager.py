@@ -96,6 +96,12 @@ class ThemeManager(html.Div):
                     const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
                     document.documentElement.classList.toggle('dark', systemPrefersDark);
                     localStorage.removeItem('theme'); // Use system default
+
+                    // Emit custom theme change event
+                    window.dispatchEvent(new CustomEvent('dashkit:theme-changed', {
+                        detail: { theme: 'system', isDark: systemPrefersDark }
+                    }));
+
                     return { theme: 'system' };
                 }
                 return window.dash_clientside.no_update;
@@ -114,6 +120,12 @@ class ThemeManager(html.Div):
                     console.log('Setting theme to: light');
                     document.documentElement.classList.remove('dark');
                     localStorage.setItem('theme', 'light');
+
+                    // Emit custom theme change event
+                    window.dispatchEvent(new CustomEvent('dashkit:theme-changed', {
+                        detail: { theme: 'light', isDark: false }
+                    }));
+
                     return { theme: 'light' };
                 }
                 return window.dash_clientside.no_update;
@@ -132,6 +144,12 @@ class ThemeManager(html.Div):
                     console.log('Setting theme to: dark');
                     document.documentElement.classList.add('dark');
                     localStorage.setItem('theme', 'dark');
+
+                    // Emit custom theme change event
+                    window.dispatchEvent(new CustomEvent('dashkit:theme-changed', {
+                        detail: { theme: 'dark', isDark: true }
+                    }));
+
                     return { theme: 'dark' };
                 }
                 return window.dash_clientside.no_update;
@@ -234,6 +252,12 @@ class ThemeManager(html.Div):
                     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
                     const handleSystemChange = (e) => {
                         document.documentElement.classList.toggle('dark', e.matches);
+
+                        // Emit custom theme change event for system theme changes
+                        window.dispatchEvent(new CustomEvent('dashkit:theme-changed', {
+                            detail: { theme: 'system', isDark: e.matches }
+                        }));
+
                         // Trigger table theme update by updating the theme store
                         const themeStore = document.querySelector('#theme-store');
                         if (themeStore && window.dash_clientside) {
@@ -255,6 +279,73 @@ class ThemeManager(html.Div):
             }
             """,
             Output("theme-toggle-container", "children"),
+            Input("theme-store", "data"),
+            prevent_initial_call=False,
+        )
+
+        # Add mantine and plotly theme management callback
+        clientside_callback(
+            """
+            function(data) {
+                const theme = data && data.theme ? data.theme : 'system';
+                let isDark = false;
+
+                if (theme === 'dark') {
+                    isDark = true;
+                } else if (theme === 'system') {
+                    isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                }
+
+                // Update Mantine theme
+                const mantineProvider = document.querySelector('[data-mantine-color-scheme]');
+                if (mantineProvider) {
+                    mantineProvider.setAttribute('data-mantine-color-scheme', isDark ? 'dark' : 'light');
+                }
+
+                // Update all Plotly figures to use dark theme
+                if (window.Plotly) {
+                    const plotlyDivs = document.querySelectorAll('div[id*="graph"], div.plotly-graph-div');
+                    plotlyDivs.forEach(div => {
+                        if (div._fullData && div._fullLayout) {
+                            const newTemplate = isDark ? 'plotly_dark' : 'plotly';
+                            window.Plotly.relayout(div, {
+                                template: newTemplate
+                            });
+                        }
+                    });
+                }
+
+                // Listen for theme change events and update themes accordingly
+                if (!window.themeChangeListener) {
+                    window.themeChangeListener = function(event) {
+                        const isDarkTheme = event.detail.isDark;
+
+                        // Update Mantine theme
+                        const mantineProvider = document.querySelector('[data-mantine-color-scheme]');
+                        if (mantineProvider) {
+                            mantineProvider.setAttribute('data-mantine-color-scheme', isDarkTheme ? 'dark' : 'light');
+                        }
+
+                        // Update Plotly figures
+                        if (window.Plotly) {
+                            const plotlyDivs = document.querySelectorAll('div[id*="graph"], div.plotly-graph-div');
+                            plotlyDivs.forEach(div => {
+                                if (div._fullData && div._fullLayout) {
+                                    const newTemplate = isDarkTheme ? 'plotly_dark' : 'plotly';
+                                    window.Plotly.relayout(div, {
+                                        template: newTemplate
+                                    });
+                                }
+                            });
+                        }
+                    };
+                    window.addEventListener('dashkit:theme-changed', window.themeChangeListener);
+                }
+
+                return window.dash_clientside.no_update;
+            }
+            """,
+            Output("theme-store", "storage_type"),
             Input("theme-store", "data"),
             prevent_initial_call=False,
         )

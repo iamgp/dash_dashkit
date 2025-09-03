@@ -289,13 +289,14 @@ wheels = [
 
 [[package]]
 name = "dash-dashkit"
-version = "1.2.5"
+version = "1.3.1"
 source = { editable = "." }
 dependencies = [
     { name = "dash" },
     { name = "dash-bootstrap-components" },
     { name = "dash-iconify" },
     { name = "dash-mantine-components" },
+    { name = "dashkit-table" },
     { name = "plotly" },
     { name = "pyyaml" },
 ]
@@ -304,7 +305,6 @@ dependencies = [
 all = [
     { name = "dashkit-kiboui" },
     { name = "dashkit-shadcn" },
-    { name = "dashkit-table" },
 ]
 charts = [
     { name = "dashkit-shadcn" },
@@ -315,9 +315,6 @@ dev = [
 ]
 kiboui = [
     { name = "dashkit-kiboui" },
-]
-table = [
-    { name = "dashkit-table" },
 ]
 
 [package.dev-dependencies]
@@ -350,13 +347,12 @@ requires-dist = [
     { name = "dashkit-kiboui", marker = "extra == 'kiboui'", directory = "src/dashkit_kiboui" },
     { name = "dashkit-shadcn", marker = "extra == 'all'", directory = "src/dashkit_shadcn" },
     { name = "dashkit-shadcn", marker = "extra == 'charts'", directory = "src/dashkit_shadcn" },
-    { name = "dashkit-table", marker = "extra == 'all'", directory = "src/dashkit_table" },
-    { name = "dashkit-table", marker = "extra == 'table'", directory = "src/dashkit_table" },
+    { name = "dashkit-table", directory = "src/dashkit_table" },
     { name = "plotly", specifier = ">=5.17.0" },
     { name = "pyyaml", specifier = ">=6.0.2" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.1.0" },
 ]
-provides-extras = ["table", "kiboui", "charts", "all", "dev"]
+provides-extras = ["kiboui", "charts", "all", "dev"]
 
 [package.metadata.requires-dev]
 dev = [
