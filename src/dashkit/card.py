@@ -15,6 +15,7 @@ def Card(
     className: str = "",
     header_className: str | None = None,
     body_className: str | None = None,
+    **kwargs,
 ) -> Component:
     header_base = (
         "flex flex-wrap items-center justify-between gap-4 px-6 py-4 "
@@ -54,6 +55,7 @@ def Card(
         ],
         className="group flex flex-col w-full h-full rounded-2xl px-[4px] [:where(&)]:py-1 bg-dashkit-panel-light dark:bg-dashkit-panel-dark "
         + className.strip(),
+        **kwargs,
     )
 
 
