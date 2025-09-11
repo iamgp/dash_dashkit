@@ -29,6 +29,73 @@
     --dashkit-sidebar-width: 14rem;
     --dashkit-sidebar-collapsed-width: 3.5rem;
     --tracking-sidebar: -0.28px;
+
+    --color-linear-base: var(--bg-base-color);
+    --color-linear-sidebar: var(--bg-sidebar-color);
+    --color-linear-border: var(--bg-border-color);
+    --color-linear-content: var(--content-color);
+    --color-base-color: var(--mantine-color-text);
+
+    --color-ceramic-bg-main: var(--ceramic-bg-main);
+    --color-ceramic-main: var(--ceramic-bg-main);
+    --color-ceramic-bg-separator: var(--ceramic-bg-separator);
+    --color-ceramic-separator: var(--ceramic-bg-separator);
+    --color-ceramic-black: var(--ceramic-black);
+    --color-ceramic-white: var(--ceramic-white);
+
+    --color-ceramic-brand: var(--ceramic-brand);
+    --color-ceramic-primary: var(--ceramic-primary);
+    --color-ceramic-secondary: var(--ceramic-secondary);
+    --color-ceramic-positive: var(--ceramic-positive);
+    --color-ceramic-negative: var(--ceramic-negative);
+    --color-ceramic-warning: var(--ceramic-warning);
+    --color-ceramic-info: var(--ceramic-info);
+
+    --color-ceramic-dimmed: var(--ceramic-dimmed);
+    --color-ceramic-menu: var(--ceramic-bg-menu);
+
+    --color-ceramic-blue-50: var(--ceramic-blue-50);
+    --color-ceramic-blue-700: var(--ceramic-blue-700);
+    --color-ceramic-blue: var(--ceramic-blue-700);
+
+    --color-ceramic-green-500: var(--ceramic-green-500);
+    --color-ceramic-green-700: var(--ceramic-green-700);
+    --color-ceramic-green: var(--ceramic-green-700);
+
+    --color-ceramic-orange-500: var(--ceramic-orange-500);
+    --color-ceramic-orange-600: var(--ceramic-orange-600);
+    --color-ceramic-orange-700: var(--ceramic-orange-700);
+    --color-ceramic-orange: var(--ceramic-orange-700);
+
+    --color-ceramic-purple-50: var(--ceramic-purple-50);
+    --color-ceramic-purple-200: var(--ceramic-purple-200);
+    --color-ceramic-purple-300: var(--ceramic-purple-300);
+    --color-ceramic-purple-500: var(--ceramic-purple-500);
+    --color-ceramic-purple-600: var(--ceramic-purple-600);
+    --color-ceramic-purple-700: var(--ceramic-purple-700);
+    --color-ceramic-purple-800: var(--ceramic-purple-800);
+    --color-ceramic-purple: var(--ceramic-purple-700);
+
+    --color-ceramic-red-50: var(--ceramic-red-50);
+    --color-ceramic-red-500: var(--ceramic-red-500);
+    --color-ceramic-red-700: var(--ceramic-red-700);
+    --color-ceramic-red: var(--ceramic-red-700);
+
+    --color-ceramic-gray-50: var(--ceramic-gray-50);
+    --color-ceramic-gray-100: var(--ceramic-gray-100);
+    --color-ceramic-gray-200: var(--ceramic-gray-200);
+    --color-ceramic-gray-300: var(--ceramic-gray-300);
+    --color-ceramic-gray-400: var(--ceramic-gray-400);
+    --color-ceramic-gray-700: var(--ceramic-gray-700);
+    --color-ceramic-gray-800: var(--ceramic-gray-800);
+    --color-ceramic-gray-1100: var(--ceramic-gray-1100);
+    --color-ceramic-gray-1300: var(--ceramic-gray-1300);
+    --color-ceramic-gray-1400: var(--ceramic-gray-1400);
+    --color-ceramic-gray-1500: var(--ceramic-gray-1500);
+    --color-ceramic-gray: var(--ceramic-gray-700);
+
+    --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 @layer base {
@@ -44,6 +111,176 @@
 }
 
 @layer components {
+}
+
+@layer utilities {
+  :root {
+    --app-shell-border-color: var(--color-gray-200);
+
+    --content-color: #71717a;
+    --bg-sidebar-color: #ededed;
+    --bg-base-color: #fbfbfb;
+    --bg-border-color: #dcdcdc;
+
+    /* Ceramic base palette */
+    --ceramic-gray-50: #fafafb;
+    --ceramic-gray-100: #f6f6f7;
+    --ceramic-gray-200: #ececee;
+    --ceramic-gray-300: #dbdbe0;
+    --ceramic-gray-400: #c7c7cf;
+    --ceramic-gray-500: #adadb7;
+    --ceramic-gray-600: #90909d;
+    --ceramic-gray-700: #767684;
+    --ceramic-gray-800: #5f5f6f;
+    --ceramic-gray-900: #4c4c5c;
+    --ceramic-gray-1000: #3d3d4a;
+    --ceramic-gray-1100: #33333e;
+    --ceramic-gray-1200: #2b2b34;
+    --ceramic-gray-1300: #232328;
+    --ceramic-gray-1400: #1b1b1f;
+    --ceramic-gray-1500: #111113;
+
+    --ceramic-purple-50: #f5f3ff;
+    --ceramic-purple-100: #e3e0ff;
+    --ceramic-purple-200: #ccc8ff;
+    --ceramic-purple-300: #bab0ff;
+    --ceramic-purple-400: #a698ff;
+    --ceramic-purple-500: #9280ff;
+    --ceramic-purple-600: #846bff;
+    --ceramic-purple-700: #6c47ff;
+    --ceramic-purple-800: #5f15fe;
+    --ceramic-purple-900: #4d06d1;
+    --ceramic-purple-1000: #3707a6;
+    --ceramic-purple-1100: #27057c;
+    --ceramic-purple-1200: #1c045f;
+    --ceramic-purple-1300: #16034b;
+
+    --ceramic-green-50: #effdf1;
+    --ceramic-green-100: #aff9bf;
+    --ceramic-green-200: #65f088;
+    --ceramic-green-300: #49dc6e;
+    --ceramic-green-400: #31c854;
+    --ceramic-green-500: #1eb43c;
+    --ceramic-green-600: #199d34;
+    --ceramic-green-700: #15892b;
+    --ceramic-green-800: #107524;
+    --ceramic-green-900: #09661c;
+    --ceramic-green-1000: #0b5619;
+    --ceramic-green-1100: #0c4919;
+    --ceramic-green-1200: #0c3c18;
+    --ceramic-green-1300: #053211;
+
+    --ceramic-red-50: #fef8f8;
+    --ceramic-red-100: #fedddd;
+    --ceramic-red-200: #fec4c4;
+    --ceramic-red-300: #fca9a9;
+    --ceramic-red-400: #f98a8a;
+    --ceramic-red-500: #f86969;
+    --ceramic-red-600: #f73d3d;
+    --ceramic-red-700: #e02e2e;
+    --ceramic-red-800: #c22a2a;
+    --ceramic-red-900: #aa1b1b;
+    --ceramic-red-1000: #921414;
+    --ceramic-red-1100: #7a1313;
+    --ceramic-red-1200: #651414;
+    --ceramic-red-1300: #550e0e;
+    --ceramic-red-1400: #3d0101;
+    --ceramic-red-1500: #2d0101;
+
+    --ceramic-orange-50: #fff8f2;
+    --ceramic-orange-100: #ffe4c4;
+    --ceramic-orange-200: #fecc9f;
+    --ceramic-orange-300: #feb166;
+    --ceramic-orange-400: #fd9357;
+    --ceramic-orange-500: #fd7224;
+    --ceramic-orange-600: #e06213;
+    --ceramic-orange-700: #c3540f;
+    --ceramic-orange-800: #a8470c;
+    --ceramic-orange-900: #9d3405;
+    --ceramic-orange-1000: #8a2706;
+    --ceramic-orange-1100: #75220b;
+    --ceramic-orange-1200: #5f1e0c;
+    --ceramic-orange-1300: #50170a;
+
+    --ceramic-yellow-50: #fefbdc;
+    --ceramic-yellow-100: #f7ed55;
+    --ceramic-yellow-200: #e5d538;
+    --ceramic-yellow-300: #d7be35;
+    --ceramic-yellow-400: #c0aa18;
+    --ceramic-yellow-500: #bd9005;
+    --ceramic-yellow-600: #a47c04;
+    --ceramic-yellow-700: #8d6b03;
+    --ceramic-yellow-800: #775902;
+    --ceramic-yellow-900: #674401;
+    --ceramic-yellow-1000: #563202;
+    --ceramic-yellow-1100: #412303;
+    --ceramic-yellow-1200: #321904;
+    --ceramic-yellow-1300: #2a1203;
+
+    --ceramic-blue-50: #f6faff;
+    --ceramic-blue-100: #daeafe;
+    --ceramic-blue-200: #b4d5fe;
+    --ceramic-blue-300: #8dc2fd;
+    --ceramic-blue-400: #73acfa;
+    --ceramic-blue-500: #6694f8;
+    --ceramic-blue-600: #307ff6;
+    --ceramic-blue-700: #236dd7;
+    --ceramic-blue-800: #1c5bb6;
+    --ceramic-blue-900: #1744a6;
+    --ceramic-blue-1000: #0f318e;
+    --ceramic-blue-1100: #0e2369;
+    --ceramic-blue-1200: #0b1c49;
+    --ceramic-blue-1300: #0c1637;
+
+    --ceramic-white: #fff;
+    --ceramic-black: #000;
+
+    /* Light (default) semantic mappings */
+    --ceramic-primary: var(--ceramic-gray-1200);
+    --ceramic-secondary: var(--ceramic-gray-800);
+    --ceramic-dimmed: var(--ceramic-gray-500);
+    --ceramic-positive: var(--ceramic-green-700);
+    --ceramic-negative: var(--ceramic-red-700);
+    --ceramic-warning: var(--ceramic-orange-500);
+    --ceramic-brand: var(--ceramic-purple-700);
+    --ceramic-info: var(--ceramic-blue-700);
+    --ceramic-bg-main: var(--ceramic-white);
+    --ceramic-bg-menu: var(--ceramic-white);
+    --ceramic-bg-separator: var(--ceramic-gray-200);
+
+    --clerk-neutral: var(--ceramic-black);
+    --clerk-color-primary: var(--ceramic-brand);
+    --clerk-color-foreground: var(--ceramic-primary);
+    --clerk-color-muted-foreground: var(--ceramic-secondary);
+    --clerk-color-success: var(--ceramic-positive);
+    --clerk-color-danger: var(--ceramic-negative);
+    --clerk-color-warning: var(--ceramic-warning);
+    --clerk-color-background: var(--ceramic-bg-main);
+    --clerk-color-neutral: var(--clerk-neutral);
+    --clerk-color-modal-backdrop: rgba(0, 0, 0, 0.4);
+  }
+
+  .dark {
+    --app-shell-border-color: var(--color-gray-800);
+
+    --content-color: #6b6f76;
+    --bg-sidebar-color: #090909;
+    --bg-base-color: #101011;
+    --bg-border-color: #27282d;
+
+    /* Dark semantic mappings */
+    --ceramic-primary: var(--ceramic-gray-100);
+    --ceramic-secondary: var(--ceramic-gray-500);
+    --ceramic-dimmed: var(--ceramic-gray-800);
+    --ceramic-positive: var(--ceramic-green-400);
+    --ceramic-negative: var(--ceramic-red-600);
+    --ceramic-warning: var(--ceramic-orange-500);
+    --ceramic-brand: var(--ceramic-purple-600);
+    --ceramic-info: var(--ceramic-blue-600);
+    --ceramic-bg-main: var(--ceramic-gray-1400);
+    --ceramic-bg-menu: var(--ceramic-gray-1100);
+    --ceramic-bg-separator: var(--ceramic-gray-1300);
+  }
 }
 
 /* Handsontable theme overrides */
