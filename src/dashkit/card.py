@@ -1,61 +1,112 @@
-from typing import Any, Literal
+from collections.abc import Sequence
 
 from dash import html
+from dash.development.base_component import Component
+from dash.html.Section import Section
+from dash_iconify import DashIconify
+
+Children = Component | Sequence[Component] | str | Section
 
 
 def Card(
-    children: Any,
+    children: Children,
+    header: Children | None = None,
+    footer: Children | None = None,
     className: str = "",
-    title: str | None = None,
-    grid_cols: Literal[1, 2, 3, 4, 6, 12, "full"] = 1,
-    **kwargs: Any,
-) -> html.Div:
-    """
-    Reusable card component with consistent dashkit styling and grid support.
+    header_className: str | None = None,
+    body_className: str | None = None,
+    **kwargs,
+) -> Component:
+    header_base = (
+        "flex flex-wrap items-center justify-between gap-4 px-6 py-4 "
+        "[&:has(+footer)]:border-b [&:has(+footer)]:border-ceramic-bg-separator "
+        "text-ceramic-secondary leading-5 "
+    )
+    return html.Section(
+        children=[
+            (
+                html.Header(
+                    children=header,
+                    className=(header_base + (header_className.strip() if header_className else "")).strip(),
+                )
+                if header
+                else None
+            ),
+            html.Div(
+                children=html.Div(
+                    children=children,
+                    className=(
+                        ("flex flex-col " + (body_className.strip() if body_className else "px-6 py-2")).strip()
+                    ),
+                ),
+                className="bg-white dark:bg-dashkit-surface overflow-hidden rounded-2xl ring-1 ring-[#191C21]/4 dark:ring-ceramic-black/20 shadow-[0_1px_2px_0_rgba(25,28,33,.06),0_0_2px_0_theme(colors.ceramic.black/.08)] dark:shadow-[inset_0_0_1px_1px_theme(colors.ceramic.white/.01),0_1px_3px_0_theme(colors.ceramic.black/.4),0_0_3px_0_theme(colors.ceramic.black/.2)] flex-1 min-h-0 ",
+            ),
+            (
+                html.Footer(
+                    children=html.Div(
+                        children=footer,
+                        className="flex items-start px-5 gap-1.5 text-ceramic-body-3 text-ceramic-secondary -mx-5 border-t border-ceramic-bg-separator  first:border-none [:where(&)]:py-3 first:[:where(&)]:pt-0 last:[:where(&)]:pb-0 flex-1 leading-5",
+                    ),
+                    className="px-7 pb-3 pt-4",
+                )
+                if footer
+                else None
+            ),
+        ],
+        className="group flex flex-col w-full h-full rounded-2xl px-[4px] [:where(&)]:py-1 bg-dashkit-panel-light dark:bg-dashkit-panel-dark "
+        + className.strip(),
+        **kwargs,
+    )
 
-    Args:
-        children: Content to display inside the card
-        className: Additional CSS classes
-        title: Optional title to display at the top of the card
-        grid_cols: Grid columns span (1-12, or "full" for col-span-full)
-        **kwargs: Additional props passed to the outer div
-    """
-    # Map grid_cols to CSS classes
-    grid_class_map = {
-        1: "col-span-1",
-        2: "col-span-2",
-        3: "col-span-3",
-        4: "col-span-4",
-        6: "col-span-6",
-        12: "col-span-12",
-        "full": "col-span-full",
-    }
 
-    grid_class = grid_class_map.get(grid_cols, "col-span-1")
+def CardTitle(
+    children: Children,
+    className: str = "",
+    **kwargs,
+) -> html.Span:
+    return html.Span(
+        children=children,
+        className="flex flex-wrap items-center gap-x-2 gap-y-0.5 font-medium text-ceramic-primary text-[16px] "
+        + className.strip(),
+    )
 
-    # Base card styling with dashkit colors
-    base_classes = "bg-white dark:bg-dashkit-panel-dark p-6 rounded-lg border border-dashkit-border-light dark:border-dashkit-border-dark"
-    combined_classes = f"{base_classes} {grid_class} {className}".strip()
 
-    # Build card content
-    card_content = []
+def CardTitleWithIcon(
+    icon: str,
+    children: Children,
+    className: str = "",
+    **kwargs,
+) -> html.Span:
+    return html.Span(
+        children=[
+            DashIconify(icon=icon, className="stroke-2"),
+            CardTitle(children, className=className, **kwargs),
+        ],
+        className="flex flex-wrap items-center gap-x-2 gap-y-0.5 font-medium text-ceramic-primary text-[16px] "
+        + className.strip(),
+    )
 
-    # Add title if provided
-    if title:
-        card_content.append(
-            html.H3(
-                title,
-                className="text-lg font-medium mb-4 text-dashkit-text dark:text-dashkit-text-invert",
-            )
-        )
 
-    # Add children (can be a single element or list)
-    if isinstance(children, list):
-        card_content.extend(children)
-    else:
-        card_content.append(children)
+def CardSubtitle(
+    children: Children,
+    className: str = "",
+    **kwargs,
+) -> html.Span:
+    return html.Span(
+        children=children,
+        className="text-xs text-ceramic-secondary pr-2 " + className.strip(),
+    )
 
-    return html.Div(card_content, className=combined_classes, **kwargs)
+
+def CardFooter(
+    children: Children,
+    className: str = "",
+    **kwargs,
+) -> html.Span:
+    return html.Span(
+        children=children,
+        className="text-xs text-ceramic-secondary " + className.strip(),
+    )
 
 
 def MetricCard(
@@ -63,10 +114,9 @@ def MetricCard(
     value: str,
     trend: str | None = None,
     trend_positive: bool = True,
-    grid_cols: Literal[1, 2, 3, 4, 6, 12, "full"] = 1,
     className: str = "",
-    **kwargs: Any,
-) -> html.Div:
+    **kwargs,
+) -> Component:
     """
     Specialized card for displaying metrics/KPIs.
 
@@ -75,7 +125,6 @@ def MetricCard(
         value: Metric value to display
         trend: Optional trend indicator (e.g., "+2.1%", "↗ +5%")
         trend_positive: Whether trend is positive (affects color)
-        grid_cols: Grid columns span
         className: Additional CSS classes
         **kwargs: Additional props
     """
@@ -102,38 +151,29 @@ def MetricCard(
 
     return Card(
         html.Div(content, className="text-center"),
-        className=f"bg-dashkit-panel-light dark:bg-dashkit-surface {className}",
-        grid_cols=grid_cols,
+        className=className,
         **kwargs,
     )
 
 
 def ChartCard(
     title: str,
-    chart: Any,
-    grid_cols: Literal[1, 2, 3, 4, 6, 12, "full"] = 1,
+    chart: Children,
     className: str = "",
-    **kwargs: Any,
-) -> html.Div:
+    **kwargs,
+) -> Component:
     """
     Specialized card for displaying charts with consistent styling.
 
     Args:
         title: Chart title
         chart: Chart component (e.g., dmc.LineChart, dmc.BarChart, etc.)
-        grid_cols: Grid columns span
         className: Additional CSS classes
         **kwargs: Additional props
     """
     return Card(
-        [
-            html.H3(
-                title,
-                className="text-lg font-medium mb-4 text-dashkit-text dark:text-dashkit-text-invert",
-            ),
-            chart,
-        ],
+        chart,
+        header=CardTitle(title),
         className=className,
-        grid_cols=grid_cols,
         **kwargs,
     )
